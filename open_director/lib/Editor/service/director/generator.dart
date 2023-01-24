@@ -1295,7 +1295,7 @@ class Generator {
   }
 
   _getFontPath(String relativePath) async {
-    const String rootFontsPath = 'fonts';
+    const String rootFontsPath = 'packages/open_director/fonts';
     final ByteData fontFile =
         await rootBundle.load(p.join(rootFontsPath, relativePath));
     final Directory appDocDir = await getApplicationDocumentsDirectory();
