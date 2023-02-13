@@ -937,11 +937,11 @@ class Generator {
     //     "[au][a]amix=inputs=2 :weights=$audioVolume $videoVolume:duration=first:dropout_transition=0 [amx];";
     if (isNoVideoSound) {
       String arguments =
-          "[a] volume=${VolumeVariables.videoVolume}[a]; [a]amix=inputs=1:dropout_transition=0 [amx];";
+          "[a] volume=${VolumeVariables.isMute ? 0.0 : VolumeVariables.videoVolume}[a]; [a]amix=inputs=1:dropout_transition=0 [amx];";
       return arguments;
     } else {
       String arguments =
-          "[au] volume=${VolumeVariables.audioVolume}[au];[a]volume=${VolumeVariables.videoVolume}[a]; [au][a]amix=inputs=2:duration=first:dropout_transition=0 [amx];";
+          "[au] volume=${VolumeVariables.audioVolume}[au];[a]volume=${VolumeVariables.isMute ? 0.0 : VolumeVariables.videoVolume}[a]; [au][a]amix=inputs=2:duration=first:dropout_transition=0 [amx];";
       return arguments;
     }
   }

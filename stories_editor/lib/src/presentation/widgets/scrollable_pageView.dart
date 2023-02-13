@@ -8,6 +8,7 @@ class ScrollablePageView extends StatefulWidget {
   Widget mainView;
   Widget gallery;
   Widget fullImageView;
+  Widget onlinImages;
   final bool scrollPhysics;
   PageController pageController;
   ScrollController gridController;
@@ -18,7 +19,8 @@ class ScrollablePageView extends StatefulWidget {
       required this.scrollPhysics,
       required this.pageController,
       required this.gridController,
-      required this.fullImageView})
+      required this.fullImageView,
+      required this.onlinImages})
       : super(key: key);
   @override
   _ScrollablePageViewState createState() => _ScrollablePageViewState();
@@ -118,7 +120,12 @@ class _ScrollablePageViewState extends State<ScrollablePageView> {
           controller: _pageController,
           scrollDirection: Axis.vertical,
           physics: const NeverScrollableScrollPhysics(),
-          children: [widget.mainView, widget.gallery, widget.fullImageView],
+          children: [
+            widget.mainView,
+            widget.gallery,
+            widget.onlinImages,
+            widget.fullImageView,
+          ],
         ));
   }
 }

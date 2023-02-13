@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:open_director/Editor/service_locator.dart';
@@ -18,7 +17,7 @@ class AssetSelection extends StatelessWidget {
         stream: directorService.selected$,
         initialData: Selected(-1, -1),
         builder: (BuildContext context, AsyncSnapshot<Selected> selected) {
-          Color borderColor = Colors.pinkAccent;
+          Color borderColor = const Color.fromRGBO(93, 86, 250, 1);
           double left, width;
           if (selected.data.layerIndex == layerIndex &&
               selected.data.assetIndex != -1) {

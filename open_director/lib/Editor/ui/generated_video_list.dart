@@ -19,7 +19,30 @@ class GeneratedVideoList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${project.title}'),
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_back_ios)),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 40,
+            ),
+            Text('${project.title}'),
+          ],
+        ),
+        backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
+        // actions: <Widget>[
+        //   // TextButton.icon(
+        //   //   label: const Text('Exit'),
+        //   //   icon: const Icon(Icons.exit_to_app),
+        //   //   onPressed: () {
+        //   //     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        //   //   },
+        //   // ),
+        // ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

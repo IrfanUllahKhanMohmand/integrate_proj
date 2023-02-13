@@ -45,7 +45,7 @@ class _SubMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey.shade800,
+      color: const Color.fromRGBO(93, 86, 250, 1),
       margin: EdgeInsets.only(right: 16),
       child: Column(
         children: [
@@ -123,7 +123,10 @@ class _FontSize extends StatelessWidget {
         Text('Size:',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w100)),
         Slider(
-          min: 0.03,
+          inactiveColor: Color.fromRGBO(93, 86, 250, 0.3),
+          activeColor: Color.fromRGBO(93, 86, 250, 1),
+          thumbColor: Color.fromRGBO(93, 86, 250, 1),
+          min: 0.01,
           max: 1,
           value: math.sqrt(_asset?.fontSize ?? 1),
           onChanged: (size) {

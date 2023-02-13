@@ -19,17 +19,32 @@ class ProjectList extends StatelessWidget {
     bool isLandscape =
         (MediaQuery.of(context).orientation == Orientation.landscape);
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(245, 245, 247, 1),
       appBar: AppBar(
-        title: Text('Open Director'),
-        actions: <Widget>[
-          TextButton.icon(
-            label: Text('Exit'),
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
             },
-          ),
-        ],
+            child: const Icon(Icons.arrow_back_ios)),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const [
+            SizedBox(
+              width: 40,
+            ),
+            Text('Nawees'),
+          ],
+        ),
+        backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
+        // actions: <Widget>[
+        //   // TextButton.icon(
+        //   //   label: const Text('Exit'),
+        //   //   icon: const Icon(Icons.exit_to_app),
+        //   //   onPressed: () {
+        //   //     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        //   //   },
+        //   // ),
+        // ],
       ),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -197,7 +212,10 @@ class _ProjectCard extends StatelessWidget {
                 ],
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? EdgeInsets.all(10)
+                        : EdgeInsets.all(5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -260,7 +278,7 @@ class _CreateProject extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10)),
             child: Container(
               height: (MediaQuery.of(context).size.height - 20) *
-                      (isLandscape ? 1 : 0.17) -
+                      (isLandscape ? 0.8 : 0.17) -
                   10,
               width: MediaQuery.of(context).size.width *
                       (isLandscape ? 0.20 : 0.95) -

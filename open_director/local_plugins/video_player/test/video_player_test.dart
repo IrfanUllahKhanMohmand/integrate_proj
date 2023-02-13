@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,7 +43,6 @@ class FakeController extends ValueNotifier<VideoPlayerValue>
   @override
   VideoFormat get formatHint => null;
 
-
   @override
   Future<void> removeMediaSource(int index) {
     // TODO: implement removeMediaSource
@@ -63,7 +60,8 @@ class FakeController extends ValueNotifier<VideoPlayerValue>
   Future<int> get windowIndex => null;
 
   @override
-  Future<void> addMediaSource(int index, String path, int start, int end, {bool isAsset = false}) {
+  Future<void> addMediaSource(int index, String path, int start, int end,
+      {bool isAsset = false}) {
     // TODO: implement addMediaSource
     return null;
   }

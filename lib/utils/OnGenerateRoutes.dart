@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/main.dart';
 import 'package:integration_test/screens/PoetsList/PoetsList.dart';
 import 'package:integration_test/screens/Profile/Profile.dart';
 import 'package:integration_test/screens/Profile/widgets/ghazalPreview.dart';
@@ -27,6 +26,8 @@ class Routers {
         {
           return MaterialPageRoute(
               builder: (_) => StoriesEditor(
+                    editorBackgroundColor:
+                        const Color.fromRGBO(243, 243, 243, 1),
                     giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
                     galleryThumbnailQuality: 300,
                     middleBottomWidget: Container(),

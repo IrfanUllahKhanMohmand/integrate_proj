@@ -209,7 +209,7 @@ class _DirectorScreenFirstTime extends State<DirectorScreenFirstTime>
         return false;
       },
       child: Material(
-        color: Colors.grey.shade900,
+        color: const Color.fromRGBO(245, 245, 247, 1),
         child: SafeArea(
           child: GestureDetector(
             onTap: () {
@@ -220,7 +220,7 @@ class _DirectorScreenFirstTime extends State<DirectorScreenFirstTime>
               FocusScope.of(context).requestFocus(new FocusNode());
             },
             child: Container(
-              color: Colors.grey.shade900,
+              color: const Color.fromRGBO(245, 245, 247, 1),
               child: _Director(),
             ),
           ),
@@ -268,6 +268,7 @@ class _Director extends StatelessWidget {
                 alignment: const Alignment(-1, -1),
                 children: <Widget>[
                   Container(
+                    color: Color.fromARGB(255, 226, 225, 225),
                     child: GestureDetector(
                       child: NotificationListener<ScrollNotification>(
                         onNotification: (ScrollNotification scrollState) {
@@ -311,7 +312,7 @@ class _PositionLine extends StatelessWidget {
         width: 2,
         height: Params.getTimelineHeight(context) - 4,
         margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
-        color: Colors.grey.shade100);
+        color: const Color.fromRGBO(130, 130, 130, 1));
   }
 }
 
@@ -324,7 +325,7 @@ class _PositionMarker extends StatelessWidget {
       width: 58,
       height: Params.RULER_HEIGHT - 4,
       margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
-      color: Colors.blue,
+      color: const Color.fromRGBO(93, 86, 250, 1),
       child: StreamBuilder(
           stream: directorService.position$,
           initialData: 0,
@@ -384,10 +385,11 @@ class _Ruler extends StatelessWidget {
     return CustomPaint(
       painter: RulerPainter(context),
       child: Container(
+        // color: const Color.fromRGBO(245, 245, 247, 1),
         height: Params.RULER_HEIGHT - 4,
         width: MediaQuery.of(context).size.width +
             directorService.pixelsPerSecond * directorService.duration / 1000,
-        margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
+        margin: const EdgeInsets.fromLTRB(0, 2, 0, 2),
       ),
     );
   }
@@ -429,11 +431,11 @@ class RulerPainter extends CustomPainter {
             MediaQuery.of(context).size.width;
 
     final paint = Paint();
-    paint.color = Colors.grey.shade800;
+    paint.color = const Color.fromRGBO(245, 245, 247, 1);
     Rect rect = Rect.fromLTWH(0, 2, width, size.height - 4);
     canvas.drawRect(rect, paint);
 
-    paint.color = Colors.grey.shade400;
+    paint.color = const Color.fromRGBO(130, 130, 130, 1);
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = 1;
 
@@ -460,8 +462,8 @@ class RulerPainter extends CustomPainter {
         textAlign: TextAlign.left,
         text: TextSpan(
           text: text,
-          style: TextStyle(
-            color: Colors.grey.shade400,
+          style: const TextStyle(
+            color: Color.fromRGBO(130, 130, 130, 1),
             fontSize: 10,
           ),
         ),
@@ -485,7 +487,12 @@ class RulerPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-class _LayerHeaders extends StatelessWidget {
+class _LayerHeaders extends StatefulWidget {
+  @override
+  State<_LayerHeaders> createState() => _LayerHeadersState();
+}
+
+class _LayerHeadersState extends State<_LayerHeaders> {
   final directorService = locator.get<DirectorService>();
 
   @override
@@ -504,7 +511,40 @@ class _LayerHeaders extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: directorService.layers
               .asMap()
-              .map((index, layer) => MapEntry(index, _LayerHeader(layer.type)))
+              .map((index, layer) => MapEntry(
+                  index,
+                  Row(
+                    children: [
+                      _LayerHeader(layer.type),
+                      layer.type == 'raster'
+                          ? VolumeVariables.isMute
+                              ? GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      VolumeVariables.isMute =
+                                          !VolumeVariables.isMute;
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.volume_off_outlined,
+                                    color: Color.fromARGB(255, 80, 80, 80),
+                                  ),
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      VolumeVariables.isMute =
+                                          !VolumeVariables.isMute;
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.volume_up,
+                                    color: Color.fromARGB(255, 80, 80, 80),
+                                  ),
+                                )
+                          : Container(),
+                    ],
+                  )))
               .values
               .toList(),
         ),
@@ -522,7 +562,7 @@ class _Video extends StatelessWidget {
         stream: directorService.position$,
         builder: (BuildContext context, AsyncSnapshot<int> position) {
           var backgroundContainer = Container(
-            color: Colors.black,
+            color: const Color.fromRGBO(245, 245, 247, 1),
             height: Params.getPlayerHeight(context),
             width: Params.getPlayerWidth(context),
           );
@@ -698,6 +738,13 @@ class _LayerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        height: Params.getLayerHeight(context, type),
+        width: 28.0,
+        margin: const EdgeInsets.fromLTRB(0, 1, 1, 1),
+        padding: const EdgeInsets.all(4.0),
+        decoration: const BoxDecoration(
+          color: Color.fromRGBO(130, 130, 130, 1),
+        ),
         child: Icon(
           type == "raster"
               ? Icons.photo
@@ -706,13 +753,6 @@ class _LayerHeader extends StatelessWidget {
                   : Icons.music_note,
           color: Colors.white,
           size: 16,
-        ),
-        height: Params.getLayerHeight(context, type),
-        width: 28.0,
-        margin: EdgeInsets.fromLTRB(0, 1, 1, 1),
-        padding: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade800,
         ));
   }
 }
@@ -737,15 +777,20 @@ class _LayerAssets extends StatelessWidget {
               Container(width: MediaQuery.of(context).size.width / 2),
 
               Row(
-                children: directorService.layers[layerIndex].assets
-                    .asMap()
-                    .map((assetIndex, asset) => MapEntry(
-                          assetIndex,
-                          _Asset(layerIndex, assetIndex),
-                        ))
-                    .values
-                    .toList(),
+                children: directorService.layers[layerIndex].assets.isNotEmpty
+                    ? directorService.layers[layerIndex].assets
+                        .asMap()
+                        .map((assetIndex, asset) => MapEntry(
+                              assetIndex,
+                              _Asset(layerIndex, assetIndex),
+                            ))
+                        .values
+                        .toList()
+                    : [_AssetSelect(layerIndex)],
               ),
+              directorService.layers[layerIndex].assets.isNotEmpty
+                  ? _AssetAdd(layerIndex)
+                  : Container(),
               Container(
                 width: MediaQuery.of(context).size.width / 2 - 2,
               ),
@@ -787,18 +832,18 @@ class _AssetState extends State<_Asset> {
       borderColor = Colors.red;
       textColor = Colors.red.shade900;
     } else if (widget.layerIndex == 0) {
-      backgroundColor = Colors.blue.shade200;
-      borderColor = Colors.blue;
+      backgroundColor = const Color.fromRGBO(245, 245, 247, 1);
+      borderColor = const Color.fromRGBO(93, 86, 250, 1);
       textColor = Colors.white;
       backgroundTextColor = Colors.black.withOpacity(0.5);
     } else if (widget.layerIndex == 1 && asset.title != '') {
-      backgroundColor = Colors.blue.shade200;
-      borderColor = Colors.blue;
-      textColor = Colors.blue.shade900;
+      backgroundColor = const Color.fromRGBO(245, 245, 247, 1);
+      borderColor = const Color.fromRGBO(93, 86, 250, 1);
+      textColor = const Color.fromRGBO(130, 130, 130, 1);
     } else if (widget.layerIndex == 2) {
-      backgroundColor = Colors.orange.shade200;
-      borderColor = Colors.orange;
-      textColor = Colors.orange.shade900;
+      backgroundColor = const Color.fromRGBO(245, 245, 247, 1);
+      borderColor = const Color.fromRGBO(93, 86, 250, 1);
+      textColor = const Color.fromRGBO(130, 130, 130, 1);
     }
     return GestureDetector(
       child: Container(
@@ -832,6 +877,7 @@ class _AssetState extends State<_Asset> {
                   asset.thumbnailPath != null &&
                   !directorService.isGenerating)
               ? DecorationImage(
+                  opacity: 1,
                   image: FileImage(File(asset.thumbnailPath)),
                   fit: BoxFit.cover,
                   alignment: Alignment.topLeft,
@@ -928,6 +974,214 @@ class _AssetState extends State<_Asset> {
       },
       onLongPressEnd: (LongPressEndDetails details) {
         directorService.dragEnd();
+      },
+    );
+  }
+}
+
+class _AssetSelect extends StatefulWidget {
+  final int layerIndex;
+  _AssetSelect(this.layerIndex) : super();
+
+  @override
+  State<_AssetSelect> createState() => _AssetSelectState();
+}
+
+class _AssetSelectState extends State<_AssetSelect> {
+  final directorService = locator.get<DirectorService>();
+  @override
+  Widget build(BuildContext context) {
+    Color backgroundColor = Colors.white;
+    Color textColor = const Color.fromRGBO(130, 130, 130, 1);
+    Color backgroundTextColor = Colors.transparent;
+
+    return GestureDetector(
+      child: Container(
+        height: Params.getLayerHeight(
+            context, directorService.layers[widget.layerIndex].type),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.add,
+              color: textColor,
+            ),
+            Text(
+              widget.layerIndex == 0
+                  ? 'Add Media'
+                  : widget.layerIndex == 1
+                      ? 'Add Text'
+                      : widget.layerIndex == 2
+                          ? 'Add Audio'
+                          : '',
+              style: TextStyle(
+                  color: textColor,
+                  fontSize: 12,
+                  backgroundColor: backgroundTextColor,
+                  shadows: <Shadow>[
+                    Shadow(color: Colors.black, offset: Offset(0, 0))
+                  ]),
+            ),
+          ],
+        ),
+        width: 10000 * directorService.pixelsPerSecond / 1000.0,
+        padding: const EdgeInsets.fromLTRB(4, 3, 4, 3),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          color: backgroundColor,
+          image: null,
+        ),
+      ),
+      onTap: () {
+        widget.layerIndex == 0
+            ? showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(20.0)), //this right here
+                    child: Container(
+                      height: 200,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                                directorService.add(AssetType.image);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.image_outlined, size: 50),
+                                  Text('Image')
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                                directorService.add(AssetType.video);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.video_file_outlined, size: 50),
+                                  Text('Video')
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                })
+            : widget.layerIndex == 1
+                ? directorService.add(AssetType.text)
+                : widget.layerIndex == 2
+                    ? directorService.add(AssetType.audio)
+                    : () {};
+        // directorService.select(widget.layerIndex, widget.assetIndex);
+      },
+    );
+  }
+}
+
+class _AssetAdd extends StatefulWidget {
+  final int layerIndex;
+  _AssetAdd(this.layerIndex) : super();
+
+  @override
+  State<_AssetAdd> createState() => _AssetAddState();
+}
+
+class _AssetAddState extends State<_AssetAdd> {
+  final directorService = locator.get<DirectorService>();
+  @override
+  Widget build(BuildContext context) {
+    Color backgroundColor = Color.fromRGBO(93, 86, 250, 1);
+    Color textColor = Colors.white;
+
+    return GestureDetector(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: Container(
+          height: 30,
+          child: Icon(
+            Icons.add,
+            color: textColor,
+          ),
+          width: 30,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: backgroundColor,
+          ),
+        ),
+      ),
+      onTap: () {
+        widget.layerIndex == 0
+            ? showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(20.0)), //this right here
+                    child: Container(
+                      height: 200,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                                directorService.add(AssetType.image);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.image_outlined, size: 50),
+                                  Text('Image')
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                                directorService.add(AssetType.video);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.video_file_outlined, size: 50),
+                                  Text('Video')
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                })
+            : widget.layerIndex == 1
+                ? directorService.add(AssetType.text)
+                : widget.layerIndex == 2
+                    ? directorService.add(AssetType.audio)
+                    : () {};
+        // directorService.select(widget.layerIndex, widget.assetIndex);
       },
     );
   }

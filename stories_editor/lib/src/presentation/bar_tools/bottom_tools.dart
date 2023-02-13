@@ -7,7 +7,6 @@ import 'package:stories_editor/src/domain/providers/notifiers/draggable_widget_n
 import 'package:stories_editor/src/domain/providers/notifiers/scroll_notifier.dart';
 import 'package:stories_editor/src/domain/sevices/save_as_image.dart';
 import 'package:stories_editor/src/presentation/widgets/animated_onTap_button.dart';
-import 'package:stories_editor/src/presentation/widgets/pick_online_images.dart';
 
 class BottomTools extends StatelessWidget {
   final GlobalKey contentKey;
@@ -95,38 +94,38 @@ class BottomTools extends StatelessWidget {
                 ),
 
                 /// center logo
-                if (controlNotifier.middleBottomWidget != null)
-                  Expanded(
-                    child: Center(
-                      child: Container(
-                          alignment: Alignment.bottomCenter,
-                          child: controlNotifier.middleBottomWidget),
-                    ),
-                  )
-                else
-                  Expanded(
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(
-                            'assets/images/instagram_logo.png',
-                            package: 'stories_editor',
-                            color: Colors.white,
-                            height: 42,
-                          ),
-                          const Text(
-                            'Stories Creator',
-                            style: TextStyle(
-                                color: Colors.white38,
-                                letterSpacing: 1.5,
-                                fontSize: 9.2,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                // if (controlNotifier.middleBottomWidget != null)
+                //   Expanded(
+                //     child: Center(
+                //       child: Container(
+                //           alignment: Alignment.bottomCenter,
+                //           child: controlNotifier.middleBottomWidget),
+                //     ),
+                //   )
+                // else
+                //   Expanded(
+                //     child: Center(
+                //       child: Column(
+                //         mainAxisSize: MainAxisSize.min,
+                //         children: [
+                //           Image.asset(
+                //             'assets/images/instagram_logo.png',
+                //             package: 'stories_editor',
+                //             color: Colors.white,
+                //             height: 42,
+                //           ),
+                //           const Text(
+                //             'Stories Creator',
+                //             style: TextStyle(
+                //                 color: Colors.white38,
+                //                 letterSpacing: 1.5,
+                //                 fontSize: 9.2,
+                //                 fontWeight: FontWeight.bold),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
 
                 /// save final image to gallery
                 Expanded(
@@ -155,14 +154,14 @@ class BottomTools extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                     border: Border.all(
-                                        color: Colors.white, width: 1.5)),
+                                        color: Colors.black, width: 1.5)),
                                 child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: const [
                                       Text(
                                         'Share',
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: Colors.black,
                                             letterSpacing: 1.5,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400),

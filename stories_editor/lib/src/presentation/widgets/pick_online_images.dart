@@ -89,23 +89,7 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: 40,
-                  child: TextField(
-                      controller: textController,
-                      decoration:
-                          const InputDecoration(border: OutlineInputBorder())),
-                ),
-                ElevatedButton(
-                    onPressed: () async {
-                      categoryType = CategoryType.none;
-                      if (textController.text != '') {
-                        await getApiData(textController.text);
-                      }
-
-                      textController.text = '';
-                    },
-                    child: const Text('Search')),
+                const SizedBox(height: 10),
                 SizedBox(
                   height: 45,
                   child: Padding(
@@ -139,7 +123,54 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
                     ),
                   ),
                 ),
-                imageListNew.isNotEmpty && imageListNew.length > 2 && !isLoading
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                  child: TextField(
+                    controller: textController,
+                    cursorColor: const Color.fromRGBO(93, 86, 250, 1),
+                    decoration: InputDecoration(
+                        suffixIcon: InkWell(
+                          onTap: () async {
+                            categoryType = CategoryType.none;
+                            if (textController.text != '') {
+                              await getApiData(textController.text);
+                            }
+
+                            textController.text = '';
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(24),
+                                  bottomRight: Radius.circular(24)),
+                              color: Color.fromRGBO(93, 86, 250, 1),
+                            ),
+                            child: const Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Color.fromRGBO(93, 86, 250, 1),
+                        ),
+                        prefixIconColor: const Color.fromRGBO(93, 86, 250, 1),
+                        enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(24)),
+                            borderSide: BorderSide(
+                                color: Color.fromRGBO(93, 86, 250, 1))),
+                        focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(24)),
+                            borderSide: BorderSide(
+                                color: Color.fromRGBO(93, 86, 250, 1))),
+                        border: const OutlineInputBorder(),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 8)),
+                  ),
+                ),
+                imageListNew.isNotEmpty && !isLoading
                     ? Container(
                         height: 580,
                         margin: const EdgeInsets.all(5),
@@ -192,7 +223,7 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
                                 Provider.of<ScrollNotifier>(context,
                                         listen: false)
                                     .pageController
-                                    .animateToPage(2,
+                                    .animateToPage(3,
                                         duration:
                                             const Duration(milliseconds: 300),
                                         curve: Curves.easeIn);
@@ -315,10 +346,10 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
     return Container(
       decoration: BoxDecoration(
           color: isSelected
-              ? DesignCourseAppTheme.nearlyBlue
+              ? const Color.fromRGBO(93, 86, 250, 1)
               : DesignCourseAppTheme.nearlyWhite,
-          borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-          border: Border.all(color: DesignCourseAppTheme.nearlyBlue)),
+          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+          border: Border.all(color: const Color.fromRGBO(93, 86, 250, 1))),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -332,7 +363,7 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
           },
           child: Padding(
             padding:
-                const EdgeInsets.only(top: 12, bottom: 12, left: 28, right: 28),
+                const EdgeInsets.only(top: 2, bottom: 2, left: 28, right: 28),
             child: Center(
               child: Text(
                 txt,
@@ -343,7 +374,7 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
                   letterSpacing: 0.27,
                   color: isSelected
                       ? DesignCourseAppTheme.nearlyWhite
-                      : DesignCourseAppTheme.nearlyBlue,
+                      : const Color.fromRGBO(93, 86, 250, 1),
                 ),
               ),
             ),

@@ -46,11 +46,20 @@ class ProgressDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               progress == 0
-                  ? Center(child: CircularProgressIndicator())
+                  ? Center(
+                      child: CircularProgressIndicator(
+                      color: const Color.fromRGBO(93, 86, 250, 1),
+                    ))
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                          LinearProgressIndicator(value: progress),
+                          LinearProgressIndicator(
+                            value: progress,
+                            backgroundColor:
+                                const Color.fromRGBO(93, 86, 250, 0.5),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                const Color.fromRGBO(93, 86, 250, 1)),
+                          ),
                           Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                           Text(progressText),
                           Padding(padding: EdgeInsets.symmetric(vertical: 1)),
@@ -60,7 +69,11 @@ class ProgressDialog extends StatelessWidget {
           if (ffmepegStat.data.finished) {
             title = 'Your video has been saved in the gallery';
             buttonText = 'OK';
-            child = LinearProgressIndicator(value: 1);
+            child = LinearProgressIndicator(
+              value: 1,
+              backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
+              color: const Color.fromRGBO(93, 86, 250, 1),
+            );
           } else if (ffmepegStat.data.error) {
             title = 'Error';
             buttonText = 'OK';
@@ -81,7 +94,7 @@ class ProgressDialog extends StatelessWidget {
                       child: Text(
                         "OPEN VIDEO",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: const Color.fromRGBO(93, 86, 250, 1),
                         ),
                       ),
                       onPressed: () async {
@@ -92,7 +105,7 @@ class ProgressDialog extends StatelessWidget {
               TextButton(
                 child: Text(
                   buttonText,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: const Color.fromRGBO(93, 86, 250, 1)),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();

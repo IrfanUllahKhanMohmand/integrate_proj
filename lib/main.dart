@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:integration_test/utils/OnGenerateRoutes.dart';
+import 'package:integration_test/utils/pallete.dart';
 import 'package:open_director/Editor/service_locator.dart';
 
 void main() {
@@ -16,13 +17,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      initialRoute: '/',
+      initialRoute: '/storiesEditor',
       onGenerateRoute: Routers.generateRoute,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        accentColor: Colors.blue,
-        brightness: Brightness.dark,
+        primarySwatch: Palette.kToDark,
+        colorScheme: ColorScheme.fromSwatch().copyWith(),
+        brightness: Brightness.light,
         textTheme: const TextTheme(
           button: TextStyle(color: Colors.white),
         ),

@@ -20,9 +20,10 @@ class TextAssetEditor extends StatelessWidget {
             height: Params.getTimelineHeight(context),
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              color: Colors.grey.shade900,
+              color: const Color.fromRGBO(245, 245, 247, 1),
               border: Border(
-                top: BorderSide(width: 2, color: Colors.blue),
+                top: BorderSide(
+                    width: 2, color: const Color.fromRGBO(93, 86, 250, 1)),
               ),
             ),
             child: TextForm(editingTextAsset.data),

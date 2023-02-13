@@ -32,7 +32,6 @@ import 'package:stories_editor/src/presentation/widgets/animated_onTap_button.da
 import 'package:stories_editor/src/presentation/widgets/custom_slider.dart';
 import 'package:stories_editor/src/presentation/widgets/pick_online_images.dart';
 import 'package:stories_editor/src/presentation/widgets/scrollable_pageView.dart';
-import 'package:stories_editor/src/presentation/widgets/size_slider_selector.dart';
 
 class MainView extends StatefulWidget {
   /// editor custom font families
@@ -157,7 +156,6 @@ class _MainViewState extends State<MainView> {
                     !controlNotifier.isTextEditing,
                 pageController: scrollProvider.pageController,
                 gridController: scrollProvider.gridController,
-
                 mainView: Column(
                   children: [
                     Expanded(
@@ -177,7 +175,7 @@ class _MainViewState extends State<MainView> {
                             child: Align(
                               alignment: Alignment.topCenter,
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(25),
+                                borderRadius: BorderRadius.circular(10),
                                 child: SizedBox(
                                   width: screenUtil.screenWidth,
                                   child: RepaintBoundary(
@@ -340,16 +338,16 @@ class _MainViewState extends State<MainView> {
                             ),
 
                           /// top tools
-                          Visibility(
-                            visible: !controlNotifier.isTextEditing &&
-                                !controlNotifier.isPainting,
-                            child: Align(
-                                alignment: Alignment.topCenter,
-                                child: TopTools(
-                                  contentKey: contentKey,
-                                  context: context,
-                                )),
-                          ),
+                          // Visibility(
+                          //   visible: !controlNotifier.isTextEditing &&
+                          //       !controlNotifier.isPainting,
+                          //   child: Align(
+                          //       alignment: Alignment.topCenter,
+                          //       child: TopTools(
+                          //         contentKey: contentKey,
+                          //         context: context,
+                          //       )),
+                          // ),
                           //Slider for image Opacity
                           Visibility(
                             visible: !controlNotifier.isTextEditing &&
@@ -386,20 +384,124 @@ class _MainViewState extends State<MainView> {
                     ),
 
                     /// bottom tools
-                    if (!kIsWeb)
-                      BottomTools(
+                    // if (!kIsWeb)
+                    //   BottomTools(
+                    //     contentKey: contentKey,
+                    //     onDone: (bytes) {
+                    //       setState(() {
+                    //         widget.onDone!(bytes);
+                    //       });
+                    //     },
+                    //     onDoneButtonStyle: widget.onDoneButtonStyle,
+                    //     editorBackgroundColor: widget.editorBackgroundColor,
+                    //   ),
+                    Visibility(
+                      visible: !controlNotifier.isTextEditing &&
+                          !controlNotifier.isPainting,
+                      child: TopTools(
                         contentKey: contentKey,
-                        onDone: (bytes) {
-                          setState(() {
-                            widget.onDone!(bytes);
-                          });
-                        },
-                        onDoneButtonStyle: widget.onDoneButtonStyle,
-                        editorBackgroundColor: widget.editorBackgroundColor,
+                        context: context,
                       ),
+                    ),
                   ],
                 ),
-                gallery: const PickOnlineImages(),
+                gallery: GalleryMediaPicker(
+                  gridViewController: scrollProvider.gridController,
+                  thumbnailQuality: widget.galleryThumbnailQuality,
+                  singlePick: true,
+                  onlyImages: true,
+                  appBarColor: Colors.grey,
+                  albumBackGroundColor: Colors.grey,
+                  gridViewPhysics: itemProvider.draggableWidget.isEmpty
+                      ? const NeverScrollableScrollPhysics()
+                      : const ScrollPhysics(),
+                  //Take previous slider to its position
+                  pathList: (path) async {
+                    scrollProvider.pageController.animateToPage(0,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn);
+                    CroppedFile? croppedFile = await ImageCropper().cropImage(
+                      sourcePath: path.first.path!,
+                      aspectRatioPresets: Platform.isAndroid
+                          ? [
+                              CropAspectRatioPreset.square,
+                              CropAspectRatioPreset.ratio3x2,
+                              CropAspectRatioPreset.original,
+                              CropAspectRatioPreset.ratio4x3,
+                              CropAspectRatioPreset.ratio16x9
+                            ]
+                          : [
+                              CropAspectRatioPreset.original,
+                              CropAspectRatioPreset.square,
+                              CropAspectRatioPreset.ratio3x2,
+                              CropAspectRatioPreset.ratio4x3,
+                              CropAspectRatioPreset.ratio5x3,
+                              CropAspectRatioPreset.ratio5x4,
+                              CropAspectRatioPreset.ratio7x5,
+                              CropAspectRatioPreset.ratio16x9
+                            ],
+                      uiSettings: [
+                        AndroidUiSettings(
+                            toolbarColor: Colors.black,
+                            toolbarWidgetColor: Colors.white,
+                            // initAspectRatio: CropAspectRatioPreset.original,
+                            hideBottomControls: true,
+                            lockAspectRatio: false),
+                        IOSUiSettings(
+                          title: 'Cropper',
+                        ),
+                        WebUiSettings(
+                          context: context,
+                        ),
+                      ],
+                    );
+
+                    controlNotifier.mediaPath = croppedFile!.path.toString();
+                    // controlNotifier.mediaPath = path.first.path!.toString();
+                    if (controlNotifier.mediaPath.isNotEmpty) {
+                      itemProvider.draggableWidget.insert(
+                          0,
+                          EditableItem()
+                            ..type = ItemType.image
+                            ..position = const Offset(0.0, 0));
+                    }
+                    scrollProvider.pageController.animateToPage(0,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn);
+                  },
+                  appBarLeadingWidget: Padding(
+                    padding: const EdgeInsets.only(bottom: 15, right: 15),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: AnimatedOnTapButton(
+                        onTap: () {
+                          scrollProvider.pageController.animateToPage(0,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeIn);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 1.2,
+                              )),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                onlinImages: const PickOnlineImages(),
                 fullImageView: InkWell(
                   onTap: () {},
                   child: FullImageView(
@@ -407,101 +509,6 @@ class _MainViewState extends State<MainView> {
                       ind: paintingProvider.fullImageViewIndex,
                       downloadLink: paintingProvider.fullImageViewDownloadLink),
                 ),
-                // gallery: GalleryMediaPicker(
-                //   gridViewController: scrollProvider.gridController,
-                //   thumbnailQuality: widget.galleryThumbnailQuality,
-                //   singlePick: true,
-                //   onlyImages: true,
-                //   appBarColor: widget.editorBackgroundColor ?? Colors.black,
-                //   gridViewPhysics: itemProvider.draggableWidget.isEmpty
-                //       ? const NeverScrollableScrollPhysics()
-                //       : const ScrollPhysics(),
-                //       //Take previous slider to its position
-                //   pathList: (path) async {
-                //     scrollProvider.pageController.animateToPage(0,
-                //         duration: const Duration(milliseconds: 300),
-                //         curve: Curves.easeIn);
-                //     CroppedFile? croppedFile = await ImageCropper().cropImage(
-                //       sourcePath: path.first.path!,
-                //       aspectRatioPresets: Platform.isAndroid
-                //           ? [
-                //               CropAspectRatioPreset.square,
-                //               CropAspectRatioPreset.ratio3x2,
-                //               CropAspectRatioPreset.original,
-                //               CropAspectRatioPreset.ratio4x3,
-                //               CropAspectRatioPreset.ratio16x9
-                //             ]
-                //           : [
-                //               CropAspectRatioPreset.original,
-                //               CropAspectRatioPreset.square,
-                //               CropAspectRatioPreset.ratio3x2,
-                //               CropAspectRatioPreset.ratio4x3,
-                //               CropAspectRatioPreset.ratio5x3,
-                //               CropAspectRatioPreset.ratio5x4,
-                //               CropAspectRatioPreset.ratio7x5,
-                //               CropAspectRatioPreset.ratio16x9
-                //             ],
-                //       uiSettings: [
-                //         AndroidUiSettings(
-                //             toolbarColor: Colors.black,
-                //             toolbarWidgetColor: Colors.white,
-                //             // initAspectRatio: CropAspectRatioPreset.original,
-                //             hideBottomControls: true,
-                //             lockAspectRatio: false),
-                //         IOSUiSettings(
-                //           title: 'Cropper',
-                //         ),
-                //         WebUiSettings(
-                //           context: context,
-                //         ),
-                //       ],
-                //     );
-
-                //     controlNotifier.mediaPath = croppedFile!.path.toString();
-                //     // controlNotifier.mediaPath = path.first.path!.toString();
-                //     if (controlNotifier.mediaPath.isNotEmpty) {
-                //       itemProvider.draggableWidget.insert(
-                //           0,
-                //           EditableItem()
-                //             ..type = ItemType.image
-                //             ..position = const Offset(0.0, 0));
-                //     }
-                // scrollProvider.pageController.animateToPage(0,
-                //     duration: const Duration(milliseconds: 300),
-                //     curve: Curves.easeIn);
-                //   },
-                //   appBarLeadingWidget: Padding(
-                //     padding: const EdgeInsets.only(bottom: 15, right: 15),
-                //     child: Align(
-                //       alignment: Alignment.bottomRight,
-                //       child: AnimatedOnTapButton(
-                //         onTap: () {
-                //           scrollProvider.pageController.animateToPage(0,
-                //               duration: const Duration(milliseconds: 300),
-                //               curve: Curves.easeIn);
-                //         },
-                //         child: Container(
-                //           padding: const EdgeInsets.symmetric(
-                //               horizontal: 8, vertical: 2),
-                //           decoration: BoxDecoration(
-                //               color: Colors.transparent,
-                //               borderRadius: BorderRadius.circular(10),
-                //               border: Border.all(
-                //                 color: Colors.white,
-                //                 width: 1.2,
-                //               )),
-                //           child: const Text(
-                //             'Cancel',
-                //             style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 15,
-                //                 fontWeight: FontWeight.w400),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
               ),
             );
           },

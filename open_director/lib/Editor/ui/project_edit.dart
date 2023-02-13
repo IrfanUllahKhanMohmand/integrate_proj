@@ -18,9 +18,25 @@ class ProjectEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(245, 245, 247, 1),
       appBar: AppBar(
-        title: Text(
-            (projectService.project.id == null) ? 'New video' : 'Edit title'),
+        backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_back_ios)),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(
+              width: 40,
+            ),
+            Text((projectService.project.id == null)
+                ? 'New video'
+                : 'Edit title'),
+          ],
+        ),
       ),
       body: _ProjectEditForm(),
       resizeToAvoidBottomInset: true,
@@ -51,14 +67,20 @@ class _ProjectEditForm extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
+                  cursorColor: const Color.fromRGBO(93, 86, 250, 1),
                   initialValue: projectService.project.title,
                   maxLength: 75,
                   onSaved: (value) {
                     projectService.project.title = value;
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Title',
+                    labelStyle:
+                        TextStyle(color: Color.fromRGBO(93, 86, 250, 1)),
                     hintText: 'Enter a title for your video project',
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(93, 86, 250, 1))),
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) {
@@ -68,31 +90,43 @@ class _ProjectEditForm extends StatelessWidget {
                     return null;
                   },
                 ),
-                Padding(padding: EdgeInsets.only(top: 10)),
+                const Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
+                  cursorColor: const Color.fromRGBO(93, 86, 250, 1),
                   initialValue: projectService.project.description,
                   maxLines: 3,
                   maxLength: 1000,
                   onSaved: (value) {
                     projectService.project.description = value;
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Description (optional)',
+                    labelStyle:
+                        TextStyle(color: Color.fromRGBO(93, 86, 250, 1)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(93, 86, 250, 1))),
                     border: OutlineInputBorder(),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 10)),
+                const Padding(padding: EdgeInsets.only(top: 10)),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: <
                     Widget>[
                   TextButton(
-                    child: Text('Cancel'),
+                    style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromRGBO(93, 86, 250, 1))),
+                    child: const Text('Cancel'),
                     onPressed: () {
                       Navigator.pop(context);
                     },
                   ),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
                   ElevatedButton(
-                    child: Text('OK'),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromRGBO(93, 86, 250, 1))),
+                    child: const Text('OK'),
                     onPressed: () async {
                       // If the form is valid
                       if (_formKey.currentState.validate()) {
@@ -100,7 +134,7 @@ class _ProjectEditForm extends StatelessWidget {
                         _formKey.currentState.save();
 
                         // To hide soft keyboard
-                        FocusScope.of(context).requestFocus(new FocusNode());
+                        FocusScope.of(context).requestFocus(FocusNode());
 
                         if (projectService.project.id == null) {
                           await projectService.insert(projectService.project);
@@ -125,7 +159,7 @@ class _ProjectEditForm extends StatelessWidget {
       ),
       onTap: () {
         // To hide soft keyboard
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
     );
   }

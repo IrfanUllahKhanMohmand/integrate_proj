@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:open_director/Editor/service_locator.dart';
@@ -64,7 +63,8 @@ class AssetSizer extends StatelessWidget {
               }
 
               if (directorService.dxSizerDrag == 0) {
-                color = Colors.pinkAccent;
+                color = const Color.fromRGBO(93, 86, 250, 1);
+                ;
               } else {
                 color = Colors.greenAccent;
               }

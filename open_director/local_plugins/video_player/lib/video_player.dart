@@ -8,7 +8,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 final MethodChannel _channel = const MethodChannel('flutter.io/videoPlayer')
   // This will clear all open videos on the platform when a full restart is
@@ -585,7 +584,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return (_textureId == null || widget.controller.value.size.height == 0)
+    return (_textureId == null ||
+            widget.controller.value.size == null ||
+            widget.controller.value.size.height == 0)
         ? Container()
         : Center(
             child: Transform.rotate(
@@ -593,6 +594,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
                 ? math.pi / 180 * _rotationDegrees
                 : 0,
             child: AspectRatio(
+                // aspectRatio: widget.controller.value.size.height /
+                //     widget.controller.value.size.width,
+                // aspectRatio: 9 / 16,
                 aspectRatio: widget.controller.value.size.width /
                     widget.controller.value.size.height,
                 child: Texture(textureId: _textureId)),

@@ -101,7 +101,7 @@ class LayerPlayer {
     if (asset.type == AssetType.image) {
       await _videoController.addMediaSource(
         index,
-        'assets/blank-1h.mp4',
+        'packages/open_director/assets/blank-1h.mp4',
         asset.cutFrom,
         asset.cutFrom + asset.duration,
         isAsset: true,
@@ -109,7 +109,9 @@ class LayerPlayer {
     } else {
       await _videoController.addMediaSource(
         index,
-        asset.deleted ? 'assets/blank-1h.mp4' : asset.srcPath,
+        asset.deleted
+            ? 'packages/open_director/assets/blank-1h.mp4'
+            : asset.srcPath,
         asset.cutFrom,
         asset.cutFrom + asset.duration,
         isAsset: false,

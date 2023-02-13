@@ -79,7 +79,12 @@ flutter:
     - packages/stories_editor/assets/icons/photo_filter.png
     - packages/stories_editor/assets/icons/video_trim.png
     - packages/stories_editor/assets/icons/opacity.png
-    - packages/stories_editor/assets/images/instagram_logo.png
+    - packages/stories_editor/assets/icons/overlay.png
+    - packages/stories_editor/assets/icons/localimages.png
+    - packages/stories_editor/assets/icons/onlineimage.png
+    - packages/stories_editor/assets/icons/doodle.png
+    - packages/stories_editor/assets/icons/crop.png
+    - packages/stories_editor/assets/icons/colorpick.png
     
   fonts:
 

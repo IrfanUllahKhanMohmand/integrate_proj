@@ -26,13 +26,17 @@ class AppBar1 extends StatelessWidget {
             }
           } else if (directorService.editingColor == null) {
             if (isLandscape) {
-              return Container(width: Params.getSideMenuWidth(context));
+              return Container(
+                  color: Color.fromRGBO(245, 245, 247, 1),
+                  width: Params.getSideMenuWidth(context));
             } else {
               return _AppBar1Portrait();
             }
           } else {
             if (isLandscape) {
-              return Container(width: Params.getSideMenuWidth(context));
+              return Container(
+                  color: Color.fromRGBO(245, 245, 247, 1),
+                  width: Params.getSideMenuWidth(context));
             } else {
               return _AppBar1Portrait();
             }
@@ -65,9 +69,14 @@ class AppBar2 extends StatelessWidget {
             }
           } else {
             if (isLandscape) {
-              return Container(width: Params.getSideMenuWidth(context));
+              return Container(
+                  color: Color.fromRGBO(245, 245, 247, 1),
+                  width: Params.getSideMenuWidth(context));
             } else {
-              return Container();
+              return Container(
+                height: 56,
+                color: Color.fromRGBO(245, 245, 247, 1),
+              );
             }
           }
         });
@@ -95,6 +104,7 @@ class _AppBar1Landscape extends StatelessWidget {
       children.add(Container(height: 48));
     }
     return Container(
+      color: const Color.fromRGBO(245, 245, 247, 1),
       width: Params.getSideMenuWidth(context),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -111,12 +121,18 @@ class _AppBar1Portrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List();
-    children.add(_ButtonBack());
     return AppBar(
+      backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
       leading: _ButtonBack(),
-      title: Text(directorService.project.title),
-      actions: children,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(
+            width: 40,
+          ),
+          Text(directorService.project.title),
+        ],
+      ),
     );
   }
 }
@@ -139,6 +155,7 @@ class _AppBar2Landscape extends StatelessWidget {
       children.add(_ButtonGenerate());
     }
     return Container(
+      color: const Color.fromRGBO(245, 245, 247, 1),
       width: Params.getSideMenuWidth(context),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -179,6 +196,7 @@ class _AppBar2Portrait extends StatelessWidget {
     }
 
     return Container(
+      color: const Color.fromRGBO(245, 245, 247, 1),
       height: 56,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -197,17 +215,24 @@ class _AppBar2EditingTextLandscape extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: const Color.fromRGBO(245, 245, 247, 1),
       width: Params.getSideMenuWidth(context),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(93, 86, 250, 1))),
             child: Text('SAVE'),
             onPressed: () {
               directorService.saveTextAsset();
             },
           ),
           TextButton(
+            style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(93, 86, 250, 1))),
             child: Text('Cancel'),
             onPressed: () {
               directorService.editingTextAsset = null;
@@ -228,17 +253,24 @@ class _AppBar2EditingTextPortrait extends StatelessWidget {
     children.add(_ButtonAdd());
 
     return Container(
+      color: const Color.fromRGBO(245, 245, 247, 1),
       height: 56,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(93, 86, 250, 1))),
             child: Text('SAVE'),
             onPressed: () {
               directorService.saveTextAsset();
             },
           ),
           TextButton(
+            style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(93, 86, 250, 1))),
             child: Text('Cancel'),
             onPressed: () {
               directorService.editingTextAsset = null;
@@ -256,7 +288,7 @@ class _ButtonBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.grey.shade500),
+        icon: Icon(Icons.arrow_back_ios, color: Colors.white),
         tooltip: "Back",
         onPressed: () async {
           bool exit = await directorService.exitAndSaveProject();
@@ -273,9 +305,9 @@ class _ButtonDelete extends StatelessWidget {
     return FloatingActionButton(
       heroTag: "delete",
       tooltip: "Delete selected",
-      backgroundColor: Colors.pink,
+      backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
       mini: MediaQuery.of(context).size.width < 900,
-      child: Icon(Icons.delete, color: Colors.white),
+      child: Icon(Icons.delete_outline, color: Colors.white),
       onPressed: directorService.delete,
     );
   }
@@ -289,9 +321,9 @@ class _ButtonCut extends StatelessWidget {
     return FloatingActionButton(
       heroTag: "cut",
       tooltip: "Cut video selected",
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
       mini: MediaQuery.of(context).size.width < 900,
-      child: Icon(Icons.content_cut, color: Colors.white),
+      child: const Icon(Icons.content_cut, color: Colors.white),
       onPressed: directorService.cutVideo,
     );
   }
@@ -305,7 +337,7 @@ class _ButtonEdit extends StatelessWidget {
     return FloatingActionButton(
       heroTag: "edit",
       tooltip: "Edit",
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
       mini: MediaQuery.of(context).size.width < 900,
       child: Icon(Icons.edit, color: Colors.white),
       onPressed: () {
@@ -323,7 +355,7 @@ class _ButtonAdd extends StatelessWidget {
     return FloatingActionButton(
       heroTag: "add",
       tooltip: "Add media",
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
       mini: MediaQuery.of(context).size.width < 900,
       onPressed: () {},
       child: PopupMenuButton<AssetType>(
@@ -362,7 +394,7 @@ class _ButtonPlay extends StatelessWidget {
     return FloatingActionButton(
       heroTag: "play",
       tooltip: "Play",
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
       mini: MediaQuery.of(context).size.width < 900,
       child: Icon(Icons.play_arrow, color: Colors.white),
       onPressed: directorService.play,
@@ -378,7 +410,7 @@ class _ButtonPause extends StatelessWidget {
     return FloatingActionButton(
       heroTag: "pause",
       tooltip: "Pause",
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
       mini: MediaQuery.of(context).size.width < 900,
       child: Icon(Icons.pause, color: Colors.white),
       onPressed: directorService.stop,
@@ -404,11 +436,11 @@ class _ButtonGenerate extends StatelessWidget {
     return FloatingActionButton(
       heroTag: "generate",
       tooltip: "Generate video",
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
       mini: MediaQuery.of(context).size.width < 900,
       onPressed: () {},
       child: PopupMenuButton<dynamic>(
-        icon: Icon(Icons.theaters, color: Colors.white),
+        icon: Icon(Icons.file_upload_outlined, color: Colors.white),
         onSelected: (dynamic val) {
           if (val == 99) {
             Navigator.push(
