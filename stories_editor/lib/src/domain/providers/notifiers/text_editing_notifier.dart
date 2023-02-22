@@ -13,6 +13,7 @@ class TextEditingNotifier extends ChangeNotifier {
   TextAnimationType _animationType = TextAnimationType.none;
   bool _isFontFamily = true;
   bool _isTextAnimation = false;
+  bool _isTextAlign = false;
 
   PageController _fontFamilyController = PageController(viewportFraction: .125);
   PageController _textAnimationController =
@@ -54,6 +55,7 @@ class TextEditingNotifier extends ChangeNotifier {
   Color get backGroundColor => _backGroundColor;
   bool get isFontFamily => _isFontFamily;
   bool get isTextAnimation => _isTextAnimation;
+  bool get isTextAlign => _isTextAlign;
   PageController get fontFamilyController => _fontFamilyController;
   PageController get textAnimationController => _textAnimationController;
   TextEditingController get textController => _textController;
@@ -100,6 +102,11 @@ class TextEditingNotifier extends ChangeNotifier {
 
   set isTextAnimation(bool isAnimation) {
     _isTextAnimation = isAnimation;
+    notifyListeners();
+  }
+
+  set isTextAlign(bool isAlign) {
+    _isTextAlign = isAlign;
     notifyListeners();
   }
 

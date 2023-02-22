@@ -8,37 +8,23 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(),
-            Text(
-              'rekhta',
-              style: TextStyle(),
-            ),
-            Row(
-              children: [
-                Icon(Icons.search),
-                SizedBox(width: 15),
-                Icon(Icons.more_vert)
-              ],
-            ),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          const ProfileTobBar(
-            imageUrl:
-                "https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png",
-            fullName: "AHMAD FARAZ",
-            yearOfBirth: "1931",
-            yearOfDeath: "2008",
-            birthPlace: "Peshawar",
+      backgroundColor: Colors.grey[100],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: const [
+              ProfileTobBar(
+                imageUrl:
+                    "https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png",
+                fullName: "AHMAD FARAZ",
+                yearOfBirth: "1931",
+                yearOfDeath: "2008",
+                birthPlace: "Peshawar",
+              ),
+              TabBarTabs(),
+            ],
           ),
-          TabBarTabs(),
-        ],
+        ),
       ),
     );
   }

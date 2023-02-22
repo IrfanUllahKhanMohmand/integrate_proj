@@ -41,15 +41,14 @@ create table generatedVideo (
     );
   }
 
-  Future<Project> insert(Project project) async {
+  insert(Project project) async {
     if (db != null) {
       project.id = await db.insert('project', project.toMap());
       return project;
     }
   }
 
-  Future<GeneratedVideo> insertGeneratedVideo(
-      GeneratedVideo generatedVideo) async {
+  insertGeneratedVideo(GeneratedVideo generatedVideo) async {
     if (db != null) {
       generatedVideo.id =
           await db.insert('generatedVideo', generatedVideo.toMap());
@@ -57,7 +56,7 @@ create table generatedVideo (
     }
   }
 
-  Future<Project> get(int id) async {
+  get(int id) async {
     if (db != null) {
       List<Map> maps = await db.query('project',
           columns: [
@@ -78,7 +77,7 @@ create table generatedVideo (
     }
   }
 
-  Future<List<Project>> findAll() async {
+  findAll() async {
     if (db != null) {
       List<Map> maps = await db.query(
         'project',
@@ -96,7 +95,7 @@ create table generatedVideo (
     }
   }
 
-  Future<List<GeneratedVideo>> findAllGeneratedVideo(int projectId) async {
+  findAllGeneratedVideo(int projectId) async {
     if (db != null) {
       List<Map> maps = await db.query('generatedVideo',
           columns: [
@@ -114,26 +113,26 @@ create table generatedVideo (
     }
   }
 
-  Future<int> delete(int id) async {
+  delete(int id) async {
     if (db != null) {
       return await db.delete('project', where: '_id = ?', whereArgs: [id]);
     }
   }
 
-  Future<int> deleteGeneratedVideo(int id) async {
+  deleteGeneratedVideo(int id) async {
     if (db != null) {
       return await db
           .delete('generatedVideo', where: '_id = ?', whereArgs: [id]);
     }
   }
 
-  Future<int> deleteAll() async {
+  deleteAll() async {
     if (db != null) {
       return await db.delete('project');
     }
   }
 
-  Future<int> update(Project project) async {
+  update(Project project) async {
     if (db != null) {
       return await db.update('project', project.toMap(),
           where: '_id = ?', whereArgs: [project.id]);

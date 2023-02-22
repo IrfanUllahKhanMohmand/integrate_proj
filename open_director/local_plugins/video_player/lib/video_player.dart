@@ -641,7 +641,7 @@ class _VideoScrubberState extends State<_VideoScrubber> {
       final Offset tapPos = box.globalToLocal(globalPosition);
       final double relative = tapPos.dx / box.size.width;
       final Duration position = controller.value.duration * relative;
-      controller.seekTo(0, position); // TODO: windowIndex
+      controller.seekTo(0, position);
     }
 
     return GestureDetector(

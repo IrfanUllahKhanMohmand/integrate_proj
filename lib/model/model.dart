@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class Author {
   final String? penName;
   final String realName;

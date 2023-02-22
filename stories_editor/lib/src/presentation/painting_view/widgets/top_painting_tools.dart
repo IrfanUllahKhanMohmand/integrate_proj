@@ -24,23 +24,23 @@ class _TopPaintingToolsState extends State<TopPaintingTools> {
             color: Colors.transparent,
             child: Row(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 /// remove last line
-                if (paintingNotifier.lines.isNotEmpty)
-                  ToolButton(
-                    onTap: paintingNotifier.removeLast,
-                    onLongPress: paintingNotifier.clearAll,
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    backGroundColor: Colors.black12,
-                    child: Transform.scale(
-                        scale: 0.6,
-                        child: const ImageIcon(
-                          AssetImage('assets/icons/return.png',
-                              package: 'stories_editor'),
-                          color: Colors.white,
-                        )),
-                  ),
+                // if (paintingNotifier.lines.isNotEmpty)
+                //   ToolButton(
+                //     onTap: paintingNotifier.removeLast,
+                //     onLongPress: paintingNotifier.clearAll,
+                //     padding: const EdgeInsets.symmetric(horizontal: 5),
+                //     backGroundColor: Colors.black12,
+                //     child: Transform.scale(
+                //         scale: 0.6,
+                //         child: const ImageIcon(
+                //           AssetImage('assets/icons/return.png',
+                //               package: 'stories_editor'),
+                //           color: Colors.white,
+                //         )),
+                //   ),
 
                 /// select pen
                 ToolButton(
@@ -119,21 +119,21 @@ class _TopPaintingToolsState extends State<TopPaintingTools> {
                 ),
 
                 /// done button
-                ToolButton(
-                  onTap: () {
-                    controlNotifier.isPainting = !controlNotifier.isPainting;
-                    paintingNotifier.resetDefaults();
-                  },
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  backGroundColor: Colors.black12,
-                  child: Transform.scale(
-                      scale: 0.7,
-                      child: const ImageIcon(
-                        AssetImage('assets/icons/check.png',
-                            package: 'stories_editor'),
-                        color: Colors.white,
-                      )),
-                ),
+                // ToolButton(
+                //   onTap: () {
+                //     controlNotifier.isPainting = !controlNotifier.isPainting;
+                //     paintingNotifier.resetDefaults();
+                //   },
+                //   padding: const EdgeInsets.symmetric(horizontal: 5),
+                //   backGroundColor: Colors.black12,
+                //   child: Transform.scale(
+                //       scale: 0.7,
+                //       child: const ImageIcon(
+                //         AssetImage('assets/icons/check.png',
+                //             package: 'stories_editor'),
+                //         color: Colors.white,
+                //       )),
+                // ),
               ],
             ),
           ),

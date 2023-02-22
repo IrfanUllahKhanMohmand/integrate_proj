@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:integration_test/screens/Profile/widgets/nazamTile.dart';
 import 'package:integration_test/utils/constants.dart';
 
 class GhazalsTabView extends StatelessWidget {
-  const GhazalsTabView({key});
+  const GhazalsTabView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,24 +12,15 @@ class GhazalsTabView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: const [
-                  Text("GHAZAL", style: TextStyle(color: Colors.white)),
-                  SizedBox(width: 5),
-                  Text("137", style: TextStyle(color: Colors.white)),
-                ],
-              ),
-              const Icon(
-                Icons.tune,
-                color: Colors.white,
-              )
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text("GHAZAL",
+                  style: TextStyle(color: Color.fromRGBO(93, 86, 250, 1))),
             ],
           ),
         ),
         SizedBox(
-          height: 360,
+          height: MediaQuery.of(context).size.height * .52,
           child: ListView.builder(
               itemCount: 20,
               itemBuilder: (context, index) {
@@ -36,26 +28,16 @@ class GhazalsTabView extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      ghazalPreview,
+                      nazamPreview,
                     );
                   },
                   child: Column(
                     children: const [
-                      ListTile(
-                        leading:
-                            Icon(Icons.favorite_outline, color: Colors.white),
-                        title: Text(
-                          'suna hai log use aankh bhar ke dekhte hay....................',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Divider(
-                          color: Colors.white,
-                          thickness: 0.2,
-                        ),
-                      ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
+                        child: NazamTile(),
+                      )
                     ],
                   ),
                 );

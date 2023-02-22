@@ -55,7 +55,7 @@ class _PaintingState extends State<Painting> {
       final points = [point];
 
       /// validate allow pan area
-      if (point.y >= 4 &&
+      if (point.y >= 40 &&
           point.y <=
               (Platform.isIOS
                   ? (screenSize.size.height - 132) - screenSize.viewPadding.top
@@ -79,10 +79,10 @@ class _PaintingState extends State<Painting> {
       final box = context.findRenderObject() as RenderBox;
       final offset = box.globalToLocal(details.globalPosition);
       final point = Point(offset.dx, offset.dy);
-      final points = [...line!.points, point];
+      final points = line != null ? [...line!.points, point] : [point];
 
       /// validate allow pan area
-      if (point.y >= 6 &&
+      if (point.y >= 40 &&
           point.y <=
               (Platform.isIOS
                   ? (screenSize.size.height - 132) - screenSize.viewPadding.top
@@ -103,7 +103,9 @@ class _PaintingState extends State<Painting> {
 
     /// on gestures end
     void _onPanEnd(DragEndDetails details, PaintingNotifier paintingNotifier) {
-      paintingNotifier.lines = List.from(paintingNotifier.lines)..add(line!);
+      paintingNotifier.lines = line != null
+          ? (List.from(paintingNotifier.lines)..add(line!))
+          : List.from(paintingNotifier.lines);
       line = null;
       paintingNotifier.linesStreamController.add(paintingNotifier.lines);
     }
@@ -178,17 +180,84 @@ class _PaintingState extends State<Painting> {
                 ),
 
                 /// top painting tools
-                const SafeArea(child: TopPaintingTools()),
+                // const SafeArea(child: TopPaintingTools()),
+
+                /// bottom painting tools
+                paintingNotifier.isPenPick
+                    ? Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 30.h, horizontal: 30.w),
+                            child: const TopPaintingTools()),
+                      )
+                    : Container(),
 
                 /// bottom color picker
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 30.h, horizontal: 30.w),
-                    child: const ColorSelector(),
+                paintingNotifier.isColorPick
+                    ? Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 30.h, horizontal: 30.w),
+                          child: const ColorSelector(),
+                        ),
+                      )
+                    : Container(),
+                Positioned(
+                  bottom: 60,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 50,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          paintingNotifier.lines.isNotEmpty
+                              ? GestureDetector(
+                                  onTap: () {
+                                    paintingNotifier.removeLast();
+                                  },
+                                  onLongPress: () {
+                                    paintingNotifier.clearAll();
+                                  },
+                                  child: const Icon(Icons.undo))
+                              : const SizedBox(width: 24),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(width: 10),
+                              GestureDetector(
+                                  onTap: () {
+                                    paintingNotifier.isPenPick = true;
+                                    paintingNotifier.isColorPick = false;
+                                  },
+                                  child: const Icon(Icons.edit_outlined)),
+                              const SizedBox(width: 15),
+                              GestureDetector(
+                                  onTap: () {
+                                    paintingNotifier.isPenPick = false;
+                                    paintingNotifier.isColorPick = true;
+                                  },
+                                  child: const Icon(Icons.color_lens_rounded)),
+                              const SizedBox(width: 10),
+                            ],
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                controlNotifier.isPainting =
+                                    !controlNotifier.isPainting;
+                                paintingNotifier.resetDefaults();
+                              },
+                              child: const Icon(Icons.check))
+                        ],
+                      ),
+                    ),
+                    decoration: const BoxDecoration(color: Colors.white),
                   ),
-                ),
+                )
               ],
             ),
           ),

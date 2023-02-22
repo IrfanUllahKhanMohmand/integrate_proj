@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'dart:core';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:open_director/Editor.dart';
 import 'package:open_director/Editor/ui/common/volume_variables.dart';
 import 'dart:async';
 import 'package:video_player/video_player.dart';
@@ -20,7 +18,6 @@ import 'package:open_director/Editor/ui/director/color_editor.dart';
 import 'package:open_director/Editor/ui/director/text_form.dart';
 import 'package:open_director/Editor/ui/director/text_player_editor.dart';
 import 'package:open_director/Editor/ui/common/animated_dialog.dart';
-import 'package:provider/provider.dart';
 
 class DirectorScreen extends StatefulWidget {
   final Project project;

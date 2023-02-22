@@ -88,7 +88,7 @@ class _AppBar1Landscape extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List();
+    List<Widget> children = [];
     children.add(_ButtonBack());
     if (directorService.selected.layerIndex != -1) {
       children.add(_ButtonDelete());
@@ -142,7 +142,7 @@ class _AppBar2Landscape extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List();
+    List<Widget> children = [];
     children.add(_ButtonAdd());
     if (directorService.layers[0].assets.isNotEmpty &&
         !directorService.isPlaying) {
@@ -171,7 +171,7 @@ class _AppBar2Portrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List();
+    List<Widget> children = [];
     children.add(_ButtonAdd());
     if (directorService.layers[0].assets.isNotEmpty &&
         !directorService.isPlaying) {
@@ -184,7 +184,7 @@ class _AppBar2Portrait extends StatelessWidget {
       children.add(_ButtonGenerate());
     }
 
-    List<Widget> children2 = List();
+    List<Widget> children2 = [];
     if (directorService.selected.layerIndex != -1) {
       children2.add(_ButtonDelete());
     }
@@ -249,7 +249,7 @@ class _AppBar2EditingTextPortrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List();
+    List<Widget> children = [];
     children.add(_ButtonAdd());
 
     return Container(

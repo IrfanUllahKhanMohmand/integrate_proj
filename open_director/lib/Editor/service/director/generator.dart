@@ -577,7 +577,6 @@ import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:open_director/Editor.dart';
 import 'package:open_director/Editor/ui/common/volume_variables.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -587,7 +586,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:open_director/Editor/service_locator.dart';
 import 'package:open_director/Editor/model/model.dart';
-import 'package:provider/provider.dart';
 
 class Generator {
   final logger = locator.get<Logger>();
@@ -1011,11 +1009,6 @@ class Generator {
     double d = asset.duration / 1000 * 25;
     String s = "${size.width}x${size.height}";
     // Zoom 20%
-    String z = asset.kenBurnZSign == 1
-        ? "'zoom+${0.1 / d}'"
-        : (asset.kenBurnZSign == -1
-            ? "'if(eq(on,1),1.2,zoom-${0.1 / d})'"
-            : "1.2");
     String x = asset.kenBurnZSign != 0
         ? "'${asset.kenBurnXTarget}*(iw-iw/zoom)'"
         : (asset.kenBurnXTarget == 1
@@ -1221,7 +1214,6 @@ class Generator {
   _commandDrawText(Asset asset, VideoResolution videoResolution) async {
     String fontFile = await _getFontPath(asset.font);
     String fontColor = '0x' + asset.fontColor.toRadixString(16).substring(2);
-    VideoResolutionSize size = _videoResolutionSize(videoResolution);
     double fadeInStartTime = asset.begin / 1000;
     double fadeInDuration = 1 / 3;
     double textDuration = asset.duration / 1000;

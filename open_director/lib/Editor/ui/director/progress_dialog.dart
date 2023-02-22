@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:open_file/open_file.dart';
 import 'package:open_director/Editor/service_locator.dart';
 import 'package:open_director/Editor/service/director_service.dart';

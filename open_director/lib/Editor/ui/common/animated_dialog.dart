@@ -17,7 +17,7 @@ class AnimatedDialog {
     this.button2Text,
     this.onPressedButton2,
   }) {
-    List<Widget> actionButtons = List();
+    List<Widget> actionButtons = [];
 
     if (button1Text != null) {
       actionButtons.add(TextButton(

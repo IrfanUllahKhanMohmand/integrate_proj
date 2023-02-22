@@ -3,6 +3,7 @@ import 'package:integration_test/screens/PoetsList/PoetsList.dart';
 import 'package:integration_test/screens/Profile/Profile.dart';
 import 'package:integration_test/screens/Profile/widgets/ghazalPreview.dart';
 import 'package:integration_test/screens/Profile/widgets/nazamPreview.dart';
+import 'package:open_director/Editor/ui/project_edit.dart';
 import 'package:open_director/Editor/ui/project_list.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stories_editor/stories_editor.dart';
@@ -22,6 +23,8 @@ class Routers {
         return MaterialPageRoute(builder: (_) => const NazamPreview());
       case ghazalPreview:
         return MaterialPageRoute(builder: (_) => const GhazalPreview());
+      case projectEdit:
+        return MaterialPageRoute(builder: (_) => ProjectEdit(null));
       case storiesEditor:
         {
           return MaterialPageRoute(

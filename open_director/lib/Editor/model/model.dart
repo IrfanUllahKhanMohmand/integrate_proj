@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 
 class Layer {
-  String type; // TODO: enums
+  String type;
   List<Asset> assets;
   double volume;
   Layer({@required this.type, this.assets, this.volume}) {
-    assets = List<Asset>();
+    assets = [];
   }
 
   Layer.clone(Layer layer) {

@@ -160,7 +160,6 @@ class DirectorService {
       project = _project;
       if (_project.layersJson == null) {
         layers = [
-          // TODO: audio mixing between layers
           Layer(type: "raster", volume: 0.1),
           Layer(type: "vector"),
           Layer(type: "audio", volume: 1.0),
@@ -173,7 +172,7 @@ class DirectorService {
       }
       _layersChanged.add(true);
 
-      layerPlayers = List<LayerPlayer>();
+      layerPlayers = [];
       for (int i = 0; i < layers.length; i++) {
         LayerPlayer layerPlayer;
         if (i != 1) {
@@ -201,7 +200,6 @@ class DirectorService {
       project = _project;
       if (_project.layersJson == null) {
         layers = [
-          // TODO: audio mixing between layers
           Layer(type: "raster", volume: 0.1),
           Layer(type: "vector"),
           Layer(type: "audio", volume: 1.0),
@@ -214,7 +212,7 @@ class DirectorService {
       }
       _layersChanged.add(true);
 
-      layerPlayers = List<LayerPlayer>();
+      layerPlayers = [];
       for (int i = 0; i < layers.length; i++) {
         LayerPlayer layerPlayer;
         if (i != 1) {
@@ -425,7 +423,7 @@ class DirectorService {
     } else if (assetType == AssetType.text) {
       editingTextAsset = Asset(
         type: AssetType.text,
-        begin: 0, // TODO:
+        begin: 0,
         duration: 5000,
         title: '',
         srcPath: '',
@@ -905,7 +903,6 @@ class DirectorService {
     }
     _layersChanged.add(true);
     _appBar.add(true);
-    // TODO: remove thumbnails not used
 
     // Delayed because it seems updating mediaSources is not immediate
     Future.delayed(Duration(milliseconds: 100), () {
@@ -1047,7 +1044,6 @@ class DirectorService {
   }
 
   _deleteThumbnailsNotUsed() async {
-    // TODO: pending to implement
     Directory appDocDir = await getApplicationDocumentsDirectory();
     Directory fontsDir = Directory(p.join(appDocDir.parent.path, 'code_cache'));
 

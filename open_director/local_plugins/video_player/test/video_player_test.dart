@@ -45,24 +45,20 @@ class FakeController extends ValueNotifier<VideoPlayerValue>
 
   @override
   Future<void> removeMediaSource(int index) {
-    // TODO: implement removeMediaSource
     return null;
   }
 
   @override
   Future<void> seekTo(int windowIndex, Duration moment) {
-    // TODO: implement seekTo
     return null;
   }
 
   @override
-  // TODO: implement windowIndex
   Future<int> get windowIndex => null;
 
   @override
   Future<void> addMediaSource(int index, String path, int start, int end,
       {bool isAsset = false}) {
-    // TODO: implement addMediaSource
     return null;
   }
 }

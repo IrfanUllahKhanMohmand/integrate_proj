@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:open_director/Editor/service_locator.dart';
 import 'package:open_director/Editor/ui/project_list.dart';
-
-import 'package:provider/provider.dart';
 
 class Editor extends StatefulWidget {
   const Editor({Key key}) : super(key: key);

@@ -20,66 +20,77 @@ class ProfileTobBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                ),
+              ),
+              Row(
+                children: const [
+                  Icon(
+                    Icons.favorite_outline,
+                    color: Colors.black,
+                    size: 20,
+                  ),
+                  SizedBox(width: 10),
+                  Icon(
+                    Icons.share,
+                    color: Colors.black,
+                    size: 20,
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+        const CircleAvatar(
+          radius: 60, // Image radius
+          backgroundImage: NetworkImage(
+              'https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png'),
+        ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 100.0,
-              height: 100.0,
-              decoration: BoxDecoration(
-                color: const Color(0xff7c94b6),
-                image: DecorationImage(
-                  // image: AssetImage('assets/ahmad-faraz.png'),
-                  image: NetworkImage(imageUrl),
-                  // image: NetworkImage(
-                  //     'https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png'),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 4.0,
-                ),
-              ),
+            Text(
+              fullName,
+              style: const TextStyle(fontSize: 16, color: Colors.black),
+              textAlign: TextAlign.justify,
             ),
-            SizedBox(
-              width: 150,
-              child: Text(
-                fullName,
-                style: const TextStyle(fontSize: 25, color: Colors.white),
-                textAlign: TextAlign.justify,
-              ),
-            ),
-            const Icon(
-              Icons.favorite_outline,
-              color: Colors.white,
-            ),
-            const Icon(Icons.share, color: Colors.white)
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(width: 60),
             Text(
-              '$yearOfBirth-$yearOfDeath',
-              style: const TextStyle(fontSize: 11, color: Colors.white),
+              birthPlace,
+              style: const TextStyle(fontSize: 8, color: Colors.black),
               textAlign: TextAlign.justify,
             ),
             const SizedBox(width: 3),
             const Text(
               '|',
-              style: TextStyle(fontSize: 11, color: Colors.white),
+              style: TextStyle(fontSize: 8, color: Colors.black),
               textAlign: TextAlign.justify,
             ),
             const SizedBox(width: 3),
             Text(
-              birthPlace,
-              style: const TextStyle(fontSize: 11, color: Colors.white),
+              '$yearOfBirth-$yearOfDeath',
+              style: const TextStyle(fontSize: 8, color: Colors.black),
               textAlign: TextAlign.justify,
             ),
           ],
-        )
+        ),
+        const SizedBox(height: 5)
       ],
     );
   }

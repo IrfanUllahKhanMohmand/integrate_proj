@@ -28,6 +28,10 @@ class PaintingNotifier extends ChangeNotifier {
 
   bool _dowloadTaskStatus = false;
 
+  bool _isColorPick = false;
+
+  bool _isPenPick = true;
+
   /// painter type
   PaintingType _paintingType = PaintingType.pen;
 
@@ -48,6 +52,8 @@ class PaintingNotifier extends ChangeNotifier {
   int get fullImageViewIndex => _fullImageViewIndex;
   String get fullImageViewDownloadLink => _fullImageViewDownloadLink;
   bool get dowloadTaskStatus => _dowloadTaskStatus;
+  bool get isColorPick => _isColorPick;
+  bool get isPenPick => _isPenPick;
   int get selectedToolIndex => _selectedToolIndex;
   StreamController<List<PaintingModel>> get linesStreamController =>
       _linesStreamController;
@@ -96,6 +102,16 @@ class PaintingNotifier extends ChangeNotifier {
 
   set dowloadTaskStatus(bool stat) {
     _dowloadTaskStatus = stat;
+    notifyListeners();
+  }
+
+  set isColorPick(bool col) {
+    _isColorPick = col;
+    notifyListeners();
+  }
+
+  set isPenPick(bool pen) {
+    _isPenPick = pen;
     notifyListeners();
   }
 

@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:stories_editor/src/domain/models/editable_items.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/control_provider.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/draggable_widget_notifier.dart';
-import 'package:stories_editor/src/domain/providers/notifiers/painting_notifier.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/scroll_notifier.dart';
 import 'package:stories_editor/src/presentation/utils/constants/app_enums.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -62,6 +61,68 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
     'https://cdn.pixabay.com/photo/2020/12/13/16/22/snow-5828736_960_720.jpg',
     'https://cdn.pixabay.com/photo/2020/12/09/09/27/women-5816861_960_720.jpg',
   ];
+
+  download(String url) async {
+    var file = await DefaultCacheManager().getSingleFile(url);
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: file.path,
+      aspectRatioPresets: Platform.isAndroid
+          ? [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+            ]
+          : [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio5x3,
+              CropAspectRatioPreset.ratio5x4,
+              CropAspectRatioPreset.ratio7x5,
+              CropAspectRatioPreset.ratio16x9
+            ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: Colors.grey,
+            statusBarColor: const Color.fromRGBO(93, 86, 250, 1),
+            backgroundColor: const Color.fromRGBO(245, 245, 247, 1),
+            toolbarWidgetColor: Colors.white,
+            // initAspectRatio: CropAspectRatioPreset.original,
+            hideBottomControls: true,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+        WebUiSettings(
+          context: context,
+        ),
+      ],
+    );
+
+    Provider.of<ControlNotifier>(context, listen: false).mediaPath =
+        croppedFile!.path.toString();
+    // controlNotifier.mediaPath = path.first.path!.toString();
+    if (Provider.of<ControlNotifier>(context, listen: false)
+        .mediaPath
+        .isNotEmpty) {
+      Provider.of<DraggableWidgetNotifier>(context, listen: false)
+          .draggableWidget
+          .insert(
+              0,
+              EditableItem()
+                ..type = ItemType.image
+                ..position = const Offset(0.0, 0));
+    }
+    Provider.of<ScrollNotifier>(context, listen: false)
+        .pageController
+        .animateToPage(0,
+            duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -87,6 +148,7 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
       child: Scaffold(
           backgroundColor: Colors.white24,
           body: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
                 const SizedBox(height: 10),
@@ -208,25 +270,26 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
                               //       .page
                               //       .toString());
                               // },
-                              onTap: () {
-                                Provider.of<PaintingNotifier>(context,
-                                        listen: false)
-                                    .fullImageViewUrl = imageListNew[index];
-                                Provider.of<PaintingNotifier>(context,
-                                            listen: false)
-                                        .fullImageViewDownloadLink =
-                                    imageListNew[index];
-                                Provider.of<PaintingNotifier>(context,
-                                        listen: false)
-                                    .fullImageViewIndex = index;
+                              onTap: () async {
+                                await download(imageListNew[index]);
+                                // Provider.of<PaintingNotifier>(context,
+                                //         listen: false)
+                                //     .fullImageViewUrl = imageListNew[index];
+                                // Provider.of<PaintingNotifier>(context,
+                                //             listen: false)
+                                //         .fullImageViewDownloadLink =
+                                //     imageListNew[index];
+                                // Provider.of<PaintingNotifier>(context,
+                                //         listen: false)
+                                //     .fullImageViewIndex = index;
 
-                                Provider.of<ScrollNotifier>(context,
-                                        listen: false)
-                                    .pageController
-                                    .animateToPage(3,
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        curve: Curves.easeIn);
+                                // Provider.of<ScrollNotifier>(context,
+                                //         listen: false)
+                                //     .pageController
+                                //     .animateToPage(3,
+                                //         duration:
+                                //             const Duration(milliseconds: 300),
+                                //         curve: Curves.easeIn);
                                 // Navigator.push(context,
                                 //     MaterialPageRoute(builder: (context) {
                                 //   return FullImageView(
@@ -275,25 +338,26 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
                               itemCount: imageList.length,
                               itemBuilder: (context, index) {
                                 return InkWell(
-                                  onTap: () {
-                                    Provider.of<PaintingNotifier>(context,
-                                            listen: false)
-                                        .fullImageViewUrl = imageList[index];
-                                    Provider.of<PaintingNotifier>(context,
-                                                listen: false)
-                                            .fullImageViewDownloadLink =
-                                        imageList[index];
-                                    Provider.of<PaintingNotifier>(context,
-                                            listen: false)
-                                        .fullImageViewIndex = index;
+                                  onTap: () async {
+                                    await download(imageList[index]);
+                                    // Provider.of<PaintingNotifier>(context,
+                                    //         listen: false)
+                                    //     .fullImageViewUrl = imageList[index];
+                                    // Provider.of<PaintingNotifier>(context,
+                                    //             listen: false)
+                                    //         .fullImageViewDownloadLink =
+                                    //     imageList[index];
+                                    // Provider.of<PaintingNotifier>(context,
+                                    //         listen: false)
+                                    //     .fullImageViewIndex = index;
 
-                                    Provider.of<ScrollNotifier>(context,
-                                            listen: false)
-                                        .pageController
-                                        .animateToPage(2,
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            curve: Curves.easeIn);
+                                    // Provider.of<ScrollNotifier>(context,
+                                    //         listen: false)
+                                    //     .pageController
+                                    //     .animateToPage(2,
+                                    //         duration: const Duration(
+                                    //             milliseconds: 300),
+                                    //         curve: Curves.easeIn);
                                   },
                                   child: Hero(
                                     tag: index,
@@ -442,7 +506,9 @@ class _FullImageViewState extends State<FullImageView> {
             ],
       uiSettings: [
         AndroidUiSettings(
-            toolbarColor: Colors.black,
+            toolbarTitle: 'Crop Image',
+            toolbarColor: Colors.grey,
+            backgroundColor: const Color.fromRGBO(245, 245, 247, 1),
             toolbarWidgetColor: Colors.white,
             // initAspectRatio: CropAspectRatioPreset.original,
             hideBottomControls: true,

@@ -7,3 +7,4 @@ const String storiesEditor = '/storiesEditor';
 
 // const String poetsList = '/poetsList';
 const String poetsList = '/';
+const String projectEdit = '/projectEdit';

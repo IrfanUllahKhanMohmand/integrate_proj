@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:open_director/Editor/service/director_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:open_director/Editor/service_locator.dart';
 import 'package:open_director/Editor/model/project.dart';

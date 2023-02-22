@@ -1,13 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
+import 'package:stories_editor/src/domain/models/editable_items.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/control_provider.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/draggable_widget_notifier.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/painting_notifier.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/scroll_notifier.dart';
-import 'package:stories_editor/src/domain/sevices/save_as_image.dart';
-import 'package:stories_editor/src/presentation/utils/modal_sheets.dart';
+import 'package:stories_editor/src/presentation/utils/constants/app_enums.dart';
 import 'package:stories_editor/src/presentation/widgets/animated_onTap_button.dart';
 import 'package:stories_editor/src/presentation/widgets/tool_button.dart';
 
@@ -39,20 +41,21 @@ class _TopToolsState extends State<TopTools> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   /// close button
-                  ToolButton(
-                      child: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                      ),
-                      backGroundColor: Colors.black12,
-                      onTap: () async {
-                        var res = await exitDialog(
-                            context: widget.context,
-                            contentKey: widget.contentKey);
-                        if (res) {
-                          Navigator.pop(context);
-                        }
-                      }),
+                  // ToolButton(
+                  //     child: const Icon(
+                  //       Icons.close,
+                  //       color: Color.fromRGBO(93, 86, 250, 1),
+                  //     ),
+                  //     backGroundColor: Colors.white,
+                  //     colorBorder: const Color.fromRGBO(93, 86, 250, 1),
+                  //     onTap: () async {
+                  //       var res = await exitDialog(
+                  //           context: widget.context,
+                  //           contentKey: widget.contentKey);
+                  //       if (res) {
+                  //         Navigator.pop(context);
+                  //       }
+                  //     }),
                   ToolButton(
                       child: const ImageIcon(
                         AssetImage('assets/icons/overlay.png',
@@ -69,8 +72,19 @@ class _TopToolsState extends State<TopTools> {
                         color: Color.fromRGBO(93, 86, 250, 1),
                         size: 20,
                       ),
-                      backGroundColor: Colors.white,
-                      onTap: () {}),
+                      backGroundColor: Colors.transparent,
+                      onTap: () {
+                        if (controlNotifier.gradientIndex >=
+                            controlNotifier.gradientColors!.length - 1) {
+                          setState(() {
+                            controlNotifier.gradientIndex = 0;
+                          });
+                        } else {
+                          setState(() {
+                            controlNotifier.gradientIndex += 1;
+                          });
+                        }
+                      }),
                   ToolButton(
                       child: const ImageIcon(
                         AssetImage('assets/icons/text.png',
@@ -79,7 +93,11 @@ class _TopToolsState extends State<TopTools> {
                         size: 20,
                       ),
                       backGroundColor: Colors.white,
-                      onTap: () {}),
+                      onTap: () {
+                        controlNotifier.isTextEditing =
+                            !controlNotifier.isTextEditing;
+                        controlNotifier.isOpacityChanging = false;
+                      }),
                   ToolButton(
                       child: const ImageIcon(
                         AssetImage('assets/icons/doodle.png',
@@ -88,16 +106,91 @@ class _TopToolsState extends State<TopTools> {
                         size: 20,
                       ),
                       backGroundColor: Colors.white,
-                      onTap: () {}),
-                  ToolButton(
-                      child: const ImageIcon(
-                        AssetImage('assets/icons/crop.png',
-                            package: 'stories_editor'),
-                        color: Color.fromRGBO(93, 86, 250, 1),
-                        size: 20,
-                      ),
-                      backGroundColor: Colors.white,
-                      onTap: () {}),
+                      onTap: () {
+                        controlNotifier.isPainting = true;
+                        controlNotifier.isOpacityChanging = false;
+                      }),
+                  if (controlNotifier.mediaPath.isNotEmpty)
+                    ToolButton(
+                        child: const ImageIcon(
+                          AssetImage('assets/icons/crop.png',
+                              package: 'stories_editor'),
+                          color: Color.fromRGBO(93, 86, 250, 1),
+                          size: 20,
+                        ),
+                        backGroundColor: Colors.white,
+                        onTap: () async {
+                          controlNotifier.isOpacityChanging = false;
+                          CroppedFile? croppedFile =
+                              await ImageCropper().cropImage(
+                            sourcePath: controlNotifier.mediaPath,
+                            aspectRatioPresets: Platform.isAndroid
+                                ? [
+                                    CropAspectRatioPreset.square,
+                                    CropAspectRatioPreset.ratio3x2,
+                                    CropAspectRatioPreset.original,
+                                    CropAspectRatioPreset.ratio4x3,
+                                    CropAspectRatioPreset.ratio16x9
+                                  ]
+                                : [
+                                    CropAspectRatioPreset.original,
+                                    CropAspectRatioPreset.square,
+                                    CropAspectRatioPreset.ratio3x2,
+                                    CropAspectRatioPreset.ratio4x3,
+                                    CropAspectRatioPreset.ratio5x3,
+                                    CropAspectRatioPreset.ratio5x4,
+                                    CropAspectRatioPreset.ratio7x5,
+                                    CropAspectRatioPreset.ratio16x9
+                                  ],
+                            uiSettings: [
+                              AndroidUiSettings(
+                                  toolbarTitle: 'Crop Image',
+                                  toolbarColor: Colors.grey,
+                                  statusBarColor:
+                                      const Color.fromRGBO(93, 86, 250, 1),
+                                  backgroundColor:
+                                      const Color.fromRGBO(245, 245, 247, 1),
+                                  toolbarWidgetColor: Colors.white,
+                                  // initAspectRatio: CropAspectRatioPreset.original,
+                                  hideBottomControls: true,
+                                  lockAspectRatio: false),
+                              IOSUiSettings(
+                                title: 'Cropper',
+                              ),
+                              WebUiSettings(
+                                context: context,
+                              ),
+                            ],
+                          );
+
+                          controlNotifier.mediaPath =
+                              croppedFile!.path.toString();
+                          // controlNotifier.mediaPath = path.first.path!.toString();
+                          if (controlNotifier.mediaPath.isNotEmpty) {
+                            itemNotifier.draggableWidget.removeAt(0);
+                            itemNotifier.draggableWidget.insert(
+                                0,
+                                EditableItem()
+                                  ..type = ItemType.image
+                                  ..position = const Offset(0.0, 0));
+                          }
+                          scrollNotifier.pageController.animateToPage(0,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeIn);
+                        }),
+                  if (controlNotifier.mediaPath.isNotEmpty)
+                    ToolButton(
+                        child: const Icon(
+                          size: 30,
+                          Icons.delete,
+                          color: Color.fromRGBO(93, 86, 250, 1),
+                        ),
+                        backGroundColor: Colors.white,
+                        onTap: () {
+                          controlNotifier.mediaPath = '';
+                          itemNotifier.draggableWidget.removeAt(0);
+                          controlNotifier.isOpacityChanging = false;
+                        }),
                   ToolButton(
                       child: const ImageIcon(
                         AssetImage('assets/icons/onlineimage.png',
@@ -142,43 +235,43 @@ class _TopToolsState extends State<TopTools> {
                         }
                       }),
                   // if (controlNotifier.mediaPath.isEmpty)
-                  _selectColor(
-                      controlProvider: controlNotifier,
-                      onTap: () {
-                        if (controlNotifier.gradientIndex >=
-                            controlNotifier.gradientColors!.length - 1) {
-                          setState(() {
-                            controlNotifier.gradientIndex = 0;
-                          });
-                        } else {
-                          setState(() {
-                            controlNotifier.gradientIndex += 1;
-                          });
-                        }
-                      }),
-                  ToolButton(
-                      child: const ImageIcon(
-                        AssetImage('assets/icons/download.png',
-                            package: 'stories_editor'),
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      backGroundColor: Colors.black12,
-                      onTap: () async {
-                        if (paintingNotifier.lines.isNotEmpty ||
-                            itemNotifier.draggableWidget.isNotEmpty) {
-                          controlNotifier.isOpacityChanging = false;
-                          var response = await takePicture(
-                              contentKey: widget.contentKey,
-                              context: context,
-                              saveToGallery: true);
-                          if (response) {
-                            Fluttertoast.showToast(msg: 'Successfully saved');
-                          } else {
-                            Fluttertoast.showToast(msg: 'Error');
-                          }
-                        }
-                      }),
+                  // _selectColor(
+                  //     controlProvider: controlNotifier,
+                  //     onTap: () {
+                  //       if (controlNotifier.gradientIndex >=
+                  //           controlNotifier.gradientColors!.length - 1) {
+                  //         setState(() {
+                  //           controlNotifier.gradientIndex = 0;
+                  //         });
+                  //       } else {
+                  //         setState(() {
+                  //           controlNotifier.gradientIndex += 1;
+                  //         });
+                  //       }
+                  //     }),
+                  // ToolButton(
+                  //     child: const ImageIcon(
+                  //       AssetImage('assets/icons/download.png',
+                  //           package: 'stories_editor'),
+                  //       color: Color.fromRGBO(93, 86, 250, 1),
+                  //       size: 20,
+                  //     ),
+                  //     backGroundColor: Colors.white,
+                  //     onTap: () async {
+                  //       if (paintingNotifier.lines.isNotEmpty ||
+                  //           itemNotifier.draggableWidget.isNotEmpty) {
+                  //         controlNotifier.isOpacityChanging = false;
+                  //         var response = await takePicture(
+                  //             contentKey: widget.contentKey,
+                  //             context: context,
+                  //             saveToGallery: true);
+                  //         if (response) {
+                  //           Fluttertoast.showToast(msg: 'Successfully saved');
+                  //         } else {
+                  //           Fluttertoast.showToast(msg: 'Error');
+                  //         }
+                  //       }
+                  //     }),
                   // if (controlNotifier.mediaPath.isEmpty)
                   //   ToolButton(
                   //       child: const ImageIcon(
@@ -194,30 +287,29 @@ class _TopToolsState extends State<TopTools> {
 
                   if (controlNotifier.mediaPath.isNotEmpty)
                     ToolButton(
-                        child: const ImageIcon(
-                          AssetImage('assets/icons/opacity.png',
-                              package: 'stories_editor'),
-                          color: Colors.white,
-                          size: 20,
+                        child: const Icon(
+                          Icons.opacity_outlined,
+                          color: Color.fromRGBO(93, 86, 250, 1),
+                          size: 30,
                         ),
-                        backGroundColor: Colors.black12,
+                        backGroundColor: Colors.white,
                         onTap: () {
                           controlNotifier.isOpacityChanging =
                               !controlNotifier.isOpacityChanging;
                         }),
-                  ToolButton(
-                      child: const ImageIcon(
-                        AssetImage('assets/icons/draw.png',
-                            package: 'stories_editor'),
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      backGroundColor: Colors.black12,
-                      onTap: () {
-                        controlNotifier.isPainting = true;
-                        controlNotifier.isOpacityChanging = false;
-                        //createLinePainting(context: context);
-                      }),
+                  // ToolButton(
+                  //     child: const ImageIcon(
+                  //       AssetImage('assets/icons/draw.png',
+                  //           package: 'stories_editor'),
+                  //       color: Colors.white,
+                  //       size: 20,
+                  //     ),
+                  //     backGroundColor: Colors.black12,
+                  //     onTap: () {
+                  //       controlNotifier.isPainting = true;
+                  //       controlNotifier.isOpacityChanging = false;
+                  //       //createLinePainting(context: context);
+                  //     }),
                   // ToolButton(
                   //   child: ImageIcon(
                   //     const AssetImage('assets/icons/photo_filter.png',
@@ -229,19 +321,19 @@ class _TopToolsState extends State<TopTools> {
                   //   onTap: () => controlNotifier.isPhotoFilter =
                   //   !controlNotifier.isPhotoFilter,
                   // ),
-                  ToolButton(
-                      child: const ImageIcon(
-                        AssetImage('assets/icons/text.png',
-                            package: 'stories_editor'),
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      backGroundColor: Colors.black12,
-                      onTap: () {
-                        controlNotifier.isTextEditing =
-                            !controlNotifier.isTextEditing;
-                        controlNotifier.isOpacityChanging = false;
-                      }),
+                  // ToolButton(
+                  //     child: const ImageIcon(
+                  //       AssetImage('assets/icons/text.png',
+                  //           package: 'stories_editor'),
+                  //       color: Colors.white,
+                  //       size: 20,
+                  //     ),
+                  //     backGroundColor: Colors.black12,
+                  //     onTap: () {
+                  //       controlNotifier.isTextEditing =
+                  //           !controlNotifier.isTextEditing;
+                  //       controlNotifier.isOpacityChanging = false;
+                  //     }),
                 ],
               ),
             ),
