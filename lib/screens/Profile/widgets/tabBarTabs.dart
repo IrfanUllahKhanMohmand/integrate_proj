@@ -24,52 +24,51 @@ class _TabBarTabsState extends State<TabBarTabs> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 40,
-          child: ButtonsTabBar(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-            controller: _tabController,
-            backgroundColor: const Color.fromRGBO(93, 86, 250, 0.9),
-            labelStyle: const TextStyle(color: Colors.white),
-            unselectedLabelStyle:
-                const TextStyle(color: Color.fromRGBO(151, 151, 151, 1)),
-            // unselectedBorderColor: Colors.white,
-            unselectedDecoration:
-                BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                spreadRadius: 0,
-                blurRadius: 2,
-                offset: const Offset(0, 0),
-                color: Colors.grey.withOpacity(0.1),
-              )
-            ]),
-            borderColor: Colors.transparent,
-            radius: 22,
-            tabs: const [
-              Tab(
-                text: 'PROFILE',
-              ),
-              Tab(text: 'NAZAM'),
-              Tab(text: 'SHER'),
-              Tab(text: 'GHAZAL')
-            ],
+    return Expanded(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 40,
+            child: ButtonsTabBar(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+              controller: _tabController,
+              backgroundColor: const Color.fromRGBO(93, 86, 250, 0.9),
+              labelStyle: const TextStyle(color: Colors.white),
+              unselectedLabelStyle:
+                  const TextStyle(color: Color.fromRGBO(151, 151, 151, 1)),
+              // unselectedBorderColor: Colors.white,
+              unselectedDecoration:
+                  BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                  spreadRadius: 0,
+                  blurRadius: 2,
+                  offset: const Offset(0, 0),
+                  color: Colors.grey.withOpacity(0.1),
+                )
+              ]),
+              borderColor: Colors.transparent,
+              radius: 22,
+              tabs: const [
+                Tab(text: 'PROFILE'),
+                Tab(text: 'NAZAM'),
+                Tab(text: 'SHER'),
+                Tab(text: 'GHAZAL')
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * .58,
-          child: TabBarView(
-            controller: _tabController,
-            children: const [
-              ProfilesTabView(),
-              NazamsTabView(),
-              SherTabView(),
-              GhazalsTabView()
-            ],
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: const [
+                ProfilesTabView(),
+                NazamsTabView(),
+                SherTabView(),
+                GhazalsTabView()
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class NazamTile extends StatelessWidget {
   const NazamTile({
@@ -34,9 +35,13 @@ class NazamTile extends StatelessWidget {
                 Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Icon(Icons.favorite_outline),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: SvgPicture.asset(
+                "assets/favourite.svg",
+                width: 16,
+                height: 16,
+              ),
             )
           ]),
           const SizedBox(height: 10),

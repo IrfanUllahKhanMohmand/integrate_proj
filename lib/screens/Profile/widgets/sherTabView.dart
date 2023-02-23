@@ -27,8 +27,7 @@ class _SherTabViewState extends State<SherTabView> {
             ],
           ),
         ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * .52,
+        Expanded(
           child: ListView.builder(
               itemCount: 20,
               itemBuilder: (context, index) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class TabBarSherTile extends StatelessWidget {
   const TabBarSherTile({
@@ -40,13 +41,34 @@ class TabBarSherTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  SizedBox(width: 10),
-                  Icon(Icons.favorite_outline_sharp, size: 10),
-                  Icon(Icons.share, size: 10),
-                  Icon(Icons.image_outlined, size: 10),
-                  Icon(Icons.video_camera_back_rounded, size: 10),
-                  SizedBox(width: 10),
+                children: [
+                  const SizedBox(width: 10),
+                  SvgPicture.asset(
+                    "assets/videoCamera.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/favourite.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/share.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/copy.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/picture.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  const SizedBox(width: 10),
                 ]),
           )
         ],

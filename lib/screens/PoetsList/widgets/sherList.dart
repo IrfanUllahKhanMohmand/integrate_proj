@@ -11,8 +11,7 @@ class SherList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height * .85,
+        Expanded(
           child: ListView.builder(
               itemCount: 20,
               itemBuilder: (context, index) {

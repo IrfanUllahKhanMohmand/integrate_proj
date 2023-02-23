@@ -6,24 +6,22 @@ class TopReadPoetsList extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      // physics: const NeverScrollableScrollPhysics(),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: SizedBox(
-              height: 40,
-              child: TextFormField(
-                controller: _textEditingController,
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder()),
-              ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          child: SizedBox(
+            height: 40,
+            child: TextFormField(
+              controller: _textEditingController,
+              decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search), border: OutlineInputBorder()),
             ),
           ),
-          const SizedBox(height: 10),
-          GridView.builder(
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: GridView.builder(
               shrinkWrap: true,
               primary: false,
               physics: const ScrollPhysics(),
@@ -39,9 +37,9 @@ class TopReadPoetsList extends StatelessWidget {
                   noOfNazams: 8,
                   noOfSher: 7,
                 );
-              })
-        ],
-      ),
+              }),
+        )
+      ],
     );
   }
 }

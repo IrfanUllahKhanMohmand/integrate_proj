@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileTobBar extends StatelessWidget {
   const ProfileTobBar(
@@ -21,7 +22,7 @@ class ProfileTobBar extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(6.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -30,24 +31,29 @@ class ProfileTobBar extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.black,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: SvgPicture.asset(
+                    "assets/left_arrow.svg",
+                    width: 8,
+                    height: 14,
+                  ),
                 ),
               ),
               Row(
-                children: const [
-                  Icon(
-                    Icons.favorite_outline,
-                    color: Colors.black,
-                    size: 20,
+                children: [
+                  SvgPicture.asset(
+                    "assets/favourite.svg",
+                    width: 8,
+                    height: 14,
                   ),
-                  SizedBox(width: 10),
-                  Icon(
-                    Icons.share,
-                    color: Colors.black,
-                    size: 20,
-                  )
+                  const SizedBox(width: 15),
+                  SvgPicture.asset(
+                    "assets/share.svg",
+                    width: 8,
+                    height: 14,
+                  ),
+                  const SizedBox(width: 5),
                 ],
               ),
             ],

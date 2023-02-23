@@ -10,10 +10,11 @@ class Profile extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: const [
-              ProfileTobBar(
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .28,
+              child: const ProfileTobBar(
                 imageUrl:
                     "https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png",
                 fullName: "AHMAD FARAZ",
@@ -21,9 +22,9 @@ class Profile extends StatelessWidget {
                 yearOfDeath: "2008",
                 birthPlace: "Peshawar",
               ),
-              TabBarTabs(),
-            ],
-          ),
+            ),
+            const TabBarTabs(),
+          ],
         ),
       ),
     );

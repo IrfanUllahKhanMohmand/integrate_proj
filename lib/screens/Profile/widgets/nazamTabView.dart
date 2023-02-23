@@ -19,8 +19,7 @@ class NazamsTabView extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * .52,
+        Expanded(
           child: ListView.builder(
               itemCount: 20,
               itemBuilder: (context, index) {

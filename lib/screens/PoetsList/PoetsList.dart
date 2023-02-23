@@ -34,21 +34,19 @@ class PoetsList extends StatelessWidget {
       //   ),
       // ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              Container(
-                width: MediaQuery.of(context).size.width * .80,
-                height: MediaQuery.of(context).size.height * .20,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                        color: const Color.fromRGBO(93, 86, 250, 1))),
-              ),
-              const TopBarTabs()
-            ],
-          ),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              width: MediaQuery.of(context).size.width * .80,
+              height: MediaQuery.of(context).size.height * .20,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border:
+                      Border.all(color: const Color.fromRGBO(93, 86, 250, 1))),
+            ),
+            const TopBarTabs()
+          ],
         ),
       ),
     );

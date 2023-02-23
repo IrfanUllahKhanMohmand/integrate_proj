@@ -42,7 +42,7 @@ dependencies:
   logger: 0.7.0+2
   logger_flutter: 0.7.1
   flutter_colorpicker: ^1.0.3
-  dotted_border: 1.0.2
+  dotted_border: ^2.0.0+3
   text_editor: ^0.7.0
   image_picker: ^0.8.6
   image_cropper: ^3.0.1

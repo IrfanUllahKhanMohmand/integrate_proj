@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:integration_test/screens/PoetsList/widgets/poetsListTile.dart';
 import 'package:integration_test/screens/PoetsList/widgets/sherTile.dart';
 import 'package:integration_test/utils/constants.dart';
@@ -10,7 +11,6 @@ class AllPoetsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
       child: Column(
         children: [
           Padding(
@@ -47,18 +47,22 @@ class AllPoetsList extends StatelessWidget {
                         Color.fromRGBO(37, 28, 216, 0.6),
                       ]),
                       borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    children: const [
-                      Icon(
-                        Icons.image_outlined,
-                        size: 50,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        'Make Status',
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Column(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/picture.svg",
+                          width: 40,
+                          height: 40,
+                          color: Colors.white,
+                        ),
+                        const Text(
+                          'Make Status',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -94,18 +98,22 @@ class AllPoetsList extends StatelessWidget {
                         Color.fromRGBO(121, 115, 248, 1)
                       ]),
                       borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    children: const [
-                      Icon(
-                        Icons.video_camera_back_outlined,
-                        size: 50,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        'Make Video',
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Column(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/videoCamera.svg",
+                          width: 40,
+                          height: 40,
+                          color: Colors.white,
+                        ),
+                        const Text(
+                          'Make Video',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

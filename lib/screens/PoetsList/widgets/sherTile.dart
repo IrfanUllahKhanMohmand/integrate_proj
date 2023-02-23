@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SherTile extends StatelessWidget {
   const SherTile({
@@ -40,13 +41,37 @@ class SherTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  Icon(Icons.arrow_back_ios, size: 10),
-                  Icon(Icons.favorite_outline_sharp, size: 10),
-                  Icon(Icons.share, size: 10),
-                  Icon(Icons.image_outlined, size: 10),
-                  Icon(Icons.video_camera_back_rounded, size: 10),
-                  Icon(Icons.arrow_forward_ios, size: 10),
+                children: [
+                  SvgPicture.asset(
+                    "assets/leftArrow.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/favourite.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/share.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/picture.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/videoCamera.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/rightArrow.svg",
+                    width: 10,
+                    height: 10,
+                  ),
                 ]),
           )
         ],

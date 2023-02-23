@@ -29,59 +29,60 @@ class _TopBarTabsState extends State<TopBarTabs> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 48,
-          child: DefaultTabController(
-            length: 4,
-            child: Column(
+    return Expanded(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 48,
+            child: DefaultTabController(
+              length: 4,
+              child: Column(
+                children: [
+                  ButtonsTabBar(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                    controller: _tabController,
+                    backgroundColor: const Color.fromRGBO(93, 86, 250, 0.9),
+                    labelStyle: const TextStyle(color: Colors.white),
+                    unselectedDecoration:
+                        BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                        spreadRadius: 0,
+                        blurRadius: 2,
+                        offset: const Offset(0, 0),
+                        color: Colors.grey.withOpacity(0.1),
+                      )
+                    ]),
+                    unselectedLabelStyle: const TextStyle(
+                        color: Color.fromRGBO(151, 151, 151, 1)),
+                    unselectedBorderColor: Colors.transparent,
+                    borderColor: Colors.transparent,
+                    radius: 22,
+                    tabs: const [
+                      Tab(text: 'All'),
+                      Tab(text: 'Top Poets'),
+                      Tab(text: 'Ghazal'),
+                      Tab(text: 'Sher'),
+                      Tab(text: 'Nazam'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
               children: [
-                ButtonsTabBar(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                  controller: _tabController,
-                  backgroundColor: const Color.fromRGBO(93, 86, 250, 0.9),
-                  labelStyle: const TextStyle(color: Colors.white),
-                  unselectedDecoration:
-                      BoxDecoration(color: Colors.white, boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 0,
-                      blurRadius: 2,
-                      offset: const Offset(0, 0),
-                      color: Colors.grey.withOpacity(0.1),
-                    )
-                  ]),
-                  unselectedLabelStyle:
-                      const TextStyle(color: Color.fromRGBO(151, 151, 151, 1)),
-                  unselectedBorderColor: Colors.transparent,
-                  borderColor: Colors.transparent,
-                  radius: 22,
-                  tabs: const [
-                    Tab(text: 'All'),
-                    Tab(text: 'Top Poets'),
-                    Tab(text: 'Ghazal'),
-                    Tab(text: 'Sher'),
-                    Tab(text: 'Nazam'),
-                  ],
-                ),
+                const AllPoetsList(),
+                TopReadPoetsList(),
+                const GhazalList(),
+                SherList(),
+                NazamList(),
               ],
             ),
           ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * .85,
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              const AllPoetsList(),
-              TopReadPoetsList(),
-              const GhazalList(),
-              SherList(),
-              NazamList(),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
