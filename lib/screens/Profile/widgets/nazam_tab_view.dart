@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/screens/Profile/widgets/nazamTile.dart';
+import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/screens/Profile/widgets/nazam_tile.dart';
 import 'package:integration_test/utils/constants.dart';
+import 'package:integration_test/utils/on_generate_routes.dart';
 
-class NazamsTabView extends StatelessWidget {
-  const NazamsTabView({super.key});
+class NazamsTabView extends StatefulWidget {
+  const NazamsTabView({super.key, required this.nazams, required this.poet});
+  final List nazams;
+  final Poet poet;
+  @override
+  State<NazamsTabView> createState() => _NazamsTabViewState();
+}
 
+class _NazamsTabViewState extends State<NazamsTabView> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,21 +29,25 @@ class NazamsTabView extends StatelessWidget {
         ),
         Expanded(
           child: ListView.builder(
-              itemCount: 20,
+              itemCount: widget.nazams.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
                       context,
                       nazamPreview,
+                      arguments: NazamPreviewArguments(
+                          nazam: widget.nazams[index], poet: widget.poet),
                     );
                   },
                   child: Column(
-                    children: const [
+                    children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4.0),
-                        child: NazamTile(),
+                        child: NazamTile(
+                          nazam: widget.nazams[index],
+                        ),
                       )
                     ],
                   ),

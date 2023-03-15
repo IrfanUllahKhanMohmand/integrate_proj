@@ -10,7 +10,6 @@ import 'package:stories_editor/src/domain/providers/notifiers/draggable_widget_n
 import 'package:stories_editor/src/domain/providers/notifiers/painting_notifier.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/scroll_notifier.dart';
 import 'package:stories_editor/src/presentation/utils/constants/app_enums.dart';
-import 'package:stories_editor/src/presentation/widgets/animated_onTap_button.dart';
 import 'package:stories_editor/src/presentation/widgets/tool_button.dart';
 
 class TopTools extends StatefulWidget {
@@ -344,31 +343,31 @@ class _TopToolsState extends State<TopTools> {
   }
 
   /// gradient color selector
-  Widget _selectColor({onTap, controlProvider}) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 5, right: 5, top: 8),
-      child: AnimatedOnTapButton(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(2),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
-          child: Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: controlProvider
-                      .gradientColors![controlProvider.gradientIndex]),
-              shape: BoxShape.circle,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _selectColor({onTap, controlProvider}) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(left: 5, right: 5, top: 8),
+  //     child: AnimatedOnTapButton(
+  //       onTap: onTap,
+  //       child: Container(
+  //         padding: const EdgeInsets.all(2),
+  //         decoration: const BoxDecoration(
+  //           color: Colors.white,
+  //           shape: BoxShape.circle,
+  //         ),
+  //         child: Container(
+  //           width: 30,
+  //           height: 30,
+  //           decoration: BoxDecoration(
+  //             gradient: LinearGradient(
+  //                 begin: Alignment.topLeft,
+  //                 end: Alignment.bottomRight,
+  //                 colors: controlProvider
+  //                     .gradientColors![controlProvider.gradientIndex]),
+  //             shape: BoxShape.circle,
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

@@ -60,4 +60,18 @@ class Author {
   String toString() {
     return 'Author { penName: $penName, realName: $realName, birthDate: $birthDate, birthPlace: $birthPlace, deathDate: $deathDate, deathPlace: $deathPlace, intro: $intro, imageUrl: $imageUrl }';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Author &&
+          runtimeType == other.runtimeType &&
+          penName == other.penName &&
+          realName == other.realName &&
+          birthDate == other.birthDate &&
+          birthPlace == other.birthPlace &&
+          deathDate == other.deathDate &&
+          deathPlace == other.deathPlace &&
+          intro == other.intro &&
+          imageUrl == other.imageUrl;
 }

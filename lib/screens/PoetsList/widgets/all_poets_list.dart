@@ -1,12 +1,60 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:integration_test/screens/PoetsList/widgets/poetsListTile.dart';
-import 'package:integration_test/screens/PoetsList/widgets/sherTile.dart';
+import 'package:integration_test/model/category.dart';
+import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/screens/PoetsList/widgets/categories_list_tile.dart';
+import 'package:integration_test/screens/PoetsList/widgets/poets_list_tile.dart';
+import 'package:integration_test/screens/PoetsList/widgets/sher_tile.dart';
 import 'package:integration_test/utils/constants.dart';
 
-class AllPoetsList extends StatelessWidget {
+import 'package:http/http.dart' as http;
+import 'package:integration_test/utils/on_generate_routes.dart';
+
+class AllPoetsList extends StatefulWidget {
   const AllPoetsList({Key? key}) : super(key: key);
+
+  @override
+  State<AllPoetsList> createState() => _AllPoetsListState();
+}
+
+class _AllPoetsListState extends State<AllPoetsList> {
+  List<Poet> poets = [];
+  List<Category> categories = [];
+  Future<void> fetchPoets() async {
+    final response =
+        await http.get(Uri.parse('http://192.168.18.185:8080/poets'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      setState(() {
+        poets = data.map((json) => Poet.fromJson(json)).toList();
+      });
+    } else {
+      throw Exception('Failed to fetch poets');
+    }
+  }
+
+  Future<void> fetchCategories() async {
+    final response =
+        await http.get(Uri.parse('http://192.168.18.185:8080/category'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      setState(() {
+        categories = data.map((json) => Category.fromJson(json)).toList();
+      });
+    } else {
+      throw Exception('Failed to fetch poets');
+    }
+  }
+
+  @override
+  void initState() {
+    fetchPoets();
+    fetchCategories();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +103,8 @@ class AllPoetsList extends StatelessWidget {
                           "assets/picture.svg",
                           width: 40,
                           height: 40,
-                          color: Colors.white,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.white, BlendMode.srcIn),
                         ),
                         const Text(
                           'Make Status',
@@ -106,7 +155,8 @@ class AllPoetsList extends StatelessWidget {
                           "assets/videoCamera.svg",
                           width: 40,
                           height: 40,
-                          color: Colors.white,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.white, BlendMode.srcIn),
                         ),
                         const Text(
                           'Make Video',
@@ -132,25 +182,26 @@ class AllPoetsList extends StatelessWidget {
           SizedBox(
             height: 150,
             child: ListView.builder(
-                itemCount: 10,
+                itemCount: poets.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, authorProfile);
-                    },
-                    child: const AbsorbPointer(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
-                        child: PoetsListTile(
-                          imageUrl:
-                              'https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png',
-                          realName: 'Ahmad Faraz',
-                          noOfGhazals: 11,
-                          noOfNazams: 8,
-                          noOfSher: 7,
+                      Navigator.pushNamed(
+                        context,
+                        authorProfile,
+                        arguments: PoetScreenArguments(
+                          id: poets[index].id,
                         ),
+                      );
+                    },
+                    child: AbsorbPointer(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 12),
+                        child: PoetsListTile(
+                            imageUrl: poets[index].pic,
+                            realName: poets[index].name),
                       ),
                     ),
                   );
@@ -199,25 +250,20 @@ class AllPoetsList extends StatelessWidget {
           SizedBox(
             height: 150,
             child: ListView.builder(
-                itemCount: 10,
+                itemCount: categories.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, authorProfile);
                     },
-                    child: const AbsorbPointer(
+                    child: AbsorbPointer(
                       child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
-                        child: PoetsListTile(
-                          imageUrl:
-                              'https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png',
-                          realName: 'Ahmad Faraz',
-                          noOfGhazals: 11,
-                          noOfNazams: 8,
-                          noOfSher: 7,
-                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 12),
+                        child: CategoriesListTile(
+                            imageUrl: categories[index].pic,
+                            realName: categories[index].name),
                       ),
                     ),
                   );

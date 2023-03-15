@@ -426,7 +426,8 @@ Widget _text({
           Shadow(
               offset: const Offset(1.0, 1.0),
               blurRadius: 3.0,
-              color: editorNotifier.textColor == Colors.black
+              color: controlNotifier.colorList![editorNotifier.textColor] ==
+                      Colors.black
                   ? Colors.white54
                   : Colors.black)
         ]).copyWith(
@@ -463,7 +464,8 @@ Widget _textField({
               Shadow(
                   offset: const Offset(1.0, 1.0),
                   blurRadius: 3.0,
-                  color: editorNotifier.textColor == Colors.black
+                  color: controlNotifier.colorList![editorNotifier.textColor] ==
+                          Colors.black
                       ? Colors.white54
                       : Colors.black)
             ],
@@ -483,7 +485,8 @@ Widget _textField({
         Shadow(
             offset: const Offset(1.0, 1.0),
             blurRadius: 3.0,
-            color: editorNotifier.textColor == Colors.black
+            color: controlNotifier.colorList![editorNotifier.textColor] ==
+                    Colors.black
                 ? Colors.white54
                 : Colors.black)
       ],

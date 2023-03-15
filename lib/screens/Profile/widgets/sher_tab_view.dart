@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:integration_test/screens/Profile/widgets/profileSherTile.dart';
+import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/screens/Profile/widgets/profile_sher_tile.dart';
 import 'package:integration_test/utils/constants.dart';
 
 import 'package:share_plus/share_plus.dart';
 
 class SherTabView extends StatefulWidget {
-  const SherTabView({super.key});
-
+  const SherTabView({super.key, required this.shers, required this.poet});
+  final List shers;
+  final Poet poet;
   @override
   State<SherTabView> createState() => _SherTabViewState();
 }
@@ -29,21 +30,24 @@ class _SherTabViewState extends State<SherTabView> {
         ),
         Expanded(
           child: ListView.builder(
-              itemCount: 20,
+              itemCount: widget.shers.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      nazamPreview,
-                    );
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   nazamPreview,
+                    // );
                   },
                   child: Column(
-                    children: const [
+                    children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4.0),
-                        child: ProfileSherTile(),
+                        child: ProfileSherTile(
+                          sher: widget.shers[index],
+                          poet: widget.poet,
+                        ),
                       )
                     ],
                   ),

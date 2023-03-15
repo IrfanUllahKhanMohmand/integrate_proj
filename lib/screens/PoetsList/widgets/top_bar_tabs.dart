@@ -1,10 +1,10 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:integration_test/screens/PoetsList/widgets/allPoetsList.dart';
-import 'package:integration_test/screens/PoetsList/widgets/nazamList.dart';
-import 'package:integration_test/screens/PoetsList/widgets/topPoetsList.dart';
-import 'package:integration_test/screens/PoetsList/widgets/ghazalList.dart';
-import 'package:integration_test/screens/PoetsList/widgets/sherList.dart';
+import 'package:integration_test/screens/PoetsList/widgets/all_poets_list.dart';
+import 'package:integration_test/screens/PoetsList/widgets/nazam_list.dart';
+import 'package:integration_test/screens/PoetsList/widgets/top_poets_list.dart';
+import 'package:integration_test/screens/PoetsList/widgets/ghazal_list.dart';
+import 'package:integration_test/screens/PoetsList/widgets/sher_list.dart';
 
 class TopBarTabs extends StatefulWidget {
   const TopBarTabs({Key? key}) : super(key: key);
@@ -76,8 +76,8 @@ class _TopBarTabsState extends State<TopBarTabs> with TickerProviderStateMixin {
                 const AllPoetsList(),
                 TopReadPoetsList(),
                 const GhazalList(),
-                SherList(),
-                NazamList(),
+                const SherList(),
+                const NazamList(),
               ],
             ),
           ),

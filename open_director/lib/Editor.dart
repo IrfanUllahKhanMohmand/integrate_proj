@@ -75,7 +75,7 @@ setupDevice() {
     DeviceOrientation.landscapeRight,
   ]);
   // Status bar disabled
-  SystemChrome.setEnabledSystemUIOverlays([]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 }
 
 class CustomImageCache extends WidgetsFlutterBinding {

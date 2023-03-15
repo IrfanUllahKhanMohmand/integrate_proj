@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/screens/PoetsList/widgets/poetsListTile.dart';
+import 'package:integration_test/screens/PoetsList/widgets/poets_list_tile.dart';
 
 class TopReadPoetsList extends StatelessWidget {
   TopReadPoetsList({Key? key}) : super(key: key);
@@ -33,9 +33,6 @@ class TopReadPoetsList extends StatelessWidget {
                   imageUrl:
                       'https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png',
                   realName: 'Ahmad Faraz',
-                  noOfGhazals: 11,
-                  noOfNazams: 8,
-                  noOfSher: 7,
                 );
               }),
         )

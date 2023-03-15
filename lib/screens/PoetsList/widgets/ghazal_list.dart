@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/screens/PoetsList/widgets/poetsListTile.dart';
-import 'package:integration_test/screens/PoetsList/widgets/sherTile.dart';
-import 'package:integration_test/screens/PoetsList/widgets/tabBarSherTile.dart';
+import 'package:integration_test/screens/PoetsList/widgets/tab_bar_sher_tile.dart';
 
 class GhazalList extends StatelessWidget {
   const GhazalList({Key? key}) : super(key: key);

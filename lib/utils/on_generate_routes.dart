@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/screens/PoetsList/PoetsList.dart';
-import 'package:integration_test/screens/Profile/Profile.dart';
-import 'package:integration_test/screens/Profile/widgets/ghazalPreview.dart';
-import 'package:integration_test/screens/Profile/widgets/nazamPreview.dart';
+import 'package:integration_test/model/nazam.dart';
+import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/screens/PoetsList/poets_list.dart';
+import 'package:integration_test/screens/Profile/profile.dart';
+import 'package:integration_test/screens/Profile/widgets/ghazal_preview.dart';
+import 'package:integration_test/screens/Profile/widgets/nazam_preview.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:open_director/Editor/ui/project_edit.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:open_director/Editor/ui/project_list.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stories_editor/stories_editor.dart';
-
 import 'constants.dart';
+
+class PoetScreenArguments {
+  final int id;
+
+  PoetScreenArguments({required this.id});
+}
+
+class NazamPreviewArguments {
+  final Nazam nazam;
+  final Poet poet;
+
+  NazamPreviewArguments({required this.nazam, required this.poet});
+}
 
 class Routers {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -18,9 +34,18 @@ class Routers {
       case projectList:
         return MaterialPageRoute(builder: (_) => ProjectList());
       case authorProfile:
-        return MaterialPageRoute(builder: (_) => const Profile());
+        {
+          final args = settings.arguments as PoetScreenArguments;
+          return MaterialPageRoute(builder: (_) => Profile(id: args.id));
+        }
+
       case nazamPreview:
-        return MaterialPageRoute(builder: (_) => const NazamPreview());
+        {
+          final args = settings.arguments as NazamPreviewArguments;
+          return MaterialPageRoute(
+              builder: (_) => NazamPreview(nazam: args.nazam, poet: args.poet));
+        }
+
       case ghazalPreview:
         return MaterialPageRoute(builder: (_) => const GhazalPreview());
       case projectEdit:
@@ -36,6 +61,7 @@ class Routers {
                     middleBottomWidget: Container(),
                     onDone: (uri) {
                       debugPrint(uri);
+                      // ignore: deprecated_member_use
                       Share.shareFiles([uri]);
                     },
                   ));

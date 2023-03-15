@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:integration_test/utils/OnGenerateRoutes.dart';
+import 'package:integration_test/utils/on_generate_routes.dart';
 import 'package:integration_test/utils/pallete.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:open_director/Editor/service_locator.dart';
 
 void main() {
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch().copyWith(),
         brightness: Brightness.light,
         textTheme: const TextTheme(
-          button: TextStyle(color: Colors.white),
+          labelLarge: TextStyle(color: Colors.white),
         ),
       ),
       // home: const Example(),

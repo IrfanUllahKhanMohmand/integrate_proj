@@ -1,13 +1,26 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:integration_test/screens/Profile/widgets/ghazalsTabView.dart';
-import 'package:integration_test/screens/Profile/widgets/profilesTabView.dart';
-import 'package:integration_test/screens/Profile/widgets/sherTabView.dart';
-
-import 'nazamTabView.dart';
+import 'package:integration_test/model/ghazal.dart';
+import 'package:integration_test/model/nazam.dart';
+import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/model/sher.dart';
+import 'package:integration_test/screens/Profile/widgets/ghazals_tab_view.dart';
+import 'package:integration_test/screens/Profile/widgets/nazam_tab_view.dart';
+import 'package:integration_test/screens/Profile/widgets/profiles_tab_view.dart';
+import 'package:integration_test/screens/Profile/widgets/sher_tab_view.dart';
 
 class TabBarTabs extends StatefulWidget {
-  const TabBarTabs({Key? key}) : super(key: key);
+  TabBarTabs(
+      {Key? key,
+      required this.poet,
+      required this.nazams,
+      required this.ghazals,
+      required this.shers})
+      : super(key: key);
+  Poet poet;
+  List nazams;
+  List ghazals;
+  List shers;
 
   @override
   State<TabBarTabs> createState() => _TabBarTabsState();
@@ -59,10 +72,10 @@ class _TabBarTabsState extends State<TabBarTabs> with TickerProviderStateMixin {
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: const [
-                ProfilesTabView(),
-                NazamsTabView(),
-                SherTabView(),
+              children: [
+                ProfilesTabView(poet: widget.poet),
+                NazamsTabView(nazams: widget.nazams, poet: widget.poet),
+                SherTabView(shers: widget.shers, poet: widget.poet),
                 GhazalsTabView()
               ],
             ),

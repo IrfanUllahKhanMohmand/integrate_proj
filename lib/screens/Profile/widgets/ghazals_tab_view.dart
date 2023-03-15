@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/screens/Profile/widgets/nazamTile.dart';
+import 'package:integration_test/screens/Profile/widgets/nazam_tile.dart';
 import 'package:integration_test/utils/constants.dart';
 
 class GhazalsTabView extends StatelessWidget {
@@ -35,7 +35,7 @@ class GhazalsTabView extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4.0),
-                        child: NazamTile(),
+                        // child: NazamTile(),
                       )
                     ],
                   ),

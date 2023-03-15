@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/model/sher.dart';
 
 class ProfileSherTile extends StatelessWidget {
-  const ProfileSherTile({
-    Key? key,
-  }) : super(key: key);
+  const ProfileSherTile({Key? key, required this.sher, required this.poet})
+      : super(key: key);
+  final Sher sher;
+  final Poet poet;
 
   @override
   Widget build(BuildContext context) {

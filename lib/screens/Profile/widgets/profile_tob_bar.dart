@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -59,11 +60,25 @@ class ProfileTobBar extends StatelessWidget {
             ],
           ),
         ),
-        const CircleAvatar(
-          radius: 60, // Image radius
-          backgroundImage: NetworkImage(
-              'https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png'),
+        CachedNetworkImage(
+          imageBuilder: (context, imageProvider) {
+            return CircleAvatar(
+              radius: 60,
+              backgroundImage: imageProvider,
+            );
+          },
+          imageUrl: imageUrl,
+          placeholder: (context, url) => const Padding(
+            padding: EdgeInsets.all(18.0),
+            child: CircularProgressIndicator(),
+          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
+        // const CircleAvatar(
+        // radius: 60,  // Image radius
+        // backgroundImage: NetworkImage(
+        //     'https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png'),
+        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -90,7 +105,7 @@ class ProfileTobBar extends StatelessWidget {
             ),
             const SizedBox(width: 3),
             Text(
-              '$yearOfBirth-$yearOfDeath',
+              '${yearOfBirth.substring(yearOfBirth.length - 4)}-${yearOfDeath.substring(yearOfDeath.length - 4)}',
               style: const TextStyle(fontSize: 8, color: Colors.black),
               textAlign: TextAlign.justify,
             ),

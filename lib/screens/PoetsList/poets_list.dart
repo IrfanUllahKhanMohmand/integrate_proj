@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/screens/PoetsList/widgets/topBarTabs.dart';
+import 'package:integration_test/screens/PoetsList/widgets/top_bar_tabs.dart';
 
 class PoetsList extends StatelessWidget {
   const PoetsList({Key? key}) : super(key: key);

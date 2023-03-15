@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:integration_test/model/nazam.dart';
 
 class NazamTile extends StatelessWidget {
-  const NazamTile({
-    Key? key,
-  }) : super(key: key);
+  const NazamTile({Key? key, required this.nazam}) : super(key: key);
+  final Nazam nazam;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +30,11 @@ class NazamTile extends StatelessWidget {
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Column(
-              children: const [
-                Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
-                Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
+              children: [
+                Text(nazam.title),
+                Text(nazam.content.split('\n')[0])
+                // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
+                // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
               ],
             ),
             Padding(
