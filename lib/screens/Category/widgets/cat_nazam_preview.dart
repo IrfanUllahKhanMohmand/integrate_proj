@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/model/ghazal.dart';
-import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/model/category.dart';
+import 'package:integration_test/model/nazam.dart';
 
-class GhazalPreview extends StatelessWidget {
-  const GhazalPreview({super.key, required this.ghazal, required this.poet});
-  final Ghazal ghazal;
-  final Poet poet;
+class CategoryNazamPreview extends StatelessWidget {
+  const CategoryNazamPreview(
+      {super.key, required this.nazam, required this.cat});
+  final Nazam nazam;
+  final Category cat;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class GhazalPreview extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      ghazal.content.split('\n')[0],
+                      nazam.title,
                       textAlign: TextAlign.justify,
                       style: const TextStyle(
                         fontSize: 16,
@@ -47,7 +48,7 @@ class GhazalPreview extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(poet.name.toUpperCase(),
+                    Text(cat.name.toUpperCase(),
                         style: const TextStyle(
                             color: Color.fromRGBO(93, 86, 250, 1),
                             fontSize: 12,
@@ -104,7 +105,7 @@ class GhazalPreview extends StatelessWidget {
               Expanded(
                 child: SingleChildScrollView(
                   child: Text(
-                    ghazal.content,
+                    nazam.content,
                     style: const TextStyle(color: Colors.black),
                     textAlign: TextAlign.justify,
                   ),

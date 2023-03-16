@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:integration_test/model/sher.dart';
 
 class TabBarSherTile extends StatelessWidget {
-  const TabBarSherTile({
-    Key? key,
-  }) : super(key: key);
-
+  const TabBarSherTile({Key? key, required this.sher}) : super(key: key);
+  final Sher sher;
   @override
   Widget build(BuildContext context) {
     return Container(

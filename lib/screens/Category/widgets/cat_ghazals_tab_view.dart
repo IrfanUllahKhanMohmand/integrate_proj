@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/model/category.dart';
 import 'package:integration_test/screens/Profile/widgets/ghazal_tile.dart';
 import 'package:integration_test/utils/constants.dart';
 import 'package:integration_test/utils/on_generate_routes.dart';
 
-class GhazalsTabView extends StatelessWidget {
-  const GhazalsTabView({super.key, required this.ghazals, required this.poet});
+class CategoryGhazalsTabView extends StatelessWidget {
+  const CategoryGhazalsTabView(
+      {super.key, required this.ghazals, required this.cat});
   final List ghazals;
-  final Poet poet;
+  final Category cat;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,9 +31,9 @@ class GhazalsTabView extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      ghazalPreview,
-                      arguments: GhazalPreviewArguments(
-                          ghazal: ghazals[index], poet: poet),
+                      categoryGhazalPreview,
+                      arguments: CategoryGhazalPreviewArguments(
+                          ghazal: ghazals[index], cat: cat),
                     );
                   },
                   child: Column(

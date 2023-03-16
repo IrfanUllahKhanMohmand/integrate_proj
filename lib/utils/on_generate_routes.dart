@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:integration_test/model/category.dart';
+import 'package:integration_test/model/ghazal.dart';
 import 'package:integration_test/model/nazam.dart';
 import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/screens/Category/categor_profile.dart';
+import 'package:integration_test/screens/Category/widgets/cat_ghazal_preview.dart';
+import 'package:integration_test/screens/Category/widgets/cat_nazam_preview.dart';
 import 'package:integration_test/screens/PoetsList/poets_list.dart';
 import 'package:integration_test/screens/Profile/profile.dart';
 import 'package:integration_test/screens/Profile/widgets/ghazal_preview.dart';
@@ -26,6 +31,33 @@ class NazamPreviewArguments {
   NazamPreviewArguments({required this.nazam, required this.poet});
 }
 
+class GhazalPreviewArguments {
+  final Ghazal ghazal;
+  final Poet poet;
+
+  GhazalPreviewArguments({required this.ghazal, required this.poet});
+}
+
+class CategoryProfilArguments {
+  final int id;
+
+  CategoryProfilArguments({required this.id});
+}
+
+class CategoryGhazalPreviewArguments {
+  final Ghazal ghazal;
+  final Category cat;
+
+  CategoryGhazalPreviewArguments({required this.ghazal, required this.cat});
+}
+
+class CategoryNazamPreviewArguments {
+  final Category cat;
+  final Nazam nazam;
+
+  CategoryNazamPreviewArguments({required this.nazam, required this.cat});
+}
+
 class Routers {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -47,7 +79,34 @@ class Routers {
         }
 
       case ghazalPreview:
-        return MaterialPageRoute(builder: (_) => const GhazalPreview());
+        {
+          final args = settings.arguments as GhazalPreviewArguments;
+          return MaterialPageRoute(
+              builder: (_) =>
+                  GhazalPreview(ghazal: args.ghazal, poet: args.poet));
+        }
+      case categoryProfile:
+        {
+          final args = settings.arguments as CategoryProfilArguments;
+          return MaterialPageRoute(
+              builder: (_) => CategoryProfile(id: args.id));
+        }
+
+      case categoryNazamPreview:
+        {
+          final args = settings.arguments as CategoryNazamPreviewArguments;
+          return MaterialPageRoute(
+              builder: (_) =>
+                  CategoryNazamPreview(nazam: args.nazam, cat: args.cat));
+        }
+
+      case categoryGhazalPreview:
+        {
+          final args = settings.arguments as CategoryGhazalPreviewArguments;
+          return MaterialPageRoute(
+              builder: (_) =>
+                  CategoryGhazalPreview(ghazal: args.ghazal, cat: args.cat));
+        }
       case projectEdit:
         return MaterialPageRoute(builder: (_) => ProjectEdit(null));
       case storiesEditor:

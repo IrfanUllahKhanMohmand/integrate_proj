@@ -35,7 +35,9 @@ class PoetsListTile extends StatelessWidget {
             imageUrl: imageUrl,
             placeholder: (context, url) => const Padding(
               padding: EdgeInsets.all(18.0),
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: Color.fromRGBO(93, 86, 250, 1),
+              ),
             ),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),

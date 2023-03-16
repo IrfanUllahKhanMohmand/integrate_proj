@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/model/poet.dart';
-import 'package:integration_test/screens/Profile/widgets/profile_sher_tile.dart';
+import 'package:integration_test/model/category.dart';
+import 'package:integration_test/screens/Category/widgets/cat_profile_sher_tile.dart';
 
 import 'package:share_plus/share_plus.dart';
 
-class SherTabView extends StatefulWidget {
-  const SherTabView({super.key, required this.shers, required this.poet});
+class CategorySherTabView extends StatefulWidget {
+  const CategorySherTabView(
+      {super.key, required this.shers, required this.cat});
   final List shers;
-  final Poet poet;
+  final Category cat;
   @override
-  State<SherTabView> createState() => _SherTabViewState();
+  State<CategorySherTabView> createState() => _CategorySherTabViewState();
 }
 
-class _SherTabViewState extends State<SherTabView> {
+class _CategorySherTabViewState extends State<CategorySherTabView> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,9 +44,9 @@ class _SherTabViewState extends State<SherTabView> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4.0),
-                        child: ProfileSherTile(
+                        child: CategoryProfileSherTile(
                           sher: widget.shers[index],
-                          poet: widget.poet,
+                          cat: widget.cat,
                         ),
                       )
                     ],

@@ -1,29 +1,30 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:integration_test/model/poet.dart';
-import 'package:integration_test/screens/Profile/widgets/ghazals_tab_view.dart';
-import 'package:integration_test/screens/Profile/widgets/nazam_tab_view.dart';
-import 'package:integration_test/screens/Profile/widgets/profiles_tab_view.dart';
-import 'package:integration_test/screens/Profile/widgets/sher_tab_view.dart';
+import 'package:integration_test/model/category.dart';
+import 'package:integration_test/screens/Category/widgets/cat_ghazals_tab_view.dart';
+import 'package:integration_test/screens/Category/widgets/cat_nazam_tab_view.dart';
+import 'package:integration_test/screens/Category/widgets/cat_profiles_tab_view.dart';
+import 'package:integration_test/screens/Category/widgets/cat_sher_tab_view.dart';
 
-class TabBarTabs extends StatefulWidget {
-  const TabBarTabs(
+class CategoryTabBarTabs extends StatefulWidget {
+  const CategoryTabBarTabs(
       {Key? key,
-      required this.poet,
+      required this.cat,
       required this.nazams,
       required this.ghazals,
       required this.shers})
       : super(key: key);
-  final Poet poet;
+  final Category cat;
   final List nazams;
   final List ghazals;
   final List shers;
 
   @override
-  State<TabBarTabs> createState() => _TabBarTabsState();
+  State<CategoryTabBarTabs> createState() => _CategoryTabBarTabsState();
 }
 
-class _TabBarTabsState extends State<TabBarTabs> with TickerProviderStateMixin {
+class _CategoryTabBarTabsState extends State<CategoryTabBarTabs>
+    with TickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -70,10 +71,11 @@ class _TabBarTabsState extends State<TabBarTabs> with TickerProviderStateMixin {
             child: TabBarView(
               controller: _tabController,
               children: [
-                ProfilesTabView(poet: widget.poet),
-                NazamsTabView(nazams: widget.nazams, poet: widget.poet),
-                SherTabView(shers: widget.shers, poet: widget.poet),
-                GhazalsTabView(ghazals: widget.ghazals, poet: widget.poet)
+                CategoryProfilesTabView(category: widget.cat),
+                CategoryNazamsTabView(
+                    nazams: widget.nazams, category: widget.cat),
+                CategorySherTabView(shers: widget.shers, cat: widget.cat),
+                CategoryGhazalsTabView(ghazals: widget.ghazals, cat: widget.cat)
               ],
             ),
           ),

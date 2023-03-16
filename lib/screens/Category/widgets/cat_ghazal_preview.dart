@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:integration_test/model/category.dart';
 import 'package:integration_test/model/ghazal.dart';
-import 'package:integration_test/model/poet.dart';
 
-class GhazalPreview extends StatelessWidget {
-  const GhazalPreview({super.key, required this.ghazal, required this.poet});
+class CategoryGhazalPreview extends StatelessWidget {
+  const CategoryGhazalPreview(
+      {super.key, required this.ghazal, required this.cat});
   final Ghazal ghazal;
-  final Poet poet;
+  final Category cat;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class GhazalPreview extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(poet.name.toUpperCase(),
+                    Text(cat.name.toUpperCase(),
                         style: const TextStyle(
                             color: Color.fromRGBO(93, 86, 250, 1),
                             fontSize: 12,

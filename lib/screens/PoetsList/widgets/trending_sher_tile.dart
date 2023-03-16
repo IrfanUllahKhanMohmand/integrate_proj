@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:integration_test/model/poet.dart';
-import 'package:integration_test/model/sher.dart';
 
-class ProfileSherTile extends StatelessWidget {
-  const ProfileSherTile({Key? key, required this.sher, required this.poet})
-      : super(key: key);
-  final Sher sher;
-  final Poet poet;
-
+class TrendingSherTile extends StatelessWidget {
+  const TrendingSherTile({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,11 +27,11 @@ class ProfileSherTile extends StatelessWidget {
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Column(
-              children: [
-                Text(sher.content.split('\n')[0]),
-                Text(sher.content.split('\n')[1]),
-                // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
-                // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
+              children: const [
+                // Text(sher.content.split('\n')[0]),
+                // Text(sher.content.split('\n')[1])
+                Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
+                Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
               ],
             ),
           ]),
@@ -47,33 +41,36 @@ class ProfileSherTile extends StatelessWidget {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const SizedBox(width: 10),
                   SvgPicture.asset(
-                    "assets/videoCamera.svg",
-                    width: 12,
-                    height: 12,
+                    "assets/leftArrow.svg",
+                    width: 10,
+                    height: 10,
                   ),
                   SvgPicture.asset(
                     "assets/favourite.svg",
-                    width: 12,
-                    height: 12,
+                    width: 10,
+                    height: 10,
                   ),
                   SvgPicture.asset(
                     "assets/share.svg",
-                    width: 12,
-                    height: 12,
-                  ),
-                  SvgPicture.asset(
-                    "assets/copy.svg",
-                    width: 12,
-                    height: 12,
+                    width: 10,
+                    height: 10,
                   ),
                   SvgPicture.asset(
                     "assets/picture.svg",
-                    width: 12,
-                    height: 12,
+                    width: 10,
+                    height: 10,
                   ),
-                  const SizedBox(width: 10),
+                  SvgPicture.asset(
+                    "assets/videoCamera.svg",
+                    width: 10,
+                    height: 10,
+                  ),
+                  SvgPicture.asset(
+                    "assets/rightArrow.svg",
+                    width: 10,
+                    height: 10,
+                  ),
                 ]),
           )
         ],

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,52 +5,24 @@ import 'package:integration_test/model/category.dart';
 import 'package:integration_test/model/poet.dart';
 import 'package:integration_test/screens/PoetsList/widgets/categories_list_tile.dart';
 import 'package:integration_test/screens/PoetsList/widgets/poets_list_tile.dart';
-import 'package:integration_test/screens/PoetsList/widgets/sher_tile.dart';
+import 'package:integration_test/screens/PoetsList/widgets/trending_sher_tile.dart';
 import 'package:integration_test/utils/constants.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:integration_test/utils/on_generate_routes.dart';
 
 class AllPoetsList extends StatefulWidget {
-  const AllPoetsList({Key? key}) : super(key: key);
+  const AllPoetsList({Key? key, required this.poets, required this.categories})
+      : super(key: key);
+  final List<Poet> poets;
+  final List<Category> categories;
 
   @override
   State<AllPoetsList> createState() => _AllPoetsListState();
 }
 
 class _AllPoetsListState extends State<AllPoetsList> {
-  List<Poet> poets = [];
-  List<Category> categories = [];
-  Future<void> fetchPoets() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.18.185:8080/poets'));
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      setState(() {
-        poets = data.map((json) => Poet.fromJson(json)).toList();
-      });
-    } else {
-      throw Exception('Failed to fetch poets');
-    }
-  }
-
-  Future<void> fetchCategories() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.18.185:8080/category'));
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      setState(() {
-        categories = data.map((json) => Category.fromJson(json)).toList();
-      });
-    } else {
-      throw Exception('Failed to fetch poets');
-    }
-  }
-
   @override
   void initState() {
-    fetchPoets();
-    fetchCategories();
     super.initState();
   }
 
@@ -182,7 +152,7 @@ class _AllPoetsListState extends State<AllPoetsList> {
           SizedBox(
             height: 150,
             child: ListView.builder(
-                itemCount: poets.length,
+                itemCount: widget.poets.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return GestureDetector(
@@ -191,7 +161,7 @@ class _AllPoetsListState extends State<AllPoetsList> {
                         context,
                         authorProfile,
                         arguments: PoetScreenArguments(
-                          id: poets[index].id,
+                          id: widget.poets[index].id,
                         ),
                       );
                     },
@@ -200,8 +170,8 @@ class _AllPoetsListState extends State<AllPoetsList> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 12),
                         child: PoetsListTile(
-                            imageUrl: poets[index].pic,
-                            realName: poets[index].name),
+                            imageUrl: widget.poets[index].pic,
+                            realName: widget.poets[index].name),
                       ),
                     ),
                   );
@@ -231,7 +201,7 @@ class _AllPoetsListState extends State<AllPoetsList> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 12),
-                        child: SherTile(),
+                        child: TrendingSherTile(),
                       ),
                     ),
                   );
@@ -250,20 +220,26 @@ class _AllPoetsListState extends State<AllPoetsList> {
           SizedBox(
             height: 150,
             child: ListView.builder(
-                itemCount: categories.length,
+                itemCount: widget.categories.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, authorProfile);
+                      Navigator.pushNamed(
+                        context,
+                        categoryProfile,
+                        arguments: CategoryProfilArguments(
+                          id: widget.categories[index].id,
+                        ),
+                      );
                     },
                     child: AbsorbPointer(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 12),
                         child: CategoriesListTile(
-                            imageUrl: categories[index].pic,
-                            realName: categories[index].name),
+                            imageUrl: widget.categories[index].pic,
+                            realName: widget.categories[index].name),
                       ),
                     ),
                   );

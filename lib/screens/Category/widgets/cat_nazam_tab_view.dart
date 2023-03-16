@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:integration_test/model/poet.dart';
-import 'package:integration_test/screens/Profile/widgets/ghazal_tile.dart';
+import 'package:integration_test/model/category.dart';
+import 'package:integration_test/screens/Profile/widgets/nazam_tile.dart';
 import 'package:integration_test/utils/constants.dart';
 import 'package:integration_test/utils/on_generate_routes.dart';
 
-class GhazalsTabView extends StatelessWidget {
-  const GhazalsTabView({super.key, required this.ghazals, required this.poet});
-  final List ghazals;
-  final Poet poet;
+class CategoryNazamsTabView extends StatefulWidget {
+  const CategoryNazamsTabView(
+      {super.key, required this.nazams, required this.category});
+  final List nazams;
+  final Category category;
+  @override
+  State<CategoryNazamsTabView> createState() => _CategoryNazamsTabViewState();
+}
+
+class _CategoryNazamsTabViewState extends State<CategoryNazamsTabView> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,22 +23,22 @@ class GhazalsTabView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Text("GHAZAL",
+              Text("NAZAM",
                   style: TextStyle(color: Color.fromRGBO(93, 86, 250, 1))),
             ],
           ),
         ),
         Expanded(
           child: ListView.builder(
-              itemCount: ghazals.length,
+              itemCount: widget.nazams.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      ghazalPreview,
-                      arguments: GhazalPreviewArguments(
-                          ghazal: ghazals[index], poet: poet),
+                      categoryNazamPreview,
+                      arguments: CategoryNazamPreviewArguments(
+                          nazam: widget.nazams[index], cat: widget.category),
                     );
                   },
                   child: Column(
@@ -40,8 +46,8 @@ class GhazalsTabView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4.0),
-                        child: GhazalTile(
-                          ghazal: ghazals[index],
+                        child: NazamTile(
+                          nazam: widget.nazams[index],
                         ),
                       )
                     ],

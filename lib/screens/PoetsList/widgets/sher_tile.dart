@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:integration_test/model/sher.dart';
 
 class SherTile extends StatelessWidget {
-  const SherTile({
-    Key? key,
-  }) : super(key: key);
-
+  const SherTile({Key? key, required this.sher}) : super(key: key);
+  final Sher sher;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,9 +29,11 @@ class SherTile extends StatelessWidget {
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Column(
-              children: const [
-                Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
-                Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
+              children: [
+                Text(sher.content.split('\n')[0]),
+                Text(sher.content.split('\n')[1])
+                // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
+                // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
               ],
             ),
           ]),

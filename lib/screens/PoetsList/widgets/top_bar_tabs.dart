@@ -1,5 +1,10 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
+import 'package:integration_test/model/category.dart';
+import 'package:integration_test/model/ghazal.dart';
+import 'package:integration_test/model/nazam.dart';
+import 'package:integration_test/model/poet.dart';
+import 'package:integration_test/model/sher.dart';
 import 'package:integration_test/screens/PoetsList/widgets/all_poets_list.dart';
 import 'package:integration_test/screens/PoetsList/widgets/nazam_list.dart';
 import 'package:integration_test/screens/PoetsList/widgets/top_poets_list.dart';
@@ -7,8 +12,19 @@ import 'package:integration_test/screens/PoetsList/widgets/ghazal_list.dart';
 import 'package:integration_test/screens/PoetsList/widgets/sher_list.dart';
 
 class TopBarTabs extends StatefulWidget {
-  const TopBarTabs({Key? key}) : super(key: key);
-
+  const TopBarTabs(
+      {Key? key,
+      required this.poets,
+      required this.categories,
+      required this.nazams,
+      required this.ghazals,
+      required this.shers})
+      : super(key: key);
+  final List<Poet> poets;
+  final List<Category> categories;
+  final List<Nazam> nazams;
+  final List<Ghazal> ghazals;
+  final List<Sher> shers;
   @override
   State<TopBarTabs> createState() => _TopBarTabsState();
 }
@@ -73,11 +89,14 @@ class _TopBarTabsState extends State<TopBarTabs> with TickerProviderStateMixin {
             child: TabBarView(
               controller: _tabController,
               children: [
-                const AllPoetsList(),
-                TopReadPoetsList(),
-                const GhazalList(),
-                const SherList(),
-                const NazamList(),
+                AllPoetsList(
+                  poets: widget.poets,
+                  categories: widget.categories,
+                ),
+                TopReadPoetsList(poets: widget.poets),
+                GhazalList(ghazals: widget.ghazals, poet: widget.poets),
+                SherList(shers: widget.shers),
+                NazamList(nazams: widget.nazams, poet: widget.poets),
               ],
             ),
           ),

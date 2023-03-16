@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:integration_test/model/poet.dart';
 import 'package:integration_test/screens/PoetsList/widgets/poets_list_tile.dart';
 
-class TopReadPoetsList extends StatelessWidget {
-  TopReadPoetsList({Key? key}) : super(key: key);
+class TopReadPoetsList extends StatefulWidget {
+  const TopReadPoetsList({Key? key, required this.poets}) : super(key: key);
+  final List<Poet> poets;
+  @override
+  State<TopReadPoetsList> createState() => _TopReadPoetsListState();
+}
+
+class _TopReadPoetsListState extends State<TopReadPoetsList> {
   final TextEditingController _textEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,14 +33,13 @@ class TopReadPoetsList extends StatelessWidget {
               shrinkWrap: true,
               primary: false,
               physics: const ScrollPhysics(),
-              itemCount: 20,
+              itemCount: widget.poets.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisSpacing: 4.0, mainAxisSpacing: 4, crossAxisCount: 3),
               itemBuilder: (context, index) {
-                return const PoetsListTile(
-                  imageUrl:
-                      'https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png',
-                  realName: 'Ahmad Faraz',
+                return PoetsListTile(
+                  imageUrl: widget.poets[index].pic,
+                  realName: widget.poets[index].name,
                 );
               }),
         )
