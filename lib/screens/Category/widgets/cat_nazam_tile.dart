@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:integration_test/model/nazam.dart';
 
-class NazamTile extends StatelessWidget {
-  const NazamTile({Key? key, required this.nazam}) : super(key: key);
+class CatNazamTile extends StatefulWidget {
+  const CatNazamTile({Key? key, required this.nazam, required this.isLiked})
+      : super(key: key);
   final Nazam nazam;
+  final bool isLiked;
 
+  @override
+  State<CatNazamTile> createState() => _CatNazamTileState();
+}
+
+class _CatNazamTileState extends State<CatNazamTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,20 +38,31 @@ class NazamTile extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Column(
               children: [
-                Text(nazam.title),
-                Text(nazam.content.split('\n')[0])
+                Text(widget.nazam.title),
+                Text(widget.nazam.content.split('\n')[0])
                 // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
                 // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SvgPicture.asset(
-                "assets/favourite.svg",
-                width: 16,
-                height: 16,
-              ),
-            )
+            widget.isLiked
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SvgPicture.asset(
+                      "assets/favourite.svg",
+                      width: 16,
+                      height: 16,
+                      // ignore: deprecated_member_use
+                      color: Colors.red,
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SvgPicture.asset(
+                      "assets/favourite.svg",
+                      width: 16,
+                      height: 16,
+                    ),
+                  )
           ]),
           const SizedBox(height: 10),
         ],

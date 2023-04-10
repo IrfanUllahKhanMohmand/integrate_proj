@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:integration_test/model/ghazal.dart';
 
-class GhazalTile extends StatelessWidget {
-  const GhazalTile({Key? key, required this.ghazal}) : super(key: key);
+class CategoryGhazalTile extends StatefulWidget {
+  const CategoryGhazalTile(
+      {Key? key, required this.ghazal, required this.isLiked})
+      : super(key: key);
   final Ghazal ghazal;
+  final bool isLiked;
 
+  @override
+  State<CategoryGhazalTile> createState() => _CategoryGhazalTileState();
+}
+
+class _CategoryGhazalTileState extends State<CategoryGhazalTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,20 +39,31 @@ class GhazalTile extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Column(
               children: [
-                Text(ghazal.content.split('\n')[0]),
-                Text(ghazal.content.split('\n')[1])
+                Text(widget.ghazal.content.split('\n')[0]),
+                Text(widget.ghazal.content.split('\n')[1])
                 // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
                 // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SvgPicture.asset(
-                "assets/favourite.svg",
-                width: 16,
-                height: 16,
-              ),
-            )
+            widget.isLiked
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SvgPicture.asset(
+                      "assets/favourite.svg",
+                      width: 16,
+                      height: 16,
+                      // ignore: deprecated_member_use
+                      color: Colors.red,
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SvgPicture.asset(
+                      "assets/favourite.svg",
+                      width: 16,
+                      height: 16,
+                    ),
+                  )
           ]),
           const SizedBox(height: 10),
         ],

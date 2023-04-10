@@ -1,9 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:integration_test/Providers/nazams_likes_provider.dart';
+import 'package:integration_test/Providers/user_provider.dart';
 import 'package:integration_test/model/nazam.dart';
 import 'package:integration_test/model/poet.dart';
 import 'package:integration_test/screens/PoetsList/widgets/tab_nazam_tile.dart';
 import 'package:integration_test/utils/constants.dart';
 import 'package:integration_test/utils/on_generate_routes.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NazamList extends StatefulWidget {
   const NazamList({Key? key, required this.nazams, required this.poet})
@@ -15,38 +24,108 @@ class NazamList extends StatefulWidget {
 }
 
 class _NazamListState extends State<NazamList> {
+  Map nazamsData = {};
+  // Map likes = {};
   getPoet(int id) {
     var poet = widget.poet.where((element) => element.id == id);
     return poet.first;
   }
 
+  getNazamsLikes() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final nazamProvider =
+        Provider.of<NazamLikesProvider>(context, listen: false);
+    for (var element in widget.nazams) {
+      var response = await http.get(
+        Uri.parse(
+            'http://nawees.com/api/nazamlikes?user_id=${userProvider.userId}&nazam_id=${element.id}'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+      if (response.statusCode == 200) {
+        nazamsData = await jsonDecode(response.body);
+        nazamProvider.add({element.id: nazamsData.values.first});
+        setState(() {});
+      }
+    }
+
+    return nazamProvider.likes;
+  }
+
+  late final Future nazamsFuture = getNazamsLikes();
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-              itemCount: widget.nazams.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      nazamPreview,
-                      arguments: NazamPreviewArguments(
-                          nazam: widget.nazams[index],
-                          poet: getPoet(widget.nazams[index].poetId)),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 6),
-                    child: TabNazamTile(nazam: widget.nazams[index]),
-                  ),
-                );
-              }),
-        )
-      ],
+    return FutureBuilder(
+      future: Future.wait([nazamsFuture]),
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        Widget children;
+        if (snapshot.hasData) {
+          children =
+              Consumer<NazamLikesProvider>(builder: (context, nazam, child) {
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: widget.nazams.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              nazamPreview,
+                              arguments: NazamPreviewArguments(
+                                  nazam: widget.nazams[index],
+                                  poet: getPoet(widget.nazams[index].poetId)),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 6),
+                            child: TabNazamTile(
+                              nazam: widget.nazams[index],
+                              isLiked:
+                                  nazam.likes[widget.nazams[index].id] != 0,
+                            ),
+                          ),
+                        );
+                      }),
+                )
+              ],
+            );
+          });
+        } else if (snapshot.hasError) {
+          children =
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 60,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          ]);
+        } else {
+          children =
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const SizedBox(
+              width: 60,
+              height: 60,
+              child: CircularProgressIndicator(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text(AppLocalizations.of(context)!.awaiting_result),
+            ),
+          ]);
+        }
+        return Center(
+          child: children,
+        );
+      },
     );
   }
 }

@@ -1005,11 +1005,17 @@ class _AssetSelectState extends State<_AssetSelect> {
             ),
             Text(
               widget.layerIndex == 0
-                  ? 'Add Media'
+                  ? Localizations.localeOf(context).languageCode == 'ur'
+                      ? "میڈیا شامل کریں"
+                      : 'Add Media'
                   : widget.layerIndex == 1
-                      ? 'Add Text'
+                      ? Localizations.localeOf(context).languageCode == 'ur'
+                          ? "متن شامل کریں"
+                          : 'Add Text'
                       : widget.layerIndex == 2
-                          ? 'Add Audio'
+                          ? Localizations.localeOf(context).languageCode == 'ur'
+                              ? "آڈیو شامل کریں"
+                              : 'Add Audio'
                           : '',
               style: TextStyle(
                   color: textColor,

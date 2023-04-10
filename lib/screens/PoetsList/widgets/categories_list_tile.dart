@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:integration_test/Providers/local_provider.dart';
+import 'package:integration_test/model/category.dart';
+import 'package:provider/provider.dart';
 
 class CategoriesListTile extends StatelessWidget {
-  const CategoriesListTile(
-      {Key? key, required this.realName, required this.imageUrl})
+  const CategoriesListTile({Key? key, required this.category})
       : super(key: key);
-  final String realName;
-  final String imageUrl;
+  final Category category;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class CategoriesListTile extends StatelessWidget {
                 ),
               );
             },
-            imageUrl: imageUrl,
+            imageUrl: category.pic,
             placeholder: (context, url) => const Padding(
               padding: EdgeInsets.all(18.0),
               child: CircularProgressIndicator(),
@@ -40,11 +41,17 @@ class CategoriesListTile extends StatelessWidget {
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
-        Text(
-          realName,
-          style: const TextStyle(
-              fontSize: 10, color: Color.fromRGBO(151, 151, 151, 1)),
-        ),
+        Consumer<LocaleProvider>(
+          builder: (context, value, child) {
+            return Text(
+              value.locale!.languageCode == 'ur'
+                  ? category.nameUrd
+                  : category.nameEng,
+              style: const TextStyle(
+                  fontSize: 10, color: Color.fromRGBO(151, 151, 151, 1)),
+            );
+          },
+        )
       ],
     );
   }

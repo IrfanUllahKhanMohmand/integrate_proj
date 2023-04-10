@@ -1,0 +1,24 @@
+{
+  "all": "All",
+  "top_poets": "Top Poets",
+  "ghazals": "Ghazals",
+  "shers": "Shers",
+  "nazams": "Nazams",
+  "make_status": "Make Status",
+  "make_video": "Make Video",
+  "most_read_poets": "Most Read Poets",
+  "trending_shers": "Trending Shers",
+  "sher_collections": "Sher Collections",
+  "awaiting_result": "Awaiting result...",
+  "no_internet_connection":"No internet Connection",
+  "profile":"PROFILE",
+  "poet_name":"Name",
+  "poet_born":"Born",
+  "poet_died":"Died",
+  "video_editor_new_video":"New video",
+  "video_editor_title":"Title",
+  "video_editor_description":"Description(optional)",
+  "video_editor_ok":"OK",
+  "video_editor_cancel":"Cancel"
+
+}

@@ -364,21 +364,29 @@ class _ButtonAdd extends StatelessWidget {
           directorService.add(result);
         },
         itemBuilder: (BuildContext context) => <PopupMenuEntry<AssetType>>[
-          const PopupMenuItem<AssetType>(
+          PopupMenuItem<AssetType>(
             value: AssetType.video,
-            child: Text('Add video'),
+            child: Text(Localizations.localeOf(context).languageCode == 'ur'
+                ? "ویڈیو شامل کریں"
+                : 'Add video'),
           ),
-          const PopupMenuItem<AssetType>(
+          PopupMenuItem<AssetType>(
             value: AssetType.image,
-            child: Text('Add image'),
+            child: Text(Localizations.localeOf(context).languageCode == 'ur'
+                ? "تصویر شامل کریں"
+                : 'Add image'),
           ),
-          const PopupMenuItem<AssetType>(
+          PopupMenuItem<AssetType>(
             value: AssetType.audio,
-            child: Text('Add audio'),
+            child: Text(Localizations.localeOf(context).languageCode == 'ur'
+                ? "آڈیو شامل کریں"
+                : 'Add audio'),
           ),
-          const PopupMenuItem<AssetType>(
+          PopupMenuItem<AssetType>(
             value: AssetType.text,
-            child: Text('Add title'),
+            child: Text(Localizations.localeOf(context).languageCode == 'ur'
+                ? "عنوان شامل کریں"
+                : 'Add title'),
           ),
         ],
       ),
@@ -455,22 +463,30 @@ class _ButtonGenerate extends StatelessWidget {
           }
         },
         itemBuilder: (BuildContext context) => <PopupMenuEntry<dynamic>>[
-          const PopupMenuItem<VideoResolution>(
+          PopupMenuItem<VideoResolution>(
             value: VideoResolution.fullHd,
-            child: Text('Generate Full HD 1080px'),
+            child: Text(Localizations.localeOf(context).languageCode == 'ur'
+                ? "1080px بنائیں"
+                : 'Generate Full HD 1080px'),
           ),
-          const PopupMenuItem<VideoResolution>(
+          PopupMenuItem<VideoResolution>(
             value: VideoResolution.hd,
-            child: Text('Generate HD 720px'),
+            child: Text(Localizations.localeOf(context).languageCode == 'ur'
+                ? "HD 720px بنائیں"
+                : 'Generate HD 720px'),
           ),
-          const PopupMenuItem<VideoResolution>(
+          PopupMenuItem<VideoResolution>(
             value: VideoResolution.sd,
-            child: Text('Generate SD 360px'),
+            child: Text(Localizations.localeOf(context).languageCode == 'ur'
+                ? "360px بنائیں"
+                : 'Generate SD 360px'),
           ),
           const PopupMenuDivider(height: 10),
-          const PopupMenuItem<int>(
+          PopupMenuItem<int>(
             value: 99,
-            child: Text('View generated videos'),
+            child: Text(Localizations.localeOf(context).languageCode == 'ur'
+                ? "تیار کردہ ویڈیوز دیکھیں"
+                : 'View generated videos'),
           ),
         ],
       ),

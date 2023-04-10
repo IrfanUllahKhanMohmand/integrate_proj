@@ -10,6 +10,7 @@ import 'package:integration_test/screens/PoetsList/widgets/nazam_list.dart';
 import 'package:integration_test/screens/PoetsList/widgets/top_poets_list.dart';
 import 'package:integration_test/screens/PoetsList/widgets/ghazal_list.dart';
 import 'package:integration_test/screens/PoetsList/widgets/sher_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TopBarTabs extends StatefulWidget {
   const TopBarTabs(
@@ -18,13 +19,15 @@ class TopBarTabs extends StatefulWidget {
       required this.categories,
       required this.nazams,
       required this.ghazals,
-      required this.shers})
+      required this.shers,
+      required this.trendingShers})
       : super(key: key);
   final List<Poet> poets;
   final List<Category> categories;
   final List<Nazam> nazams;
   final List<Ghazal> ghazals;
   final List<Sher> shers;
+  final List trendingShers;
   @override
   State<TopBarTabs> createState() => _TopBarTabsState();
 }
@@ -73,12 +76,12 @@ class _TopBarTabsState extends State<TopBarTabs> with TickerProviderStateMixin {
                     unselectedBorderColor: Colors.transparent,
                     borderColor: Colors.transparent,
                     radius: 22,
-                    tabs: const [
-                      Tab(text: 'All'),
-                      Tab(text: 'Top Poets'),
-                      Tab(text: 'Ghazal'),
-                      Tab(text: 'Sher'),
-                      Tab(text: 'Nazam'),
+                    tabs: [
+                      Tab(text: AppLocalizations.of(context)!.all),
+                      Tab(text: AppLocalizations.of(context)!.top_poets),
+                      Tab(text: AppLocalizations.of(context)!.ghazals),
+                      Tab(text: AppLocalizations.of(context)!.shers),
+                      Tab(text: AppLocalizations.of(context)!.nazams),
                     ],
                   ),
                 ],
@@ -92,6 +95,7 @@ class _TopBarTabsState extends State<TopBarTabs> with TickerProviderStateMixin {
                 AllPoetsList(
                   poets: widget.poets,
                   categories: widget.categories,
+                  trendingShers: widget.trendingShers,
                 ),
                 TopReadPoetsList(poets: widget.poets),
                 GhazalList(ghazals: widget.ghazals, poet: widget.poets),

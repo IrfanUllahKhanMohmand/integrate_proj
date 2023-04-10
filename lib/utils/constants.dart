@@ -11,3 +11,6 @@ const String storiesEditor = '/storiesEditor';
 // const String poetsList = '/poetsList';
 const String poetsList = '/';
 const String projectEdit = '/projectEdit';
+
+const apiKey =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImlyZmFuIiwiaWF0IjoxNjgwMjU1MjQwfQ.xMjto7a5aD8llpXzfHEYKYqZTQ4kMDCtQhAnKz7p5yM";

@@ -17,6 +17,7 @@ class ProjectEdit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(Localizations.localeOf(context).languageCode);
     return Scaffold(
       backgroundColor: const Color.fromRGBO(245, 245, 247, 1),
       appBar: AppBar(
@@ -32,8 +33,11 @@ class ProjectEdit extends StatelessWidget {
             const SizedBox(
               width: 40,
             ),
+            // AppLocalizations.of(context).profile
             Text((projectService.project.id == null)
-                ? 'New video'
+                ? Localizations.localeOf(context).languageCode == 'ur'
+                    ? "نئی ویڈیو"
+                    : 'New video'
                 : 'Edit title'),
           ],
         ),
@@ -73,11 +77,17 @@ class _ProjectEditForm extends StatelessWidget {
                   onSaved: (value) {
                     projectService.project.title = value;
                   },
-                  decoration: const InputDecoration(
-                    labelText: 'Title',
+                  decoration: InputDecoration(
+                    labelText:
+                        Localizations.localeOf(context).languageCode == 'ur'
+                            ? "عنوان"
+                            : 'Title',
                     labelStyle:
                         TextStyle(color: Color.fromRGBO(93, 86, 250, 1)),
-                    hintText: 'Enter a title for your video project',
+                    hintText:
+                        Localizations.localeOf(context).languageCode == 'ur'
+                            ? "اپنے ویڈیو پروجیکٹ کے لیے عنوان درج کریں"
+                            : 'Enter a title for your video project',
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Color.fromRGBO(93, 86, 250, 1))),
@@ -85,7 +95,10 @@ class _ProjectEditForm extends StatelessWidget {
                   ),
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Please enter a title';
+                      return Localizations.localeOf(context).languageCode ==
+                              'ur'
+                          ? "براہ کرم عنوان درج کریں"
+                          : 'Please enter a title';
                     }
                     return null;
                   },
@@ -99,8 +112,11 @@ class _ProjectEditForm extends StatelessWidget {
                   onSaved: (value) {
                     projectService.project.description = value;
                   },
-                  decoration: const InputDecoration(
-                    labelText: 'Description (optional)',
+                  decoration: InputDecoration(
+                    labelText:
+                        Localizations.localeOf(context).languageCode == 'ur'
+                            ? "تفصیل (اختیاری)"
+                            : 'Description (optional)',
                     labelStyle:
                         TextStyle(color: Color.fromRGBO(93, 86, 250, 1)),
                     focusedBorder: OutlineInputBorder(
@@ -116,7 +132,10 @@ class _ProjectEditForm extends StatelessWidget {
                     style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(
                             const Color.fromRGBO(93, 86, 250, 1))),
-                    child: const Text('Cancel'),
+                    child: Text(
+                        Localizations.localeOf(context).languageCode == 'ur'
+                            ? "منسوخ کریں"
+                            : 'Cancel'),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -126,7 +145,10 @@ class _ProjectEditForm extends StatelessWidget {
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
                             const Color.fromRGBO(93, 86, 250, 1))),
-                    child: const Text('OK'),
+                    child: Text(
+                        Localizations.localeOf(context).languageCode == 'ur'
+                            ? "ٹھیک ہے"
+                            : 'OK'),
                     onPressed: () async {
                       // If the form is valid
                       if (_formKey.currentState.validate()) {

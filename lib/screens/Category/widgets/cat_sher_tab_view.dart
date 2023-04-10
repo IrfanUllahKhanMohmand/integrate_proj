@@ -1,8 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:integration_test/Providers/catsher_likes_provider.dart';
+import 'package:integration_test/Providers/user_provider.dart';
 import 'package:integration_test/model/category.dart';
 import 'package:integration_test/screens/Category/widgets/cat_profile_sher_tile.dart';
+import 'package:integration_test/utils/constants.dart';
+import 'package:provider/provider.dart';
 
 import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
 
 class CategorySherTabView extends StatefulWidget {
   const CategorySherTabView(
@@ -14,47 +22,112 @@ class CategorySherTabView extends StatefulWidget {
 }
 
 class _CategorySherTabViewState extends State<CategorySherTabView> {
+  Map catshersData = {};
+
+  getshersLikes() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final catsherProvider =
+        Provider.of<CatSherLikesProvider>(context, listen: false);
+    for (var element in widget.shers) {
+      var response = await http.get(
+        Uri.parse(
+            'http://nawees.com/api/catsherlikes?user_id=${userProvider.userId}&catsher_id=${element.id}'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+      if (response.statusCode == 200) {
+        catshersData = await jsonDecode(response.body);
+
+        catsherProvider.add({element.id: catshersData.values.first});
+        setState(() {});
+      }
+    }
+
+    return catsherProvider.likes;
+  }
+
+  late final Future ghazalsLikesFuture = getshersLikes();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("SHER",
-                  style: TextStyle(color: Color.fromRGBO(93, 86, 250, 1))),
-            ],
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-              itemCount: widget.shers.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    // Navigator.pushNamed(
-                    //   context,
-                    //   nazamPreview,
-                    // );
-                  },
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4.0),
-                        child: CategoryProfileSherTile(
-                          sher: widget.shers[index],
-                          cat: widget.cat,
+    return FutureBuilder(
+      future: Future.wait([ghazalsLikesFuture]),
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        Widget children;
+        if (snapshot.hasData) {
+          children = Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text("SHER",
+                        style:
+                            TextStyle(color: Color.fromRGBO(93, 86, 250, 1))),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: widget.shers.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          // Navigator.pushNamed(
+                          //   context,
+                          //   nazamPreview,
+                          // );
+                        },
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4.0),
+                              child: CategoryProfileSherTile(
+                                sher: widget.shers[index],
+                                cat: widget.cat,
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                );
-              }),
-        )
-      ],
+                      );
+                    }),
+              )
+            ],
+          );
+        } else if (snapshot.hasError) {
+          children =
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 60,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          ]);
+        } else {
+          children = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Awaiting result...'),
+                ),
+              ]);
+        }
+        return Center(
+          child: children,
+        );
+      },
     );
   }
 }

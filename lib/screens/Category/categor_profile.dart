@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:integration_test/model/category.dart';
@@ -9,6 +10,7 @@ import 'package:integration_test/screens/Category/widgets/cat_profile_tob_bar.da
 import 'package:integration_test/screens/Category/widgets/cat_tab_bar_tabs.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:integration_test/utils/constants.dart';
 
 class CategoryProfile extends StatefulWidget {
   const CategoryProfile({Key? key, required this.id}) : super(key: key);
@@ -25,7 +27,10 @@ class _CategoryProfileState extends State<CategoryProfile> {
   List shersData = [];
   Future getCategoryData() async {
     var response = await http.get(
-      Uri.parse('http://192.168.18.185:8080/category/${widget.id}'),
+      Uri.parse('http://nawees.com/api/category/${widget.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $apiKey",
+      },
     );
     if (response.statusCode == 200) {
       setState(() {
@@ -37,8 +42,10 @@ class _CategoryProfileState extends State<CategoryProfile> {
 
   Future getNazamsData() async {
     var response = await http.get(
-      Uri.parse(
-          'http://192.168.18.185:8080/nazamsByCategory?cat_id=${widget.id}'),
+      Uri.parse('http://nawees.com/api/nazamsByCategory?cat_id=${widget.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $apiKey",
+      },
     );
     if (response.statusCode == 200) {
       setState(() {
@@ -52,8 +59,10 @@ class _CategoryProfileState extends State<CategoryProfile> {
 
   Future getGhazalsData() async {
     var response = await http.get(
-      Uri.parse(
-          'http://192.168.18.185:8080/ghazalsByCategory?cat_id=${widget.id}'),
+      Uri.parse('http://nawees.com/api/ghazalsByCategory?cat_id=${widget.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $apiKey",
+      },
     );
     if (response.statusCode == 200) {
       setState(() {
@@ -67,8 +76,10 @@ class _CategoryProfileState extends State<CategoryProfile> {
 
   Future getShersData() async {
     var response = await http.get(
-      Uri.parse(
-          'http://192.168.18.185:8080/shersByCategory?cat_id=${widget.id}'),
+      Uri.parse('http://nawees.com/api/shersByCategory?cat_id=${widget.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $apiKey",
+      },
     );
     if (response.statusCode == 200) {
       setState(() {
@@ -108,8 +119,8 @@ class _CategoryProfileState extends State<CategoryProfile> {
                     child: CategoryProfileTobBar(
                       id: categoryData.id,
                       pic: categoryData.pic,
-                      name: categoryData.name,
-                      description: categoryData.description,
+                      name: categoryData.nameEng,
+                      description: categoryData.descriptionEng,
                     ),
                   ),
                   CategoryTabBarTabs(

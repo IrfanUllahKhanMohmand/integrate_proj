@@ -31,6 +31,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations: 
+    sdk: flutter
   open_director:
     path: ./open_director
   stories_editor:
@@ -45,6 +47,14 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: 
+  provider: ^6.0.5
+  shared_preferences: ^2.0.18
+  connectivity_plus: ^3.0.3
+  data_connection_checker: ^0.3.4
+  google_mobile_ads: ^2.4.0
+  hive_flutter: ^1.1.0
+  hive: ^2.2.3
+  intl: ^0.17.0
 
 dependency_overrides:
   rxdart: 0.22.2
@@ -70,6 +80,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   assets:

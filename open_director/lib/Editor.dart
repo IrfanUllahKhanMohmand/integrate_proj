@@ -23,8 +23,12 @@ class _EditorState extends State<Editor> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ProjectList(),
+    return Localizations.override(
+      context: context,
+      locale: const Locale('en', 'US'),
+      child: Scaffold(
+        body: ProjectList(),
+      ),
     );
   }
 }

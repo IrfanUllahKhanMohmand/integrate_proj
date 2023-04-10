@@ -1,8 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:integration_test/Providers/shers_likes_provider.dart';
+import 'package:integration_test/Providers/user_provider.dart';
 import 'package:integration_test/model/poet.dart';
 import 'package:integration_test/screens/Profile/widgets/profile_sher_tile.dart';
+import 'package:integration_test/utils/constants.dart';
 
 import 'package:share_plus/share_plus.dart';
+import 'package:provider/provider.dart';
+
+import 'package:http/http.dart' as http;
 
 class SherTabView extends StatefulWidget {
   const SherTabView({super.key, required this.shers, required this.poet});
@@ -13,47 +22,106 @@ class SherTabView extends StatefulWidget {
 }
 
 class _SherTabViewState extends State<SherTabView> {
+  Map shersData = {};
+
+  getshersLikes() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final sherProvider = Provider.of<SherLikesProvider>(context, listen: false);
+    for (var element in widget.shers) {
+      var response = await http.get(
+        Uri.parse(
+            'http://nawees.com/api/sherlikes?user_id=${userProvider.userId}&sher_id=${element.id}'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+      if (response.statusCode == 200) {
+        shersData = await jsonDecode(response.body);
+
+        sherProvider.add({element.id: shersData.values.first});
+        setState(() {});
+      }
+    }
+
+    return sherProvider.likes;
+  }
+
+  late final Future ghazalsLikesFuture = getshersLikes();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("SHER",
-                  style: TextStyle(color: Color.fromRGBO(93, 86, 250, 1))),
-            ],
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-              itemCount: widget.shers.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    // Navigator.pushNamed(
-                    //   context,
-                    //   nazamPreview,
-                    // );
-                  },
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4.0),
-                        child: ProfileSherTile(
-                          sher: widget.shers[index],
-                          poet: widget.poet,
+    return FutureBuilder(
+      future: Future.wait([ghazalsLikesFuture]),
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        Widget children;
+        if (snapshot.hasData) {
+          children = Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text("SHER",
+                        style:
+                            TextStyle(color: Color.fromRGBO(93, 86, 250, 1))),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: widget.shers.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4.0),
+                              child: ProfileSherTile(
+                                sher: widget.shers[index],
+                                poet: widget.poet,
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                );
-              }),
-        )
-      ],
+                      );
+                    }),
+              )
+            ],
+          );
+        } else if (snapshot.hasError) {
+          children =
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 60,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          ]);
+        } else {
+          children = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Awaiting result...'),
+                ),
+              ]);
+        }
+        return Center(
+          child: children,
+        );
+      },
     );
   }
 }

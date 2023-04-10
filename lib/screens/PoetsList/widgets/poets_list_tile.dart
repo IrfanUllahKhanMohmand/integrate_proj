@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:integration_test/Providers/local_provider.dart';
+import 'package:integration_test/model/poet.dart';
+import 'package:provider/provider.dart';
 
 class PoetsListTile extends StatelessWidget {
-  const PoetsListTile(
-      {Key? key, required this.realName, required this.imageUrl})
-      : super(key: key);
-  final String realName;
-  final String imageUrl;
+  const PoetsListTile({Key? key, required this.poet}) : super(key: key);
+  final Poet poet;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class PoetsListTile extends StatelessWidget {
                 ),
               );
             },
-            imageUrl: imageUrl,
+            imageUrl: poet.pic,
             placeholder: (context, url) => const Padding(
               padding: EdgeInsets.all(18.0),
               child: CircularProgressIndicator(
@@ -42,10 +42,14 @@ class PoetsListTile extends StatelessWidget {
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
-        Text(
-          realName,
-          style: const TextStyle(
-              fontSize: 10, color: Color.fromRGBO(151, 151, 151, 1)),
+        Consumer<LocaleProvider>(
+          builder: (context, value, child) {
+            return Text(
+              value.locale!.languageCode == 'ur' ? poet.nameUrd : poet.nameEng,
+              style: const TextStyle(
+                  fontSize: 10, color: Color.fromRGBO(151, 151, 151, 1)),
+            );
+          },
         ),
       ],
     );

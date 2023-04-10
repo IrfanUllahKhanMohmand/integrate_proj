@@ -5,6 +5,7 @@ import 'package:integration_test/screens/Profile/widgets/ghazals_tab_view.dart';
 import 'package:integration_test/screens/Profile/widgets/nazam_tab_view.dart';
 import 'package:integration_test/screens/Profile/widgets/profiles_tab_view.dart';
 import 'package:integration_test/screens/Profile/widgets/sher_tab_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TabBarTabs extends StatefulWidget {
   const TabBarTabs(
@@ -58,11 +59,11 @@ class _TabBarTabsState extends State<TabBarTabs> with TickerProviderStateMixin {
               ]),
               borderColor: Colors.transparent,
               radius: 22,
-              tabs: const [
-                Tab(text: 'PROFILE'),
-                Tab(text: 'NAZAM'),
-                Tab(text: 'SHER'),
-                Tab(text: 'GHAZAL')
+              tabs: [
+                Tab(text: AppLocalizations.of(context)!.profile),
+                Tab(text: AppLocalizations.of(context)!.nazams),
+                Tab(text: AppLocalizations.of(context)!.shers),
+                Tab(text: AppLocalizations.of(context)!.ghazals)
               ],
             ),
           ),

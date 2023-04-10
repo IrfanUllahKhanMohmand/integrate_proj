@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:integration_test/model/ghazal.dart';
@@ -9,6 +10,9 @@ import 'package:integration_test/screens/Profile/widgets/profile_tob_bar.dart';
 import 'package:integration_test/screens/Profile/widgets/tab_bar_tabs.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:integration_test/utils/constants.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key, required this.id}) : super(key: key);
@@ -25,19 +29,27 @@ class _ProfileState extends State<Profile> {
   List shersData = [];
   Future getPoetData() async {
     var response = await http.get(
-      Uri.parse('http://192.168.18.185:8080/poets/${widget.id}'),
+      Uri.parse('http://nawees.com/api/poets/${widget.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $apiKey",
+      },
     );
     if (response.statusCode == 200) {
       setState(() {
         poetData = Poet.fromJson(jsonDecode(response.body));
       });
       return poetData;
+    } else {
+      throw Exception('Failed to get poet data');
     }
   }
 
   Future getNazamsData() async {
     var response = await http.get(
-      Uri.parse('http://192.168.18.185:8080/nazamsByPoet?poet_id=${widget.id}'),
+      Uri.parse('http://nawees.com/api/nazamsByPoet?poet_id=${widget.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $apiKey",
+      },
     );
     if (response.statusCode == 200) {
       setState(() {
@@ -46,13 +58,17 @@ class _ProfileState extends State<Profile> {
             .toList();
       });
       return nazamsData;
+    } else {
+      throw Exception('Failed to get nazams data');
     }
   }
 
   Future getGhazalsData() async {
     var response = await http.get(
-      Uri.parse(
-          'http://192.168.18.185:8080/ghazalsByPoet?poet_id=${widget.id}'),
+      Uri.parse('http://nawees.com/api/ghazalsByPoet?poet_id=${widget.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $apiKey",
+      },
     );
     if (response.statusCode == 200) {
       setState(() {
@@ -61,12 +77,17 @@ class _ProfileState extends State<Profile> {
             .toList();
       });
       return ghazalsData;
+    } else {
+      throw Exception('Failed to get ghazal data');
     }
   }
 
   Future getShersData() async {
     var response = await http.get(
-      Uri.parse('http://192.168.18.185:8080/shersByPoet?poet_id=${widget.id}'),
+      Uri.parse('http://nawees.com/api/shersByPoet?poet_id=${widget.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $apiKey",
+      },
     );
     if (response.statusCode == 200) {
       setState(() {
@@ -75,6 +96,8 @@ class _ProfileState extends State<Profile> {
             .toList();
       });
       return shersData;
+    } else {
+      throw Exception('Failed to get shers data');
     }
   }
 
@@ -102,13 +125,9 @@ class _ProfileState extends State<Profile> {
               children = Column(
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * .28,
+                    height: MediaQuery.of(context).size.height * .30,
                     child: ProfileTobBar(
-                      imageUrl: poetData.pic,
-                      fullName: poetData.name,
-                      yearOfBirth: poetData.birthDate,
-                      yearOfDeath: poetData.deathDate,
-                      birthPlace: "Peshawar",
+                      poet: poetData,
                     ),
                   ),
                   TabBarTabs(
@@ -136,15 +155,16 @@ class _ProfileState extends State<Profile> {
             } else {
               children = Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SizedBox(
+                  children: [
+                    const SizedBox(
                       width: 60,
                       height: 60,
                       child: CircularProgressIndicator(),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Awaiting result...'),
+                      padding: const EdgeInsets.only(top: 16),
+                      child:
+                          Text(AppLocalizations.of(context)!.awaiting_result),
                     ),
                   ]);
             }

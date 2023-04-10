@@ -32,7 +32,7 @@ class _CategoryProfilesTabViewState extends State<CategoryProfilesTabView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.category.name,
+                    widget.category.nameEng,
                     style: const TextStyle(fontSize: 14, color: Colors.black),
                   ),
                 ],
@@ -40,7 +40,7 @@ class _CategoryProfilesTabViewState extends State<CategoryProfilesTabView> {
             ]),
             const SizedBox(height: 20),
             Text(
-              widget.category.description,
+              widget.category.descriptionEng,
               style: const TextStyle(fontSize: 14, color: Colors.black),
               textAlign: TextAlign.justify,
             )

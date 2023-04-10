@@ -1,8 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CategoryProfileTobBar extends StatelessWidget {
+import 'package:http/http.dart' as http;
+import 'package:integration_test/Providers/category_likes_provider.dart';
+import 'package:integration_test/Providers/user_provider.dart';
+import 'package:integration_test/utils/constants.dart';
+import 'package:provider/provider.dart';
+
+class CategoryProfileTobBar extends StatefulWidget {
   const CategoryProfileTobBar({
     Key? key,
     required this.id,
@@ -15,6 +24,47 @@ class CategoryProfileTobBar extends StatelessWidget {
   final String name;
   final String description;
   final String pic;
+
+  @override
+  State<CategoryProfileTobBar> createState() => _CategoryProfileTobBarState();
+}
+
+class _CategoryProfileTobBarState extends State<CategoryProfileTobBar> {
+  likeSher() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final response = await http.post(
+        Uri.parse('http://nawees.com/api/categorylikes'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+        body: jsonEncode(<String, dynamic>{
+          "user_id": userProvider.userId,
+          "category_id": widget.id
+        }));
+    if (response.statusCode == 201) {
+    } else {
+      throw Exception('Failed to like sher');
+    }
+  }
+
+  dislikeSher() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final response = await http.delete(
+        Uri.parse('http://nawees.com/api/categorylikes'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+        body: jsonEncode(<String, dynamic>{
+          "user_id": userProvider.userId,
+          "category_id": widget.id
+        }));
+    if (response.statusCode == 200) {
+    } else {
+      throw Exception('Failed to unlike sher');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +91,38 @@ class CategoryProfileTobBar extends StatelessWidget {
               ),
               Row(
                 children: [
-                  SvgPicture.asset(
-                    "assets/favourite.svg",
-                    width: 8,
-                    height: 14,
+                  Consumer<CategoryLikesProvider>(
+                    builder: (context, categoryProvider, child) {
+                      return categoryProvider.likes[widget.id] != null &&
+                              categoryProvider.likes[widget.id] != 0
+                          ? InkWell(
+                              onTap: () async {
+                                Provider.of<CategoryLikesProvider>(context,
+                                        listen: false)
+                                    .add({widget.id: 0});
+                                await dislikeSher();
+                              },
+                              child: SvgPicture.asset(
+                                "assets/favourite.svg",
+                                width: 10,
+                                height: 10,
+                                // ignore: deprecated_member_use
+                                color: Colors.red,
+                              ))
+                          : InkWell(
+                              onTap: () async {
+                                Provider.of<CategoryLikesProvider>(context,
+                                        listen: false)
+                                    .add({widget.id: 1});
+                                await likeSher();
+                              },
+                              child: SvgPicture.asset(
+                                "assets/favourite.svg",
+                                width: 10,
+                                height: 10,
+                              ),
+                            );
+                    },
                   ),
                   const SizedBox(width: 15),
                   SvgPicture.asset(
@@ -65,7 +143,7 @@ class CategoryProfileTobBar extends StatelessWidget {
               backgroundImage: imageProvider,
             );
           },
-          imageUrl: pic,
+          imageUrl: widget.pic,
           placeholder: (context, url) => const Padding(
             padding: EdgeInsets.all(18.0),
             child: CircularProgressIndicator(),
@@ -81,7 +159,7 @@ class CategoryProfileTobBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              name,
+              widget.name,
               style: const TextStyle(fontSize: 16, color: Colors.black),
               textAlign: TextAlign.justify,
             ),

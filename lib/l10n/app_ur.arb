@@ -1,0 +1,23 @@
+{
+  "all": "تمام",
+  "top_poets": "چوٹی کے شعراء",
+  "ghazals": "غزلیں",
+  "shers": "اشعار",
+  "nazams": "نظمیں",
+  "make_status": "اسٹیٹس بنائیں",
+  "make_video": "ویڈیو بنائیں",
+  "most_read_poets": "سب سے زیادہ پڑھے جانے والے شاعر",
+  "trending_shers": "رجحان سازاشعار",
+  "sher_collections": "شعری مجموعے",
+  "awaiting_result": "نتیجہ کا انتظار ہے...",
+  "no_internet_connection":"انٹرنیٹ کنکشن نہیں ہے۔",
+  "profile":"پروفائل",
+  "poet_name":"نام",
+  "poet_born":"پیدائش",
+  "poet_died":"موت",
+  "video_editor_new_video":"نئی ویڈیو",
+  "video_editor_title":"عنوان",
+  "video_editor_description":"تفصیل (اختیاری)",
+  "video_editor_ok":"ٹھیک ہے",
+  "video_editor_cancel":"منسوخ کریں"
+}
