@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:integration_test/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GhazalPreview extends StatefulWidget {
   const GhazalPreview({super.key, required this.ghazal, required this.poet});
@@ -157,17 +158,17 @@ class _GhazalPreviewState extends State<GhazalPreview> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
-                            children: const [
-                              Icon(
+                            children: [
+                              const Icon(
                                 Icons.video_camera_back_outlined,
                                 size: 20,
                                 color: Colors.white,
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Text(
-                                'Make Video of this Ghazal',
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 8),
+                                AppLocalizations.of(context)!.make_video_ghazal,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 8),
                               )
                             ],
                           ),

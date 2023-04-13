@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:integration_test/Providers/local_provider.dart';
 import 'package:integration_test/model/ghazal.dart';
+import 'package:provider/provider.dart';
 
 class CategoryGhazalTile extends StatefulWidget {
   const CategoryGhazalTile(
@@ -37,14 +39,25 @@ class _CategoryGhazalTileState extends State<CategoryGhazalTile> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Column(
-              children: [
-                Text(widget.ghazal.content.split('\n')[0]),
-                Text(widget.ghazal.content.split('\n')[1])
-                // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
-                // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
-              ],
-            ),
+            Consumer<LocaleProvider>(builder: (context, value, child) {
+              return value.locale!.languageCode == 'ur'
+                  ? Column(
+                      children: [
+                        Text(widget.ghazal.content.split('\n')[0]),
+                        Text(widget.ghazal.content.split('\n')[1])
+                        // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
+                        // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Text(widget.ghazal.romanContent.split('\n')[0]),
+                        Text(widget.ghazal.romanContent.split('\n')[1])
+                        // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
+                        // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
+                      ],
+                    );
+            }),
             widget.isLiked
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),

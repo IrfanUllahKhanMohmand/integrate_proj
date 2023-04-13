@@ -19,6 +19,8 @@
   "video_editor_title":"Title",
   "video_editor_description":"Description(optional)",
   "video_editor_ok":"OK",
-  "video_editor_cancel":"Cancel"
+  "video_editor_cancel":"Cancel",
+  "make_video_ghazal":"Make Video of this Ghazal",
+  "make_video_nazam":"Make Video of this Nazam"
 
 }

@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SherTabView extends StatefulWidget {
   const SherTabView({super.key, required this.shers, required this.poet});
   final List shers;
@@ -56,16 +58,8 @@ class _SherTabViewState extends State<SherTabView> {
         if (snapshot.hasData) {
           children = Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text("SHER",
-                        style:
-                            TextStyle(color: Color.fromRGBO(93, 86, 250, 1))),
-                  ],
-                ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
               ),
               Expanded(
                 child: ListView.builder(
@@ -104,19 +98,18 @@ class _SherTabViewState extends State<SherTabView> {
             ),
           ]);
         } else {
-          children = Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: CircularProgressIndicator(),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text('Awaiting result...'),
-                ),
-              ]);
+          children =
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const SizedBox(
+              width: 60,
+              height: 60,
+              child: CircularProgressIndicator(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text(AppLocalizations.of(context)!.awaiting_result),
+            ),
+          ]);
         }
         return Center(
           child: children,

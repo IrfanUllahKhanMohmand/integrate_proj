@@ -5,6 +5,7 @@ import 'package:integration_test/screens/Category/widgets/cat_ghazals_tab_view.d
 import 'package:integration_test/screens/Category/widgets/cat_nazam_tab_view.dart';
 import 'package:integration_test/screens/Category/widgets/cat_profiles_tab_view.dart';
 import 'package:integration_test/screens/Category/widgets/cat_sher_tab_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoryTabBarTabs extends StatefulWidget {
   const CategoryTabBarTabs(
@@ -59,11 +60,11 @@ class _CategoryTabBarTabsState extends State<CategoryTabBarTabs>
               ]),
               borderColor: Colors.transparent,
               radius: 22,
-              tabs: const [
-                Tab(text: 'PROFILE'),
-                Tab(text: 'NAZAM'),
-                Tab(text: 'SHER'),
-                Tab(text: 'GHAZAL')
+              tabs: [
+                Tab(text: AppLocalizations.of(context)!.profile),
+                Tab(text: AppLocalizations.of(context)!.nazams),
+                Tab(text: AppLocalizations.of(context)!.shers),
+                Tab(text: AppLocalizations.of(context)!.ghazals)
               ],
             ),
           ),

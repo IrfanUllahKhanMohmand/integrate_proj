@@ -10,6 +10,7 @@ import 'package:integration_test/utils/constants.dart';
 import 'package:integration_test/utils/on_generate_routes.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoryGhazalsTabView extends StatefulWidget {
   const CategoryGhazalsTabView(
@@ -115,19 +116,18 @@ class _CategoryGhazalsTabViewState extends State<CategoryGhazalsTabView> {
             ),
           ]);
         } else {
-          children = Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: CircularProgressIndicator(),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text('Awaiting result...'),
-                ),
-              ]);
+          children =
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const SizedBox(
+              width: 60,
+              height: 60,
+              child: CircularProgressIndicator(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text(AppLocalizations.of(context)!.awaiting_result),
+            ),
+          ]);
         }
         return Center(
           child: children,

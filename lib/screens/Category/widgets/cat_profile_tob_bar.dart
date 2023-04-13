@@ -7,23 +7,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:integration_test/Providers/category_likes_provider.dart';
+import 'package:integration_test/Providers/local_provider.dart';
 import 'package:integration_test/Providers/user_provider.dart';
+import 'package:integration_test/model/category.dart';
 import 'package:integration_test/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class CategoryProfileTobBar extends StatefulWidget {
-  const CategoryProfileTobBar({
-    Key? key,
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.pic,
-  }) : super(key: key);
+  const CategoryProfileTobBar({Key? key, required this.cat}) : super(key: key);
 
-  final int id;
-  final String name;
-  final String description;
-  final String pic;
+  final Category cat;
 
   @override
   State<CategoryProfileTobBar> createState() => _CategoryProfileTobBarState();
@@ -40,7 +33,7 @@ class _CategoryProfileTobBarState extends State<CategoryProfileTobBar> {
         },
         body: jsonEncode(<String, dynamic>{
           "user_id": userProvider.userId,
-          "category_id": widget.id
+          "category_id": widget.cat.id
         }));
     if (response.statusCode == 201) {
     } else {
@@ -58,7 +51,7 @@ class _CategoryProfileTobBarState extends State<CategoryProfileTobBar> {
         },
         body: jsonEncode(<String, dynamic>{
           "user_id": userProvider.userId,
-          "category_id": widget.id
+          "category_id": widget.cat.id
         }));
     if (response.statusCode == 200) {
     } else {
@@ -93,13 +86,13 @@ class _CategoryProfileTobBarState extends State<CategoryProfileTobBar> {
                 children: [
                   Consumer<CategoryLikesProvider>(
                     builder: (context, categoryProvider, child) {
-                      return categoryProvider.likes[widget.id] != null &&
-                              categoryProvider.likes[widget.id] != 0
+                      return categoryProvider.likes[widget.cat.id] != null &&
+                              categoryProvider.likes[widget.cat.id] != 0
                           ? InkWell(
                               onTap: () async {
                                 Provider.of<CategoryLikesProvider>(context,
                                         listen: false)
-                                    .add({widget.id: 0});
+                                    .add({widget.cat.id: 0});
                                 await dislikeSher();
                               },
                               child: SvgPicture.asset(
@@ -113,7 +106,7 @@ class _CategoryProfileTobBarState extends State<CategoryProfileTobBar> {
                               onTap: () async {
                                 Provider.of<CategoryLikesProvider>(context,
                                         listen: false)
-                                    .add({widget.id: 1});
+                                    .add({widget.cat.id: 1});
                                 await likeSher();
                               },
                               child: SvgPicture.asset(
@@ -143,7 +136,7 @@ class _CategoryProfileTobBarState extends State<CategoryProfileTobBar> {
               backgroundImage: imageProvider,
             );
           },
-          imageUrl: widget.pic,
+          imageUrl: widget.cat.pic,
           placeholder: (context, url) => const Padding(
             padding: EdgeInsets.all(18.0),
             child: CircularProgressIndicator(),
@@ -155,16 +148,20 @@ class _CategoryProfileTobBarState extends State<CategoryProfileTobBar> {
         // backgroundImage: NetworkImage(
         //     'https://rekhta.pc.cdn.bitgravity.com/Images/Shayar/ahmad-faraz.png'),
         // ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              widget.name,
-              style: const TextStyle(fontSize: 16, color: Colors.black),
-              textAlign: TextAlign.justify,
-            ),
-          ],
-        ),
+        Consumer<LocaleProvider>(builder: (context, value, child) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                value.locale!.languageCode == 'ur'
+                    ? widget.cat.nameUrd
+                    : widget.cat.nameEng,
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          );
+        }),
 
         const SizedBox(height: 5)
       ],

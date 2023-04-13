@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:integration_test/Providers/local_provider.dart';
 import 'package:integration_test/model/nazam.dart';
+import 'package:provider/provider.dart';
 
 class CatNazamTile extends StatefulWidget {
   const CatNazamTile({Key? key, required this.nazam, required this.isLiked})
@@ -36,14 +38,25 @@ class _CatNazamTileState extends State<CatNazamTile> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Column(
-              children: [
-                Text(widget.nazam.title),
-                Text(widget.nazam.content.split('\n')[0])
-                // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
-                // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
-              ],
-            ),
+            Consumer<LocaleProvider>(builder: (context, value, child) {
+              return value.locale!.languageCode == 'ur'
+                  ? Column(
+                      children: [
+                        Text(widget.nazam.title),
+                        Text(widget.nazam.content.split('\n')[0])
+                        // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
+                        // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Text(widget.nazam.romanTitle),
+                        Text(widget.nazam.romanContent.split('\n')[0])
+                        // Text('کتنے عیش سے رہتے ہوں گے کتنے اتراتے ہوں گے'),
+                        // Text('جانے کیسے لوگ وہ ہوں گے جو اس کو بھاتے ہوں گے'),
+                      ],
+                    );
+            }),
             widget.isLiked
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),

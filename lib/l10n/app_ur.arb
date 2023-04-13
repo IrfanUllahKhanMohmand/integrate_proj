@@ -19,5 +19,7 @@
   "video_editor_title":"عنوان",
   "video_editor_description":"تفصیل (اختیاری)",
   "video_editor_ok":"ٹھیک ہے",
-  "video_editor_cancel":"منسوخ کریں"
+  "video_editor_cancel":"منسوخ کریں",
+  "make_video_ghazal":"اس غزل کی ویڈیو بنائیں",
+  "make_video_nazam":"اس نظم کی ویڈیو بنائیں"
 }

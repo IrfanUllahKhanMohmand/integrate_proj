@@ -11,6 +11,7 @@ import 'package:integration_test/screens/Category/widgets/cat_tab_bar_tabs.dart'
 
 import 'package:http/http.dart' as http;
 import 'package:integration_test/utils/constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoryProfile extends StatefulWidget {
   const CategoryProfile({Key? key, required this.id}) : super(key: key);
@@ -116,12 +117,7 @@ class _CategoryProfileState extends State<CategoryProfile> {
                 children: [
                   SizedBox(
                     height: MediaQuery.of(context).size.height * .28,
-                    child: CategoryProfileTobBar(
-                      id: categoryData.id,
-                      pic: categoryData.pic,
-                      name: categoryData.nameEng,
-                      description: categoryData.descriptionEng,
-                    ),
+                    child: CategoryProfileTobBar(cat: categoryData),
                   ),
                   CategoryTabBarTabs(
                     cat: categoryData,
@@ -148,15 +144,16 @@ class _CategoryProfileState extends State<CategoryProfile> {
             } else {
               children = Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SizedBox(
+                  children: [
+                    const SizedBox(
                       width: 60,
                       height: 60,
                       child: CircularProgressIndicator(),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Awaiting result...'),
+                      padding: const EdgeInsets.only(top: 16),
+                      child:
+                          Text(AppLocalizations.of(context)!.awaiting_result),
                     ),
                   ]);
             }

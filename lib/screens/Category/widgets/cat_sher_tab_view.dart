@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategorySherTabView extends StatefulWidget {
   const CategorySherTabView(
@@ -110,19 +111,18 @@ class _CategorySherTabViewState extends State<CategorySherTabView> {
             ),
           ]);
         } else {
-          children = Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: CircularProgressIndicator(),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text('Awaiting result...'),
-                ),
-              ]);
+          children =
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const SizedBox(
+              width: 60,
+              height: 60,
+              child: CircularProgressIndicator(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text(AppLocalizations.of(context)!.awaiting_result),
+            ),
+          ]);
         }
         return Center(
           child: children,
