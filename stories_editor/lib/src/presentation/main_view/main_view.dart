@@ -325,20 +325,39 @@ class _MainViewState extends State<MainView> {
                                 ignoring: true,
                                 child: Align(
                                   alignment: const Alignment(0, -0.1),
-                                  child: Text('Tap to type',
-                                      style: TextStyle(
-                                          fontFamily: 'Alegreya',
-                                          package: 'stories_editor',
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 30,
-                                          color: Colors.white.withOpacity(0.5),
-                                          shadows: <Shadow>[
-                                            Shadow(
-                                                offset: const Offset(1.0, 1.0),
-                                                blurRadius: 3.0,
-                                                color: Colors.black45
-                                                    .withOpacity(0.3))
-                                          ])),
+                                  child: Localizations.localeOf(context)
+                                              .languageCode ==
+                                          'ur'
+                                      ? Text('ٹائپ کرنے کے لیے دبائیں',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 30,
+                                              color:
+                                                  Colors.white.withOpacity(0.5),
+                                              shadows: <Shadow>[
+                                                Shadow(
+                                                    offset:
+                                                        const Offset(1.0, 1.0),
+                                                    blurRadius: 3.0,
+                                                    color: Colors.black45
+                                                        .withOpacity(0.3))
+                                              ]))
+                                      : Text('Tap to type',
+                                          style: TextStyle(
+                                              fontFamily: 'Alegreya',
+                                              package: 'stories_editor',
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 30,
+                                              color:
+                                                  Colors.white.withOpacity(0.5),
+                                              shadows: <Shadow>[
+                                                Shadow(
+                                                    offset:
+                                                        const Offset(1.0, 1.0),
+                                                    blurRadius: 3.0,
+                                                    color: Colors.black45
+                                                        .withOpacity(0.3))
+                                              ])),
                                 ),
                               ),
 
@@ -348,12 +367,19 @@ class _MainViewState extends State<MainView> {
                               Align(
                                   alignment: Alignment.topLeft,
                                   child: GestureDetector(
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Icon(
-                                          Icons.arrow_back_ios,
-                                          color: Colors.white,
-                                        ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Localizations.localeOf(context)
+                                                    .languageCode ==
+                                                'ur'
+                                            ? const Icon(
+                                                Icons.arrow_forward_ios,
+                                                color: Colors.white,
+                                              )
+                                            : const Icon(
+                                                Icons.arrow_back_ios,
+                                                color: Colors.white,
+                                              ),
                                       ),
                                       onTap: () async {
                                         var res = await exitDialog(
@@ -492,7 +518,11 @@ class _MainViewState extends State<MainView> {
                             ],
                       uiSettings: [
                         AndroidUiSettings(
-                            toolbarTitle: 'Crop Image',
+                            toolbarTitle:
+                                Localizations.localeOf(context).languageCode ==
+                                        'ur'
+                                    ? 'تصویر کو تراشیں'
+                                    : 'Crop Image',
                             toolbarColor: Colors.grey,
                             statusBarColor:
                                 const Color.fromRGBO(93, 86, 250, 1),
@@ -544,9 +574,11 @@ class _MainViewState extends State<MainView> {
                                 color: Colors.white,
                                 width: 1.2,
                               )),
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
+                          child: Text(
+                            Localizations.localeOf(context).languageCode == 'ur'
+                                ? 'منسوخ کریں'
+                                : 'Cancel',
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w400),

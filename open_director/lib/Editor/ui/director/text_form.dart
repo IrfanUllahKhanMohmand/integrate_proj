@@ -83,12 +83,14 @@ class _FontFamily extends StatelessWidget {
         Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
         DropdownButton(
           value: (directorService.editingTextAsset != null)
-              ? directorService.editingTextAsset.font != null
-                  ? Font.getByPath(directorService.editingTextAsset.font)
-                  : Localizations.localeOf(context).languageCode == 'ur'
-                      ? Font.allFonts[0]
-                      : Font.allFonts[8]
+              ? Font.getByPath(directorService.editingTextAsset.font)
               : Font.allFonts[0],
+          // ? directorService.editingTextAsset.font != null
+          //     ? Font.getByPath(directorService.editingTextAsset.font)
+          //     : Localizations.localeOf(context).languageCode == 'ur'
+          //         ? Font.allFonts[0]
+          //         : Font.allFonts[8]
+          // : Font.allFonts[0],
           items: Localizations.localeOf(context).languageCode == 'ur'
               ? Font.allFonts
                   .sublist(0, 2)

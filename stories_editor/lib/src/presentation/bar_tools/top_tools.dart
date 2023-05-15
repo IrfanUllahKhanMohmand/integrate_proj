@@ -143,7 +143,11 @@ class _TopToolsState extends State<TopTools> {
                                   ],
                             uiSettings: [
                               AndroidUiSettings(
-                                  toolbarTitle: 'Crop Image',
+                                  toolbarTitle: Localizations.localeOf(context)
+                                              .languageCode ==
+                                          'ur'
+                                      ? 'تصویر کو تراشیں'
+                                      : 'Crop Image',
                                   toolbarColor: Colors.grey,
                                   statusBarColor:
                                       const Color.fromRGBO(93, 86, 250, 1),

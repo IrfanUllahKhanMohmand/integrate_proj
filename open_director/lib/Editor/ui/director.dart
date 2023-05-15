@@ -691,6 +691,10 @@ class _TextPlayer extends StatelessWidget {
           if (_asset == null || _asset.type != AssetType.text) {
             return Container();
           }
+          Localizations.localeOf(context).languageCode == 'ur'
+              ? _asset.font =
+                  'Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf'
+              : _asset.font = 'Lato/Lato-Regular.ttf';
           Font font = Font.getByPath(_asset.font);
           return Positioned(
             left: _asset.x * Params.getPlayerWidth(context),
