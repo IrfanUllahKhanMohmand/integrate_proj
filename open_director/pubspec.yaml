@@ -32,6 +32,7 @@ dependencies:
   rxdart: 0.22.2
   get_it: 1.0.3+2
   file_picker: 1.3.8
+  # file_picker: ^5.2.9
   path_provider: ^2.0.11
   flutter_ffmpeg: 0.2.7
   flutter_screenutil: ^5.6.0  
@@ -104,99 +105,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-  - family: Amaranth
-    fonts:
-    - asset: fonts/Amaranth/Amaranth-Bold.ttf
-      weight: 700
-    - asset: fonts/Amaranth/Amaranth-BoldItalic.ttf
-      weight: 700
-      style: italic
-    - asset: fonts/Amaranth/Amaranth-Italic.ttf
-      weight: 400
-      style: italic
-    - asset: fonts/Amaranth/Amaranth-Regular.ttf
-      weight: 400
-  - family: Bangers
-    fonts:
-    - asset: fonts/Bangers/Bangers-Regular.ttf
-      weight: 400
-  - family: CarterOne
-    fonts:
-    - asset: fonts/Carter_One/CarterOne-Regular.ttf
-      weight: 400
-  - family: Chilanka
-    fonts:
-    - asset: fonts/Chilanka/Chilanka-Regular.ttf
-      weight: 400
-  - family: Courgette
-    fonts:
-    - asset: fonts/Courgette/Courgette-Regular.ttf
-      weight: 400
-  - family: DancingScript
-    fonts:
-    - asset: fonts/Dancing_Script/DancingScript-Bold.ttf
-      weight: 700
-    - asset: fonts/Dancing_Script/DancingScript-Regular.ttf
-      weight: 400
-  - family: GochiHand
-    fonts:
-    - asset: fonts/Gochi_Hand/GochiHand-Regular.ttf
-      weight: 400
-  - family: Grenze
-    fonts:
-    - asset: fonts/Grenze/Grenze-Black.ttf
-      weight: 900
-    - asset: fonts/Grenze/Grenze-BlackItalic.ttf
-      weight: 900
-      style: italic
-    - asset: fonts/Grenze/Grenze-Bold.ttf
-      weight: 700
-    - asset: fonts/Grenze/Grenze-BoldItalic.ttf
-      weight: 700
-      style: italic
-    - asset: fonts/Grenze/Grenze-ExtraBold.ttf
-      weight: 800
-    - asset: fonts/Grenze/Grenze-ExtraBoldItalic.ttf
-      weight: 800
-      style: italic
-    - asset: fonts/Grenze/Grenze-ExtraLight.ttf
-      weight: 200
-    - asset: fonts/Grenze/Grenze-ExtraLightItalic.ttf
-      weight: 200
-      style: italic
-    - asset: fonts/Grenze/Grenze-Italic.ttf
-      weight: 400
-      style: italic
-    - asset: fonts/Grenze/Grenze-Light.ttf
-      weight: 300
-    - asset: fonts/Grenze/Grenze-LightItalic.ttf
-      weight: 300
-      style: italic
-    - asset: fonts/Grenze/Grenze-Medium.ttf
-      weight: 500
-    - asset: fonts/Grenze/Grenze-MediumItalic.ttf
-      weight: 500
-      style: italic
-    - asset: fonts/Grenze/Grenze-Regular.ttf
-      weight: 400
-    - asset: fonts/Grenze/Grenze-SemiBold.ttf
-      weight: 600
-    - asset: fonts/Grenze/Grenze-SemiBoldItalic.ttf
-      weight: 600
-      style: italic
-    - asset: fonts/Grenze/Grenze-Thin.ttf
-      weight: 100
-    - asset: fonts/Grenze/Grenze-ThinItalic.ttf
-      weight: 100
-      style: italic
-  - family: Handlee
-    fonts:
-    - asset: fonts/Handlee/Handlee-Regular.ttf
-      weight: 400
-  - family: IndieFlower
-    fonts:
-    - asset: fonts/Indie_Flower/IndieFlower-Regular.ttf
-      weight: 400
   - family: Lato
     fonts:
     - asset: fonts/Lato/Lato-Black.ttf
@@ -224,86 +132,9 @@ flutter:
     - asset: fonts/Lato/Lato-ThinItalic.ttf
       weight: 100
       style: italic
-  - family: LibreFranklin
-    fonts:
-    - asset: fonts/Libre_Franklin/LibreFranklin-Black.ttf
-      weight: 900
-    - asset: fonts/Libre_Franklin/LibreFranklin-BlackItalic.ttf
-      weight: 900
-      style: italic
-    - asset: fonts/Libre_Franklin/LibreFranklin-Bold.ttf
-      weight: 700
-    - asset: fonts/Libre_Franklin/LibreFranklin-BoldItalic.ttf
-      weight: 700
-      style: italic
-    - asset: fonts/Libre_Franklin/LibreFranklin-ExtraBold.ttf
-      weight: 800
-    - asset: fonts/Libre_Franklin/LibreFranklin-ExtraBoldItalic.ttf
-      weight: 800
-      style: italic
-    - asset: fonts/Libre_Franklin/LibreFranklin-ExtraLight.ttf
-      weight: 200
-    - asset: fonts/Libre_Franklin/LibreFranklin-ExtraLightItalic.ttf
-      weight: 200
-      style: italic
-    - asset: fonts/Libre_Franklin/LibreFranklin-Italic.ttf
-      weight: 400
-      style: italic
-    - asset: fonts/Libre_Franklin/LibreFranklin-Light.ttf
-      weight: 300
-    - asset: fonts/Libre_Franklin/LibreFranklin-LightItalic.ttf
-      weight: 300
-      style: italic
-    - asset: fonts/Libre_Franklin/LibreFranklin-Medium.ttf
-      weight: 500
-    - asset: fonts/Libre_Franklin/LibreFranklin-MediumItalic.ttf
-      weight: 500
-      style: italic
-    - asset: fonts/Libre_Franklin/LibreFranklin-Regular.ttf
-      weight: 400
-    - asset: fonts/Libre_Franklin/LibreFranklin-SemiBold.ttf
-      weight: 600
-    - asset: fonts/Libre_Franklin/LibreFranklin-SemiBoldItalic.ttf
-      weight: 600
-      style: italic
-    - asset: fonts/Libre_Franklin/LibreFranklin-Thin.ttf
-      weight: 100
-    - asset: fonts/Libre_Franklin/LibreFranklin-ThinItalic.ttf
-      weight: 100
-      style: italic
   - family: Lobster
     fonts:
     - asset: fonts/Lobster/Lobster-Regular.ttf
-      weight: 400
-  - family: LuckiestGuy
-    fonts:
-    - asset: fonts/Luckiest_Guy/LuckiestGuy-Regular.ttf
-      weight: 400
-  - family: Mansalva
-    fonts:
-    - asset: fonts/Mansalva/Mansalva-Regular.ttf
-      weight: 400
-  - family: Merriweather
-    fonts:
-    - asset: fonts/Merriweather/Merriweather-Black.ttf
-      weight: 900
-    - asset: fonts/Merriweather/Merriweather-BlackItalic.ttf
-      weight: 900
-      style: italic
-    - asset: fonts/Merriweather/Merriweather-Bold.ttf
-      weight: 700
-    - asset: fonts/Merriweather/Merriweather-BoldItalic.ttf
-      weight: 700
-      style: italic
-    - asset: fonts/Merriweather/Merriweather-Italic.ttf
-      weight: 400
-      style: italic
-    - asset: fonts/Merriweather/Merriweather-Light.ttf
-      weight: 300
-    - asset: fonts/Merriweather/Merriweather-LightItalic.ttf
-      weight: 300
-      style: italic
-    - asset: fonts/Merriweather/Merriweather-Regular.ttf
       weight: 400
   - family: OpenSans
     fonts:
@@ -335,14 +166,6 @@ flutter:
   - family: Pacifico
     fonts:
     - asset: fonts/Pacifico/Pacifico-Regular.ttf
-      weight: 400
-  - family: PermanentMarker
-    fonts:
-    - asset: fonts/Permanent_Marker/PermanentMarker-Regular.ttf
-      weight: 400
-  - family: Righteous
-    fonts:
-    - asset: fonts/Righteous/Righteous-Regular.ttf
       weight: 400
   - family: Roboto
     fonts:
@@ -379,61 +202,9 @@ flutter:
     - asset: fonts/Roboto/Roboto-ThinItalic.ttf
       weight: 100
       style: italic
-  - family: SourceSansPro
-    fonts:
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-Black.ttf
-      weight: 900
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-BlackItalic.ttf
-      weight: 900
-      style: italic
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-Bold.ttf
-      weight: 700
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-BoldItalic.ttf
-      weight: 700
-      style: italic
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-ExtraLight.ttf
-      weight: 200
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-ExtraLightItalic.ttf
-      weight: 200
-      style: italic
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-Italic.ttf
-      weight: 400
-      style: italic
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-Light.ttf
-      weight: 300
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-LightItalic.ttf
-      weight: 300
-      style: italic
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf
-      weight: 400
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-SemiBold.ttf
-      weight: 600
-    - asset: fonts/Source_Sans_Pro/SourceSansPro-SemiBoldItalic.ttf
-      weight: 600
-      style: italic
-  - family: Lateef
-    fonts:
-    - asset: fonts/Lateef/Lateef.ttf
-      weight: 900
-  - family: Jameel
-    fonts:
-    - asset: fonts/Lateef/Jameel-Noori-Nastaleeq-Kasheeda.ttf 
-      weight: 900
-  - family: NotoEmoji
-    fonts:
-    - asset: fonts/Noto_Emoji/NotoEmoji-VariableFont_wght.ttf 
-      weight: 900
-  - family: Noto Nastaliq Urdu
-    fonts:
-    - asset: fonts/Noto_Nastaliq_Urdu/NotoNastaliqUrdu-VariableFont_wght.ttf 
-      weight: 900
   - family: Noto Naskh Arabic
     fonts:
     - asset: fonts/Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf 
-      weight: 900
-  - family: 300-Regular
-    fonts:
-    - asset: fonts/Pashto/300-Regular.ttf 
       weight: 900
   - family: Noto Sans Arabic
     fonts:

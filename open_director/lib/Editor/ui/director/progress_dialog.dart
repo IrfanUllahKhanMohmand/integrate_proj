@@ -16,7 +16,10 @@ class ProgressDialog extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<FFmpegStat> ffmepegStat) {
           String title, progressText;
           double progress = 0;
-          String buttonText = 'CANCEL';
+          String buttonText =
+              Localizations.localeOf(context).languageCode == 'ur'
+                  ? "منسوخ کریں"
+                  : 'CANCEL';
           if (ffmepegStat.data.totalFiles != null &&
               ffmepegStat.data.fileNum != null) {
             title = 'Preprocessing files';
@@ -27,7 +30,9 @@ class ProgressDialog extends StatelessWidget {
             progressText =
                 'File ${ffmepegStat.data.fileNum} of ${ffmepegStat.data.totalFiles}';
           } else if (ffmepegStat.data.time > 100) {
-            title = 'Building your video';
+            title = Localizations.localeOf(context).languageCode == 'ur'
+                ? "آپ کی ویڈیو تیار ہو رہی ہے"
+                : 'Building your video';
             progress = ffmepegStat.data.time / directorService.duration;
             int remaining = (ffmepegStat.data.timeElapsed *
                     (directorService.duration / ffmepegStat.data.time - 1))
@@ -35,9 +40,13 @@ class ProgressDialog extends StatelessWidget {
             int minutes = Duration(milliseconds: remaining).inMinutes;
             int seconds = Duration(milliseconds: remaining).inSeconds -
                 60 * Duration(milliseconds: remaining).inMinutes;
-            progressText = '$minutes min $seconds secs remaining';
+            progressText = Localizations.localeOf(context).languageCode == 'ur'
+                ? '$minutes منٹ  $seconds سیکنڈ  باقی ہیں'
+                : '$minutes min $seconds secs remaining';
           } else {
-            title = 'Building your video';
+            title = Localizations.localeOf(context).languageCode == 'ur'
+                ? "آپ کی ویڈیو تیار ہو رہی ہے"
+                : 'Building your video';
             progress = ffmepegStat.data.time / directorService.duration;
             progressText = '';
           }
@@ -66,18 +75,27 @@ class ProgressDialog extends StatelessWidget {
             ],
           );
           if (ffmepegStat.data.finished) {
-            title = 'Your video has been saved in the gallery';
-            buttonText = 'OK';
+            title = Localizations.localeOf(context).languageCode == 'ur'
+                ? "آپ کی ویڈیو گیلری میں محفوظ کر لی گئی ہے"
+                : 'Your video has been saved in the gallery';
+            buttonText = Localizations.localeOf(context).languageCode == 'ur'
+                ? "ٹھیک ہے"
+                : 'OK';
             child = LinearProgressIndicator(
               value: 1,
               backgroundColor: const Color.fromRGBO(93, 86, 250, 1),
               color: const Color.fromRGBO(93, 86, 250, 1),
             );
           } else if (ffmepegStat.data.error) {
-            title = 'Error';
-            buttonText = 'OK';
-            child = Text('An unexpected error occurred. We will work on it. '
-                'Please try again or upgrade to new versions of the app if the error persists.');
+            title = Localizations.localeOf(context).languageCode == 'ur'
+                ? "خرابی"
+                : 'Error';
+            buttonText = Localizations.localeOf(context).languageCode == 'ur'
+                ? "ٹھیک ہے"
+                : 'OK';
+            child = Text(Localizations.localeOf(context).languageCode == 'ur'
+                ? "ایک غیر متوقع خرابی پیش آگئی۔ ہم اس پر کام کریں گے۔"
+                : 'An unexpected error occurred. We will work on it. ');
           }
           return AlertDialog(
             title: Text(title),
@@ -91,7 +109,9 @@ class ProgressDialog extends StatelessWidget {
               ffmepegStat.data.finished
                   ? TextButton(
                       child: Text(
-                        "OPEN VIDEO",
+                        Localizations.localeOf(context).languageCode == 'ur'
+                            ? "ویڈیو کھولیں"
+                            : "OPEN VIDEO",
                         style: TextStyle(
                           color: const Color.fromRGBO(93, 86, 250, 1),
                         ),

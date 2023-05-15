@@ -166,13 +166,13 @@ class _PoetsListState extends State<PoetsList> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // await prefs.remove('userid');
     final int id = DateTime.now().microsecondsSinceEpoch;
-    if (prefs.getInt('usrsid') != null) {
-      final int userId = prefs.getInt('usrsid') ?? id;
+    if (prefs.getInt('uusrsid') != null) {
+      final int userId = prefs.getInt('uusrsid') ?? id;
       Provider.of<UserProvider>(context, listen: false).set(userId);
     } else {
       try {
         await createUser(id);
-        await prefs.setInt('usrsid', id);
+        await prefs.setInt('uusrsid', id);
       } on Error {
         throw Exception('Failed to create user');
       }

@@ -74,11 +74,17 @@ class _TrendingSherTileState extends State<TrendingSherTile> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SvgPicture.asset(
-                      "assets/leftArrow.svg",
-                      width: 10,
-                      height: 10,
-                    ),
+                    value.locale!.languageCode == 'ur'
+                        ? SvgPicture.asset(
+                            "assets/rightArrow.svg",
+                            width: 10,
+                            height: 10,
+                          )
+                        : SvgPicture.asset(
+                            "assets/leftArrow.svg",
+                            width: 10,
+                            height: 10,
+                          ),
                     SvgPicture.asset(
                       "assets/favourite.svg",
                       width: 10,
@@ -129,11 +135,17 @@ class _TrendingSherTileState extends State<TrendingSherTile> {
                         height: 10,
                       ),
                     ),
-                    SvgPicture.asset(
-                      "assets/rightArrow.svg",
-                      width: 10,
-                      height: 10,
-                    ),
+                    value.locale!.languageCode == 'ur'
+                        ? SvgPicture.asset(
+                            "assets/leftArrow.svg",
+                            width: 10,
+                            height: 10,
+                          )
+                        : SvgPicture.asset(
+                            "assets/rightArrow.svg",
+                            width: 10,
+                            height: 10,
+                          ),
                   ]),
             )
           ],

@@ -75,11 +75,17 @@ class _CategoryProfileTobBarState extends State<CategoryProfileTobBar> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: SvgPicture.asset(
-                    "assets/left_arrow.svg",
-                    width: 8,
-                    height: 14,
-                  ),
+                  child: Localizations.localeOf(context).languageCode == 'ur'
+                      ? SvgPicture.asset(
+                          "assets/rightArrow.svg",
+                          width: 8,
+                          height: 14,
+                        )
+                      : SvgPicture.asset(
+                          "assets/left_arrow.svg",
+                          width: 8,
+                          height: 14,
+                        ),
                 ),
               ),
               Row(

@@ -83,21 +83,41 @@ class _FontFamily extends StatelessWidget {
         Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
         DropdownButton(
           value: (directorService.editingTextAsset != null)
-              ? Font.getByPath(directorService.editingTextAsset.font)
+              ? directorService.editingTextAsset.font != null
+                  ? Font.getByPath(directorService.editingTextAsset.font)
+                  : Localizations.localeOf(context).languageCode == 'ur'
+                      ? Font.allFonts[0]
+                      : Font.allFonts[8]
               : Font.allFonts[0],
-          items: Font.allFonts
-              .map((Font font) => DropdownMenuItem(
-                  value: font,
-                  child: Text(
-                    font.title,
-                    style: TextStyle(
-                      fontFamily: font.family,
-                      fontSize: 12 / MediaQuery.of(context).textScaleFactor,
-                      fontStyle: font.style,
-                      fontWeight: font.weight,
-                    ),
-                  )))
-              .toList(),
+          items: Localizations.localeOf(context).languageCode == 'ur'
+              ? Font.allFonts
+                  .sublist(0, 2)
+                  .map((Font font) => DropdownMenuItem(
+                      value: font,
+                      child: Text(
+                        font.title,
+                        style: TextStyle(
+                          fontFamily: font.family,
+                          fontSize: 12 / MediaQuery.of(context).textScaleFactor,
+                          fontStyle: font.style,
+                          fontWeight: font.weight,
+                        ),
+                      )))
+                  .toList()
+              : Font.allFonts
+                  .sublist(2)
+                  .map((Font font) => DropdownMenuItem(
+                      value: font,
+                      child: Text(
+                        font.title,
+                        style: TextStyle(
+                          fontFamily: font.family,
+                          fontSize: 12 / MediaQuery.of(context).textScaleFactor,
+                          fontStyle: font.style,
+                          fontWeight: font.weight,
+                        ),
+                      )))
+                  .toList(),
           onChanged: (font) {
             Asset newAsset = Asset.clone(_asset);
             newAsset.font = font.path;
@@ -190,213 +210,21 @@ class Font {
     this.style = FontStyle.normal,
     this.path,
   });
-
   static Font getByPath(String path) {
     return allFonts.firstWhere((font) => font.path == path);
   }
 
   static List<Font> allFonts = [
     Font(
-        title: 'Amaranth bold',
-        family: 'Amaranth',
-        weight: FontWeight.w700,
-        path: 'Amaranth/Amaranth-Bold.ttf'),
-    Font(
-        title: 'Lateef Font',
-        family: 'Lateef',
-        weight: FontWeight.w700,
-        path: 'Lateef/Lateef.ttf'),
-    Font(
-        title: 'Jameel Noori',
-        family: 'Jameel Noori',
-        weight: FontWeight.w700,
-        path: 'Lateef/Jameel-Noori-Nastaleeq-Kasheeda.ttf'),
-    Font(
-        title: 'Noto Emoji',
-        family: 'Noto Emoji',
-        weight: FontWeight.w700,
-        path: 'Noto_Emoji/NotoEmoji-VariableFont_wght.ttf'),
-    Font(
-        title: 'Noto Nastaliq Urdu',
-        family: 'Noto Nastaliq Urdu',
-        weight: FontWeight.w700,
-        path: 'Noto_Nastaliq_Urdu/NotoNastaliqUrdu-VariableFont_wght.ttf'),
-    Font(
-        title: 'Noto Naskh Arabic',
+        title: 'Noto Naskh',
         family: 'Noto Naskh Arabic',
         weight: FontWeight.w700,
         path: 'Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf'),
     Font(
-        title: 'Noto Sans Arabic',
+        title: 'Noto Sans',
         family: 'Noto Sans Arabic',
         weight: FontWeight.w700,
         path: 'Noto_Sans_Arabic/NotoSansArabic-VariableFont_wdth.ttf'),
-    Font(
-        title: '300-Regular',
-        family: '300-Regular',
-        weight: FontWeight.w700,
-        path: 'Pashto/300-Regular.ttf'),
-    Font(
-        title: 'Amaranth bold italic',
-        family: 'Amaranth',
-        style: FontStyle.italic,
-        weight: FontWeight.w700,
-        path: 'Amaranth/Amaranth-BoldItalic.ttf'),
-    Font(
-        title: 'Amaranth  italic',
-        family: 'Amaranth',
-        style: FontStyle.italic,
-        weight: FontWeight.w400,
-        path: 'Amaranth/Amaranth-Italic.ttf'),
-    Font(
-        title: 'Amaranth regular',
-        family: 'Amaranth',
-        weight: FontWeight.w400,
-        path: 'Amaranth/Amaranth-Regular.ttf'),
-    Font(
-        title: 'Bangers regular',
-        family: 'Bangers',
-        weight: FontWeight.w400,
-        path: 'Bangers/Bangers-Regular.ttf'),
-    Font(
-        title: 'CarterOne regular',
-        family: 'CarterOne',
-        weight: FontWeight.w400,
-        path: 'Carter_One/CarterOne-Regular.ttf'),
-    Font(
-        title: 'Chilanka regular',
-        family: 'Chilanka',
-        weight: FontWeight.w400,
-        path: 'Chilanka/Chilanka-Regular.ttf'),
-    Font(
-        title: 'Courgette regular',
-        family: 'Courgette',
-        weight: FontWeight.w400,
-        path: 'Courgette/Courgette-Regular.ttf'),
-    Font(
-        title: 'DancingScript bold',
-        family: 'DancingScript',
-        weight: FontWeight.w700,
-        path: 'Dancing_Script/DancingScript-Bold.ttf'),
-    Font(
-        title: 'DancingScript regular',
-        family: 'DancingScript',
-        weight: FontWeight.w400,
-        path: 'Dancing_Script/DancingScript-Regular.ttf'),
-    Font(
-        title: 'GochiHand regular',
-        family: 'GochiHand',
-        weight: FontWeight.w400,
-        path: 'Gochi_Hand/GochiHand-Regular.ttf'),
-    Font(
-        title: 'Grenze black',
-        family: 'Grenze',
-        weight: FontWeight.w900,
-        path: 'Grenze/Grenze-Black.ttf'),
-    Font(
-        title: 'Grenze black italic',
-        family: 'Grenze',
-        style: FontStyle.italic,
-        weight: FontWeight.w900,
-        path: 'Grenze/Grenze-BlackItalic.ttf'),
-    Font(
-        title: 'Grenze bold',
-        family: 'Grenze',
-        weight: FontWeight.w700,
-        path: 'Grenze/Grenze-Bold.ttf'),
-    Font(
-        title: 'Grenze bold italic',
-        family: 'Grenze',
-        style: FontStyle.italic,
-        weight: FontWeight.w700,
-        path: 'Grenze/Grenze-BoldItalic.ttf'),
-    Font(
-        title: 'Grenze extrabold',
-        family: 'Grenze',
-        weight: FontWeight.w800,
-        path: 'Grenze/Grenze-ExtraBold.ttf'),
-    Font(
-        title: 'Grenze extrabold italic',
-        family: 'Grenze',
-        style: FontStyle.italic,
-        weight: FontWeight.w800,
-        path: 'Grenze/Grenze-ExtraBoldItalic.ttf'),
-    Font(
-        title: 'Grenze extralight',
-        family: 'Grenze',
-        weight: FontWeight.w200,
-        path: 'Grenze/Grenze-ExtraLight.ttf'),
-    Font(
-        title: 'Grenze extralight italic',
-        family: 'Grenze',
-        style: FontStyle.italic,
-        weight: FontWeight.w200,
-        path: 'Grenze/Grenze-ExtraLightItalic.ttf'),
-    Font(
-        title: 'Grenze  italic',
-        family: 'Grenze',
-        style: FontStyle.italic,
-        weight: FontWeight.w400,
-        path: 'Grenze/Grenze-Italic.ttf'),
-    Font(
-        title: 'Grenze light',
-        family: 'Grenze',
-        weight: FontWeight.w300,
-        path: 'Grenze/Grenze-Light.ttf'),
-    Font(
-        title: 'Grenze light italic',
-        family: 'Grenze',
-        style: FontStyle.italic,
-        weight: FontWeight.w300,
-        path: 'Grenze/Grenze-LightItalic.ttf'),
-    Font(
-        title: 'Grenze medium',
-        family: 'Grenze',
-        weight: FontWeight.w500,
-        path: 'Grenze/Grenze-Medium.ttf'),
-    Font(
-        title: 'Grenze medium italic',
-        family: 'Grenze',
-        style: FontStyle.italic,
-        weight: FontWeight.w500,
-        path: 'Grenze/Grenze-MediumItalic.ttf'),
-    Font(
-        title: 'Grenze regular',
-        family: 'Grenze',
-        weight: FontWeight.w400,
-        path: 'Grenze/Grenze-Regular.ttf'),
-    Font(
-        title: 'Grenze semibold',
-        family: 'Grenze',
-        weight: FontWeight.w600,
-        path: 'Grenze/Grenze-SemiBold.ttf'),
-    Font(
-        title: 'Grenze semibold italic',
-        family: 'Grenze',
-        style: FontStyle.italic,
-        weight: FontWeight.w600,
-        path: 'Grenze/Grenze-SemiBoldItalic.ttf'),
-    Font(
-        title: 'Grenze thin',
-        family: 'Grenze',
-        weight: FontWeight.w100,
-        path: 'Grenze/Grenze-Thin.ttf'),
-    Font(
-        title: 'Grenze thin italic',
-        family: 'Grenze',
-        style: FontStyle.italic,
-        weight: FontWeight.w100,
-        path: 'Grenze/Grenze-ThinItalic.ttf'),
-    Font(
-        title: 'Handlee regular',
-        family: 'Handlee',
-        weight: FontWeight.w400,
-        path: 'Handlee/Handlee-Regular.ttf'),
-    Font(
-        title: 'IndieFlower regular',
-        family: 'IndieFlower',
-        weight: FontWeight.w400,
-        path: 'Indie_Flower/IndieFlower-Regular.ttf'),
     Font(
         title: 'Lato black',
         family: 'Lato',
@@ -453,163 +281,10 @@ class Font {
         weight: FontWeight.w100,
         path: 'Lato/Lato-ThinItalic.ttf'),
     Font(
-        title: 'LibreFranklin black',
-        family: 'LibreFranklin',
-        weight: FontWeight.w900,
-        path: 'Libre_Franklin/LibreFranklin-Black.ttf'),
-    Font(
-        title: 'LibreFranklin black italic',
-        family: 'LibreFranklin',
-        style: FontStyle.italic,
-        weight: FontWeight.w900,
-        path: 'Libre_Franklin/LibreFranklin-BlackItalic.ttf'),
-    Font(
-        title: 'LibreFranklin bold',
-        family: 'LibreFranklin',
-        weight: FontWeight.w700,
-        path: 'Libre_Franklin/LibreFranklin-Bold.ttf'),
-    Font(
-        title: 'LibreFranklin bold italic',
-        family: 'LibreFranklin',
-        style: FontStyle.italic,
-        weight: FontWeight.w700,
-        path: 'Libre_Franklin/LibreFranklin-BoldItalic.ttf'),
-    Font(
-        title: 'LibreFranklin extrabold',
-        family: 'LibreFranklin',
-        weight: FontWeight.w800,
-        path: 'Libre_Franklin/LibreFranklin-ExtraBold.ttf'),
-    Font(
-        title: 'LibreFranklin extrabold italic',
-        family: 'LibreFranklin',
-        style: FontStyle.italic,
-        weight: FontWeight.w800,
-        path: 'Libre_Franklin/LibreFranklin-ExtraBoldItalic.ttf'),
-    Font(
-        title: 'LibreFranklin extralight',
-        family: 'LibreFranklin',
-        weight: FontWeight.w200,
-        path: 'Libre_Franklin/LibreFranklin-ExtraLight.ttf'),
-    Font(
-        title: 'LibreFranklin extralight italic',
-        family: 'LibreFranklin',
-        style: FontStyle.italic,
-        weight: FontWeight.w200,
-        path: 'Libre_Franklin/LibreFranklin-ExtraLightItalic.ttf'),
-    Font(
-        title: 'LibreFranklin  italic',
-        family: 'LibreFranklin',
-        style: FontStyle.italic,
-        weight: FontWeight.w400,
-        path: 'Libre_Franklin/LibreFranklin-Italic.ttf'),
-    Font(
-        title: 'LibreFranklin light',
-        family: 'LibreFranklin',
-        weight: FontWeight.w300,
-        path: 'Libre_Franklin/LibreFranklin-Light.ttf'),
-    Font(
-        title: 'LibreFranklin light italic',
-        family: 'LibreFranklin',
-        style: FontStyle.italic,
-        weight: FontWeight.w300,
-        path: 'Libre_Franklin/LibreFranklin-LightItalic.ttf'),
-    Font(
-        title: 'LibreFranklin medium',
-        family: 'LibreFranklin',
-        weight: FontWeight.w500,
-        path: 'Libre_Franklin/LibreFranklin-Medium.ttf'),
-    Font(
-        title: 'LibreFranklin medium italic',
-        family: 'LibreFranklin',
-        style: FontStyle.italic,
-        weight: FontWeight.w500,
-        path: 'Libre_Franklin/LibreFranklin-MediumItalic.ttf'),
-    Font(
-        title: 'LibreFranklin regular',
-        family: 'LibreFranklin',
-        weight: FontWeight.w400,
-        path: 'Libre_Franklin/LibreFranklin-Regular.ttf'),
-    Font(
-        title: 'LibreFranklin semibold',
-        family: 'LibreFranklin',
-        weight: FontWeight.w600,
-        path: 'Libre_Franklin/LibreFranklin-SemiBold.ttf'),
-    Font(
-        title: 'LibreFranklin semibold italic',
-        family: 'LibreFranklin',
-        style: FontStyle.italic,
-        weight: FontWeight.w600,
-        path: 'Libre_Franklin/LibreFranklin-SemiBoldItalic.ttf'),
-    Font(
-        title: 'LibreFranklin thin',
-        family: 'LibreFranklin',
-        weight: FontWeight.w100,
-        path: 'Libre_Franklin/LibreFranklin-Thin.ttf'),
-    Font(
-        title: 'LibreFranklin thin italic',
-        family: 'LibreFranklin',
-        style: FontStyle.italic,
-        weight: FontWeight.w100,
-        path: 'Libre_Franklin/LibreFranklin-ThinItalic.ttf'),
-    Font(
         title: 'Lobster regular',
         family: 'Lobster',
         weight: FontWeight.w400,
         path: 'Lobster/Lobster-Regular.ttf'),
-    Font(
-        title: 'LuckiestGuy regular',
-        family: 'LuckiestGuy',
-        weight: FontWeight.w400,
-        path: 'Luckiest_Guy/LuckiestGuy-Regular.ttf'),
-    Font(
-        title: 'Mansalva regular',
-        family: 'Mansalva',
-        weight: FontWeight.w400,
-        path: 'Mansalva/Mansalva-Regular.ttf'),
-    Font(
-        title: 'Merriweather black',
-        family: 'Merriweather',
-        weight: FontWeight.w900,
-        path: 'Merriweather/Merriweather-Black.ttf'),
-    Font(
-        title: 'Merriweather black italic',
-        family: 'Merriweather',
-        style: FontStyle.italic,
-        weight: FontWeight.w900,
-        path: 'Merriweather/Merriweather-BlackItalic.ttf'),
-    Font(
-        title: 'Merriweather bold',
-        family: 'Merriweather',
-        weight: FontWeight.w700,
-        path: 'Merriweather/Merriweather-Bold.ttf'),
-    Font(
-        title: 'Merriweather bold italic',
-        family: 'Merriweather',
-        style: FontStyle.italic,
-        weight: FontWeight.w700,
-        path: 'Merriweather/Merriweather-BoldItalic.ttf'),
-    Font(
-        title: 'Merriweather  italic',
-        family: 'Merriweather',
-        style: FontStyle.italic,
-        weight: FontWeight.w400,
-        path: 'Merriweather/Merriweather-Italic.ttf'),
-    Font(
-        title: 'Merriweather light',
-        family: 'Merriweather',
-        weight: FontWeight.w300,
-        path: 'Merriweather/Merriweather-Light.ttf'),
-    Font(
-        title: 'Merriweather light italic',
-        family: 'Merriweather',
-        style: FontStyle.italic,
-        weight: FontWeight.w300,
-        path: 'Merriweather/Merriweather-LightItalic.ttf'),
-    Font(
-        title: 'Merriweather regular',
-        family: 'Merriweather',
-        weight: FontWeight.w400,
-        path: 'Merriweather/Merriweather-Regular.ttf'),
     Font(
         title: 'OpenSans bold',
         family: 'OpenSans',
@@ -670,16 +345,6 @@ class Font {
         family: 'Pacifico',
         weight: FontWeight.w400,
         path: 'Pacifico/Pacifico-Regular.ttf'),
-    Font(
-        title: 'PermanentMarker regular',
-        family: 'PermanentMarker',
-        weight: FontWeight.w400,
-        path: 'Permanent_Marker/PermanentMarker-Regular.ttf'),
-    Font(
-        title: 'Righteous regular',
-        family: 'Righteous',
-        weight: FontWeight.w400,
-        path: 'Righteous/Righteous-Regular.ttf'),
     Font(
         title: 'Roboto black',
         family: 'Roboto',
@@ -752,71 +417,5 @@ class Font {
         style: FontStyle.italic,
         weight: FontWeight.w100,
         path: 'Roboto/Roboto-ThinItalic.ttf'),
-    Font(
-        title: 'SourceSansPro black',
-        family: 'SourceSansPro',
-        weight: FontWeight.w900,
-        path: 'Source_Sans_Pro/SourceSansPro-Black.ttf'),
-    Font(
-        title: 'SourceSansPro black italic',
-        family: 'SourceSansPro',
-        style: FontStyle.italic,
-        weight: FontWeight.w900,
-        path: 'Source_Sans_Pro/SourceSansPro-BlackItalic.ttf'),
-    Font(
-        title: 'SourceSansPro bold',
-        family: 'SourceSansPro',
-        weight: FontWeight.w700,
-        path: 'Source_Sans_Pro/SourceSansPro-Bold.ttf'),
-    Font(
-        title: 'SourceSansPro bold italic',
-        family: 'SourceSansPro',
-        style: FontStyle.italic,
-        weight: FontWeight.w700,
-        path: 'Source_Sans_Pro/SourceSansPro-BoldItalic.ttf'),
-    Font(
-        title: 'SourceSansPro extralight',
-        family: 'SourceSansPro',
-        weight: FontWeight.w200,
-        path: 'Source_Sans_Pro/SourceSansPro-ExtraLight.ttf'),
-    Font(
-        title: 'SourceSansPro extralight italic',
-        family: 'SourceSansPro',
-        style: FontStyle.italic,
-        weight: FontWeight.w200,
-        path: 'Source_Sans_Pro/SourceSansPro-ExtraLightItalic.ttf'),
-    Font(
-        title: 'SourceSansPro  italic',
-        family: 'SourceSansPro',
-        style: FontStyle.italic,
-        weight: FontWeight.w400,
-        path: 'Source_Sans_Pro/SourceSansPro-Italic.ttf'),
-    Font(
-        title: 'SourceSansPro light',
-        family: 'SourceSansPro',
-        weight: FontWeight.w300,
-        path: 'Source_Sans_Pro/SourceSansPro-Light.ttf'),
-    Font(
-        title: 'SourceSansPro light italic',
-        family: 'SourceSansPro',
-        style: FontStyle.italic,
-        weight: FontWeight.w300,
-        path: 'Source_Sans_Pro/SourceSansPro-LightItalic.ttf'),
-    Font(
-        title: 'SourceSansPro regular',
-        family: 'SourceSansPro',
-        weight: FontWeight.w400,
-        path: 'Source_Sans_Pro/SourceSansPro-Regular.ttf'),
-    Font(
-        title: 'SourceSansPro semibold',
-        family: 'SourceSansPro',
-        weight: FontWeight.w600,
-        path: 'Source_Sans_Pro/SourceSansPro-SemiBold.ttf'),
-    Font(
-        title: 'SourceSansPro semibold italic',
-        family: 'SourceSansPro',
-        style: FontStyle.italic,
-        weight: FontWeight.w600,
-        path: 'Source_Sans_Pro/SourceSansPro-SemiBoldItalic.ttf'),
   ];
 }

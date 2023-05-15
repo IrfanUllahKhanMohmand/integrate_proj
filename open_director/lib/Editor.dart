@@ -25,7 +25,6 @@ class _EditorState extends State<Editor> {
   Widget build(BuildContext context) {
     return Localizations.override(
       context: context,
-      locale: const Locale('en', 'US'),
       child: Scaffold(
         body: ProjectList(),
       ),
