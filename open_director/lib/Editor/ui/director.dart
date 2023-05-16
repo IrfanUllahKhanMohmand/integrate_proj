@@ -684,50 +684,41 @@ class _TextPlayer extends StatelessWidget {
         stream: directorService.editingTextAsset$,
         initialData: null,
         builder: (BuildContext context, AsyncSnapshot<Asset> editingTextAsset) {
-          Asset _asset = editingTextAsset.data;
-          if (_asset == null) {
-            _asset = directorService.getAssetByPosition(1);
+          if (editingTextAsset.hasData || editingTextAsset.data != null) {
+            Asset _asset = editingTextAsset.data;
+            if (_asset == null) {
+              _asset = directorService.getAssetByPosition(1);
+            }
+            if (_asset == null || _asset.type != AssetType.text) {
+              return Container();
+            }
+            Font font = Font.getByPath(_asset.font);
+            return Positioned(
+              left: _asset.x * Params.getPlayerWidth(context) + 100,
+              top: _asset.y * Params.getPlayerHeight(context),
+              child: Container(
+                child: (directorService.editingTextAsset == null)
+                    ? Text(
+                        _asset.title,
+                        style: TextStyle(
+                          height: 1,
+                          // fontSize: _asset.fontSize *
+                          //     Params.getPlayerWidth(context) /
+                          //     MediaQuery.of(context).textScaleFactor,
+                          fontSize:
+                              _asset.fontSize * Params.getPlayerWidth(context),
+                          fontStyle: font.style,
+                          fontFamily: font.family,
+                          fontWeight: font.weight,
+                          color: Color(_asset.fontColor),
+                          backgroundColor: Color(_asset.boxcolor),
+                        ),
+                      )
+                    : TextPlayerEditor(editingTextAsset.data),
+              ),
+            );
           }
-          if (_asset == null || _asset.type != AssetType.text) {
-            return Container();
-          }
-          Localizations.localeOf(context).languageCode == 'ur'
-              ? _asset.font =
-                  'Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf'
-              : _asset.font = 'Lato/Lato-Regular.ttf';
-          Font font = Font.getByPath(_asset.font);
-          return Positioned(
-            left: _asset.x * Params.getPlayerWidth(context),
-            top: _asset.y * Params.getPlayerHeight(context),
-            child: Container(
-              child: (directorService.editingTextAsset == null)
-                  ? Text(
-                      _asset.title,
-                      /*strutStyle: StrutStyle(
-                        fontSize: _asset.fontSize *
-                            Params.getPlayerWidth(context) /
-                            MediaQuery.of(context).textScaleFactor,
-                        fontStyle: font.style,
-                        fontFamily: font.family,
-                        fontWeight: font.weight,
-                        height: 1,
-                        leading: 0.0,
-                      ),*/
-                      style: TextStyle(
-                        height: 1,
-                        fontSize: _asset.fontSize *
-                            Params.getPlayerWidth(context) /
-                            MediaQuery.of(context).textScaleFactor,
-                        fontStyle: font.style,
-                        fontFamily: font.family,
-                        fontWeight: font.weight,
-                        color: Color(_asset.fontColor),
-                        backgroundColor: Color(_asset.boxcolor),
-                      ),
-                    )
-                  : TextPlayerEditor(editingTextAsset.data),
-            ),
-          );
+          return Container();
         });
   }
 }

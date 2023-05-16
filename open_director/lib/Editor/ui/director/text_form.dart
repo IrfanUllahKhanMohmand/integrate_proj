@@ -12,6 +12,13 @@ class TextForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (directorService.editingTextAsset.font == null) {
+      Localizations.localeOf(context).languageCode == 'ur'
+          ? _asset.font =
+              'Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf'
+          : _asset.font = 'Roboto/Roboto-BoldItalic.ttf';
+    }
+
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       _SubMenu(),
       Container(

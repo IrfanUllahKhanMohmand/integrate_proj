@@ -596,9 +596,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
             child: AspectRatio(
                 // aspectRatio: widget.controller.value.size.height /
                 //     widget.controller.value.size.width,
-                // aspectRatio: 9 / 16,
-                aspectRatio: widget.controller.value.size.width /
-                    widget.controller.value.size.height,
+                aspectRatio: 9 / 16,
+                // aspectRatio: widget.controller.value.size.width /
+                //     widget.controller.value.size.height,
                 child: Texture(textureId: _textureId)),
           ));
   }

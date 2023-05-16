@@ -1227,7 +1227,7 @@ class Generator {
         "x='(${asset.x}*w)':y='(${asset.y}*h)':" +
         // "x=${asset.x * size.width}:y=${asset.y * size.height}:" +
 
-        "fontfile=$fontFile:fontsize='(${asset.fontSize}*w)':" +
+        "fontfile=$fontFile:fontsize='(${asset.fontSize * 3}*w)':" +
         // "fontfile=$fontFile:fontsize=${asset.fontSize * size.width}:" +
         "fontcolor=$fontColor:alpha='if(lt(t,$fadeInStartTime),0,if(lt(t,${fadeInStartTime + fadeInDuration}),(t-$fadeInStartTime)/$fadeInDuration,if(lt(t,${fadeInStartTime + fadeInDuration + textDuration}),1,if(lt(t,${fadeInStartTime + fadeInDuration + fadeOutDuration + textDuration}),($fadeOutDuration-(t-${fadeInStartTime + fadeInDuration + fadeOutDuration + textDuration}))/$fadeOutDuration,0))))':" +
         // "fontcolor=$fontColor:alpha=${asset.alpha}:" +

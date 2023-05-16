@@ -40,9 +40,12 @@ class ProgressDialog extends StatelessWidget {
             int minutes = Duration(milliseconds: remaining).inMinutes;
             int seconds = Duration(milliseconds: remaining).inSeconds -
                 60 * Duration(milliseconds: remaining).inMinutes;
+            // progressText = Localizations.localeOf(context).languageCode == 'ur'
+            //     ? '$minutes منٹ  $seconds سیکنڈ  باقی ہیں'
+            //     : '$minutes min $seconds secs remaining';
             progressText = Localizations.localeOf(context).languageCode == 'ur'
-                ? '$minutes منٹ  $seconds سیکنڈ  باقی ہیں'
-                : '$minutes min $seconds secs remaining';
+                ? "${(progress * 100).toInt()}% مکمل"
+                : '${(progress * 100).toInt()}% Completed';
           } else {
             title = Localizations.localeOf(context).languageCode == 'ur'
                 ? "آپ کی ویڈیو تیار ہو رہی ہے"
