@@ -203,17 +203,15 @@ class _TopToolsState extends State<TopTools> {
                       ),
                       backGroundColor: Colors.white,
                       onTap: () {
-                        if (controlNotifier.mediaPath.isEmpty) {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           const PickOnlineImages()),
-                          // );
-                          scrollNotifier.pageController.animateToPage(2,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.ease);
-                        }
+                        scrollNotifier.pageController.animateToPage(2,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.ease);
+
+                        // if (controlNotifier.mediaPath.isEmpty) {
+                        //   scrollNotifier.pageController.animateToPage(2,
+                        //       duration: const Duration(milliseconds: 300),
+                        //       curve: Curves.ease);
+                        // }
                       }),
                   ToolButton(
                       child: const ImageIcon(
@@ -225,68 +223,15 @@ class _TopToolsState extends State<TopTools> {
                       backGroundColor: Colors.white,
                       onTap: () {
                         /// scroll to gridView page
-                        if (controlNotifier.mediaPath.isEmpty) {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           const PickOnlineImages()),
-                          // );
-                          scrollNotifier.pageController.animateToPage(1,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.ease);
-                        }
+                        // if (controlNotifier.mediaPath.isEmpty) {
+                        //   scrollNotifier.pageController.animateToPage(1,
+                        //       duration: const Duration(milliseconds: 300),
+                        //       curve: Curves.ease);
+                        // }
+                        scrollNotifier.pageController.animateToPage(1,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.ease);
                       }),
-                  // if (controlNotifier.mediaPath.isEmpty)
-                  // _selectColor(
-                  //     controlProvider: controlNotifier,
-                  //     onTap: () {
-                  //       if (controlNotifier.gradientIndex >=
-                  //           controlNotifier.gradientColors!.length - 1) {
-                  //         setState(() {
-                  //           controlNotifier.gradientIndex = 0;
-                  //         });
-                  //       } else {
-                  //         setState(() {
-                  //           controlNotifier.gradientIndex += 1;
-                  //         });
-                  //       }
-                  //     }),
-                  // ToolButton(
-                  //     child: const ImageIcon(
-                  //       AssetImage('assets/icons/download.png',
-                  //           package: 'stories_editor'),
-                  //       color: Color.fromRGBO(93, 86, 250, 1),
-                  //       size: 20,
-                  //     ),
-                  //     backGroundColor: Colors.white,
-                  //     onTap: () async {
-                  //       if (paintingNotifier.lines.isNotEmpty ||
-                  //           itemNotifier.draggableWidget.isNotEmpty) {
-                  //         controlNotifier.isOpacityChanging = false;
-                  //         var response = await takePicture(
-                  //             contentKey: widget.contentKey,
-                  //             context: context,
-                  //             saveToGallery: true);
-                  //         if (response) {
-                  //           Fluttertoast.showToast(msg: 'Successfully saved');
-                  //         } else {
-                  //           Fluttertoast.showToast(msg: 'Error');
-                  //         }
-                  //       }
-                  //     }),
-                  // if (controlNotifier.mediaPath.isEmpty)
-                  //   ToolButton(
-                  //       child: const ImageIcon(
-                  //         AssetImage('assets/icons/stickers.png',
-                  //             package: 'stories_editor'),
-                  //         color: Colors.white,
-                  //         size: 20,
-                  //       ),
-                  //       backGroundColor: Colors.black12,
-                  //       onTap: () => createGiphyItem(
-                  //           context: context,
-                  //           giphyKey: controlNotifier.giphyKey)),
 
                   if (controlNotifier.mediaPath.isNotEmpty)
                     ToolButton(

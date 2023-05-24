@@ -74,10 +74,9 @@ class TextPlayerEditor extends StatelessWidget {
             ),*/
             style: TextStyle(
               height: 1.0,
-              fontSize: _asset.fontSize * Params.getPlayerWidth(context),
-              // fontSize: _asset.fontSize *
-              //     Params.getPlayerWidth(context) /
-              //     MediaQuery.of(context).textScaleFactor,
+              fontSize: _asset.fontSize *
+                  Params.getPlayerWidth(context) /
+                  MediaQuery.of(context).textScaleFactor,
               fontStyle: font.style,
               fontFamily: font.family,
               fontWeight: font.weight,

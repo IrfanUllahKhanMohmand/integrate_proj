@@ -96,15 +96,15 @@ class _TextEditorState extends State<TextEditor> {
                                 child: Stack(
                               alignment: Alignment.center,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 2),
-                                  child: _text(
-                                    editorNotifier: editorNotifier,
-                                    textNode: _textFieldNode,
-                                    controlNotifier: controlNotifier,
-                                    paintingStyle: PaintingStyle.fill,
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(right: 2),
+                                //   child: _text(
+                                //     editorNotifier: editorNotifier,
+                                //     textNode: _textFieldNode,
+                                //     controlNotifier: controlNotifier,
+                                //     paintingStyle: PaintingStyle.fill,
+                                //   ),
+                                // ),
                                 _textField(
                                   editorNotifier: editorNotifier,
                                   textNode: _textFieldNode,
@@ -119,13 +119,16 @@ class _TextEditorState extends State<TextEditor> {
                         /// text size
                         keyboardConfig.keyboardHeight != 0
                             ? Positioned(
-                                left: 0,
+                                left: 5,
                                 bottom: keyboardConfig.keyboardHeight + 30,
                                 child: const SizeSliderWidget(),
                               )
-                            : const Align(
-                                alignment: Alignment.centerLeft,
-                                child: SizeSliderWidget(),
+                            : const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: SizeSliderWidget(),
+                                ),
                               ),
 
                         /// top tools

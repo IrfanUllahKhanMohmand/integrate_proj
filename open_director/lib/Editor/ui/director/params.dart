@@ -13,7 +13,7 @@ class Params {
           getTimelineHeight(context) -
           (fixHeight ? 24 : 24);
     } else {
-      return getPlayerWidth(context) * 9 / 16;
+      return getPlayerWidth(context) * 1.1;
     }
   }
 

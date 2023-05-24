@@ -559,7 +559,7 @@ class _Video extends StatelessWidget {
         stream: directorService.position$,
         builder: (BuildContext context, AsyncSnapshot<int> position) {
           var backgroundContainer = Container(
-            color: const Color.fromRGBO(245, 245, 247, 1),
+            color: Color.fromARGB(255, 23, 23, 80),
             height: Params.getPlayerHeight(context),
             width: Params.getPlayerWidth(context),
           );
@@ -634,21 +634,19 @@ class KenBurnEffect extends StatelessWidget {
     this.path,
     this.ratio, {
     this.zSign = 0, // Options: {-1, 0, +1}
-    this.xTarget = 0, // Options: {0, 0.5, 1}
-    this.yTarget = 0, // Options; {0, 0.5, 1}
+    this.xTarget = 0.5, // Options: {0, 0.5, 1}
+    this.yTarget = 0.5, // Options: {0, 0.5, 1}
   }) : super();
 
   @override
   Widget build(BuildContext context) {
     // Start and end positions
-    double xStart = (zSign == 1) ? 0 : (0.5 - xTarget);
-    double xEnd =
-        (zSign == 1) ? (0.5 - xTarget) : ((zSign == -1) ? 0 : (xTarget - 0.5));
-    double yStart = (zSign == 1) ? 0 : (0.5 - yTarget);
-    double yEnd =
-        (zSign == 1) ? (0.5 - yTarget) : ((zSign == -1) ? 0 : (yTarget - 0.5));
-    double zStart = (zSign == 1) ? 0 : 1;
-    double zEnd = (zSign == -1) ? 0 : 1;
+    double xStart = 0.5;
+    double xEnd = 0.5;
+    double yStart = 0.5;
+    double yEnd = 0.5;
+    double zStart = 0;
+    double zEnd = 0;
 
     // Interpolation
     double x = xStart * (1 - ratio) + xEnd * ratio;
@@ -675,6 +673,59 @@ class KenBurnEffect extends StatelessWidget {
   }
 }
 
+// class KenBurnEffect extends StatelessWidget {
+//   final String path;
+//   final double ratio;
+//   // Effect configuration
+//   final int zSign;
+//   final double xTarget;
+//   final double yTarget;
+
+//   KenBurnEffect(
+//     this.path,
+//     this.ratio, {
+//     this.zSign = 0, // Options: {-1, 0, +1}
+//     this.xTarget = 0, // Options: {0, 0.5, 1}
+//     this.yTarget = 0, // Options; {0, 0.5, 1}
+//   }) : super();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // Start and end positions
+//     double xStart = (zSign == 1) ? 0 : (0.5 - xTarget);
+//     double xEnd =
+//         (zSign == 1) ? (0.5 - xTarget) : ((zSign == -1) ? 0 : (xTarget - 0.5));
+//     double yStart = (zSign == 1) ? 0 : (0.5 - yTarget);
+//     double yEnd =
+//         (zSign == 1) ? (0.5 - yTarget) : ((zSign == -1) ? 0 : (yTarget - 0.5));
+//     double zStart = (zSign == 1) ? 0 : 1;
+//     double zEnd = (zSign == -1) ? 0 : 1;
+
+//     // Interpolation
+//     double x = xStart * (1 - ratio) + xEnd * ratio;
+//     double y = yStart * (1 - ratio) + yEnd * ratio;
+//     double z = zStart * (1 - ratio) + zEnd * ratio;
+
+//     return LayoutBuilder(builder: (context, constraints) {
+//       return ClipRect(
+//         child: Transform.translate(
+//           offset: Offset(x * 0.2 * Params.getPlayerWidth(context),
+//               y * 0.2 * Params.getPlayerHeight(context)),
+//           child: Transform.scale(
+//             scale: 1 + z * 0.2,
+//             child: Stack(
+//               fit: StackFit.expand,
+//               children: [
+//                 Image.file(File(path)),
+//               ],
+//             ),
+//           ),
+//         ),
+//       );
+//     });
+//   }
+// }
+
 class _TextPlayer extends StatelessWidget {
   final directorService = locator.get<DirectorService>();
 
@@ -684,41 +735,46 @@ class _TextPlayer extends StatelessWidget {
         stream: directorService.editingTextAsset$,
         initialData: null,
         builder: (BuildContext context, AsyncSnapshot<Asset> editingTextAsset) {
-          if (editingTextAsset.hasData || editingTextAsset.data != null) {
-            Asset _asset = editingTextAsset.data;
-            if (_asset == null) {
-              _asset = directorService.getAssetByPosition(1);
-            }
-            if (_asset == null || _asset.type != AssetType.text) {
-              return Container();
-            }
-            Font font = Font.getByPath(_asset.font);
-            return Positioned(
-              left: _asset.x * Params.getPlayerWidth(context) + 100,
-              top: _asset.y * Params.getPlayerHeight(context),
-              child: Container(
-                child: (directorService.editingTextAsset == null)
-                    ? Text(
-                        _asset.title,
-                        style: TextStyle(
-                          height: 1,
-                          // fontSize: _asset.fontSize *
-                          //     Params.getPlayerWidth(context) /
-                          //     MediaQuery.of(context).textScaleFactor,
-                          fontSize:
-                              _asset.fontSize * Params.getPlayerWidth(context),
-                          fontStyle: font.style,
-                          fontFamily: font.family,
-                          fontWeight: font.weight,
-                          color: Color(_asset.fontColor),
-                          backgroundColor: Color(_asset.boxcolor),
-                        ),
-                      )
-                    : TextPlayerEditor(editingTextAsset.data),
-              ),
-            );
+          Asset _asset = editingTextAsset.data;
+          if (_asset == null) {
+            _asset = directorService.getAssetByPosition(1);
           }
-          return Container();
+          if (_asset == null || _asset.type != AssetType.text) {
+            return Container();
+          }
+          Font font = Font.getByPath(_asset.font);
+          return Positioned(
+            left: _asset.x * Params.getPlayerWidth(context),
+            top: _asset.y * Params.getPlayerHeight(context),
+            child: Container(
+              child: (directorService.editingTextAsset == null)
+                  ? Text(
+                      _asset.title,
+                      /*strutStyle: StrutStyle(
+                        fontSize: _asset.fontSize *
+                            Params.getPlayerWidth(context) /
+                            MediaQuery.of(context).textScaleFactor,
+                        fontStyle: font.style,
+                        fontFamily: font.family,
+                        fontWeight: font.weight,
+                        height: 1,
+                        leading: 0.0,
+                      ),*/
+                      style: TextStyle(
+                        height: 1,
+                        fontSize: _asset.fontSize *
+                            Params.getPlayerWidth(context) /
+                            MediaQuery.of(context).textScaleFactor,
+                        fontStyle: font.style,
+                        fontFamily: font.family,
+                        fontWeight: font.weight,
+                        color: Color(_asset.fontColor),
+                        backgroundColor: Color(_asset.boxcolor),
+                      ),
+                    )
+                  : TextPlayerEditor(editingTextAsset.data),
+            ),
+          );
         });
   }
 }

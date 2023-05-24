@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class Layer {
   String type;
@@ -77,8 +78,8 @@ class Asset {
     this.kenBurnYTarget = 0.5,
     this.x = 0.1,
     this.y = 0.1,
-    // this.font = 'Lato/Lato-Regular.ttf',
-    this.font = null,
+    this.font = 'Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf',
+    // this.font = null,
     this.fontSize = 0.1,
     this.fontColor = 0xFFFFFFFF,
     this.alpha = 1,

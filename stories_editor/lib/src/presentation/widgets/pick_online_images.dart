@@ -104,7 +104,16 @@ class _PickOnlineImagesState extends State<PickOnlineImages> {
         ),
       ],
     );
-
+    if (Provider.of<ControlNotifier>(context, listen: false)
+        .mediaPath
+        .isNotEmpty) {
+      Provider.of<ControlNotifier>(context, listen: false).mediaPath = '';
+      Provider.of<DraggableWidgetNotifier>(context, listen: false)
+          .draggableWidget
+          .removeAt(0);
+      Provider.of<ControlNotifier>(context, listen: false).isOpacityChanging =
+          false;
+    }
     Provider.of<ControlNotifier>(context, listen: false).mediaPath =
         croppedFile!.path.toString();
     // controlNotifier.mediaPath = path.first.path!.toString();

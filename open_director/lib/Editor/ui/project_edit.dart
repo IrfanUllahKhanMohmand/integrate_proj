@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_director/Editor/model/constants.dart';
 import 'package:open_director/Editor/service_locator.dart';
 import 'package:open_director/Editor/service/project_service.dart';
 import 'package:open_director/Editor/model/project.dart';
@@ -17,7 +18,6 @@ class ProjectEdit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(Localizations.localeOf(context).languageCode);
     return Scaffold(
       backgroundColor: const Color.fromRGBO(245, 245, 247, 1),
       appBar: AppBar(

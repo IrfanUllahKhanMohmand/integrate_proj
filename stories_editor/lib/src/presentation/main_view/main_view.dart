@@ -101,6 +101,24 @@ class _MainViewState extends State<MainView> {
   bool _isDeletePosition = false;
   bool _inAction = false;
 
+  textAddingFromClipBoard() async {
+    ClipboardData? data = await Clipboard.getData('text/plain');
+    if (data != null) {
+      final _editableItemNotifier =
+          Provider.of<DraggableWidgetNotifier>(context, listen: false);
+
+      _editableItemNotifier.draggableWidget.add(EditableItem()
+        ..type = ItemType.text
+        ..text = data.text.toString()
+        ..backGroundColor = Colors.transparent
+        ..textColor = Colors.white
+        ..fontFamily = 1
+        ..fontSize = 16
+        ..textAlign = TextAlign.center
+        ..position = const Offset(0.0, 0.0));
+    }
+  }
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -120,6 +138,8 @@ class _MainViewState extends State<MainView> {
         _control.colorList = widget.colorList;
       }
     });
+
+    textAddingFromClipBoard();
     super.initState();
   }
 
@@ -409,16 +429,35 @@ class _MainViewState extends State<MainView> {
                                                 .draggableWidget.isNotEmpty) {
                                           controlNotifier.isOpacityChanging =
                                               false;
+                                          Fluttertoast.showToast(
+                                              msg: Localizations.localeOf(
+                                                              context)
+                                                          .languageCode ==
+                                                      'ur'
+                                                  ? 'محفوظ ہو رہا ہے...'
+                                                  : 'Saving...');
                                           var response = await takePicture(
                                               contentKey: contentKey,
                                               context: context,
                                               saveToGallery: true);
                                           if (response) {
+                                            Fluttertoast.cancel();
                                             Fluttertoast.showToast(
-                                                msg: 'Successfully saved');
+                                                msg: Localizations.localeOf(
+                                                                context)
+                                                            .languageCode ==
+                                                        'ur'
+                                                    ? 'کامیابی کے ساتھ محفوظ ہو گیا'
+                                                    : 'Successfully saved');
                                           } else {
+                                            Fluttertoast.cancel();
                                             Fluttertoast.showToast(
-                                                msg: 'Error');
+                                                msg: Localizations.localeOf(
+                                                                context)
+                                                            .languageCode ==
+                                                        'ur'
+                                                    ? 'خرابی'
+                                                    : 'Error');
                                           }
                                         }
                                       })),
@@ -428,9 +467,12 @@ class _MainViewState extends State<MainView> {
                               visible: !controlNotifier.isTextEditing &&
                                   !controlNotifier.isPainting &&
                                   controlNotifier.isOpacityChanging,
-                              child: const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: CustomSlider()),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: CustomSlider()),
+                              ),
                             ),
 
                             /// delete item when the item is in position
@@ -540,7 +582,11 @@ class _MainViewState extends State<MainView> {
                         ),
                       ],
                     );
-
+                    if (controlNotifier.mediaPath.isNotEmpty) {
+                      controlNotifier.mediaPath = '';
+                      itemProvider.draggableWidget.removeAt(0);
+                      controlNotifier.isOpacityChanging = false;
+                    }
                     controlNotifier.mediaPath = croppedFile!.path.toString();
                     // controlNotifier.mediaPath = path.first.path!.toString();
                     if (controlNotifier.mediaPath.isNotEmpty) {

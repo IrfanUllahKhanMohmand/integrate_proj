@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:open_director/Editor/model/constants.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -446,12 +447,11 @@ class DirectorService {
     if (isOperating) return;
     isAdding = true;
     editingTextAsset = Asset(
-      type: AssetType.text,
-      begin: 0,
-      duration: 5000,
-      title: '$text',
-      srcPath: '',
-    );
+        type: AssetType.text,
+        begin: 0,
+        duration: 5000,
+        title: '$text',
+        srcPath: '');
     isAdding = false;
 
     if (assetSelected == null) {

@@ -12,13 +12,6 @@ class TextForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (directorService.editingTextAsset.font == null) {
-      Localizations.localeOf(context).languageCode == 'ur'
-          ? _asset.font =
-              'Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf'
-          : _asset.font = 'Roboto/Roboto-BoldItalic.ttf';
-    }
-
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       _SubMenu(),
       Container(
@@ -91,13 +84,7 @@ class _FontFamily extends StatelessWidget {
         DropdownButton(
           value: (directorService.editingTextAsset != null)
               ? Font.getByPath(directorService.editingTextAsset.font)
-              : Font.allFonts[0],
-          // ? directorService.editingTextAsset.font != null
-          //     ? Font.getByPath(directorService.editingTextAsset.font)
-          //     : Localizations.localeOf(context).languageCode == 'ur'
-          //         ? Font.allFonts[0]
-          //         : Font.allFonts[8]
-          // : Font.allFonts[0],
+              : Font.allFonts[1],
           items: Localizations.localeOf(context).languageCode == 'ur'
               ? Font.allFonts
                   .sublist(0, 2)
@@ -114,7 +101,7 @@ class _FontFamily extends StatelessWidget {
                       )))
                   .toList()
               : Font.allFonts
-                  .sublist(2)
+                  .sublist(1)
                   .map((Font font) => DropdownMenuItem(
                       value: font,
                       child: Text(
@@ -219,21 +206,22 @@ class Font {
     this.style = FontStyle.normal,
     this.path,
   });
+
   static Font getByPath(String path) {
     return allFonts.firstWhere((font) => font.path == path);
   }
 
   static List<Font> allFonts = [
     Font(
-        title: 'Noto Naskh',
-        family: 'Noto Naskh Arabic',
-        weight: FontWeight.w700,
-        path: 'Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf'),
-    Font(
         title: 'Noto Sans',
         family: 'Noto Sans Arabic',
         weight: FontWeight.w700,
         path: 'Noto_Sans_Arabic/NotoSansArabic-VariableFont_wdth.ttf'),
+    Font(
+        title: 'Noto Naskh',
+        family: 'Noto Naskh Arabic',
+        weight: FontWeight.w700,
+        path: 'Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf'),
     Font(
         title: 'Lato black',
         family: 'Lato',
@@ -289,11 +277,6 @@ class Font {
         style: FontStyle.italic,
         weight: FontWeight.w100,
         path: 'Lato/Lato-ThinItalic.ttf'),
-    Font(
-        title: 'Lobster regular',
-        family: 'Lobster',
-        weight: FontWeight.w400,
-        path: 'Lobster/Lobster-Regular.ttf'),
     Font(
         title: 'OpenSans bold',
         family: 'OpenSans',

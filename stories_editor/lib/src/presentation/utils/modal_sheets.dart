@@ -68,29 +68,51 @@ Future<bool> exitDialog({required context, required contentKey}) async {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text(
-                    'Discard Edits?',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        letterSpacing: 0.5),
-                  ),
+                  Localizations.localeOf(context).languageCode == 'ur'
+                      ? const Text(
+                          'ترامیم کو مسترد کریں؟',
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              letterSpacing: 0.5),
+                        )
+                      : const Text(
+                          'Discard Edits?',
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              letterSpacing: 0.5),
+                        ),
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text(
-                    "If you go back now, you'll lose all the edits you've made.",
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white54,
-                        letterSpacing: 0.1),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
+                  Localizations.localeOf(context).languageCode == 'ur'
+                      ? const Text(
+                          'اگر آپ ابھی واپس جاتے ہیں، تو آپ ان تمام ترامیم سے محروم ہو جائیں گے جو آپ نے کی ہیں۔',
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white54,
+                              letterSpacing: 0.1),
+                          textAlign: TextAlign.center,
+                        )
+                      : const Text(
+                          "If you go back now, you'll lose all the edits you've made.",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white54,
+                              letterSpacing: 0.1),
+                          textAlign: TextAlign.center,
+                        ),
+                  Localizations.localeOf(context).languageCode == 'ur'
+                      ? const SizedBox(
+                          height: 20,
+                        )
+                      : const SizedBox(
+                          height: 40,
+                        ),
 
                   /// discard
                   AnimatedOnTapButton(
@@ -99,7 +121,9 @@ Future<bool> exitDialog({required context, required contentKey}) async {
                       Navigator.of(context).pop(true);
                     },
                     child: Text(
-                      'Discard',
+                      Localizations.localeOf(context).languageCode == 'ur'
+                          ? 'رد کر دیں'
+                          : 'Discard',
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.redAccent.shade200,
@@ -132,17 +156,36 @@ Future<bool> exitDialog({required context, required contentKey}) async {
                             saveToGallery: true);
                         if (response) {
                           _dispose(
-                              context: context, message: 'Successfully saved');
+                              context: context,
+                              message: Localizations.localeOf(context)
+                                          .languageCode ==
+                                      'ur'
+                                  ? 'کامیابی کے ساتھ محفوظ ہو گیا'
+                                  : 'Successfully saved');
                         } else {
-                          _dispose(context: context, message: 'Error');
+                          _dispose(
+                              context: context,
+                              message: Localizations.localeOf(context)
+                                          .languageCode ==
+                                      'ur'
+                                  ? 'خرابی'
+                                  : 'Error');
                         }
                       } else {
-                        _dispose(context: context, message: 'Draft Empty');
+                        _dispose(
+                            context: context,
+                            message:
+                                Localizations.localeOf(context).languageCode ==
+                                        'ur'
+                                    ? 'ڈرافٹ خالی'
+                                    : 'Draft Empty');
                       }
                     },
-                    child: const Text(
-                      'Save Draft',
-                      style: TextStyle(
+                    child: Text(
+                      Localizations.localeOf(context).languageCode == 'ur'
+                          ? 'ڈرافٹ محفوظ کریں'
+                          : 'Save Draft',
+                      style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -162,9 +205,11 @@ Future<bool> exitDialog({required context, required contentKey}) async {
                     onTap: () {
                       Navigator.of(context).pop(false);
                     },
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
+                    child: Text(
+                      Localizations.localeOf(context).languageCode == 'ur'
+                          ? 'منسوخ کریں'
+                          : 'Cancel',
+                      style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
