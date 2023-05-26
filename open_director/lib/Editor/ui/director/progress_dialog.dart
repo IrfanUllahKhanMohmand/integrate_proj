@@ -34,12 +34,12 @@ class ProgressDialog extends StatelessWidget {
                 ? "آپ کی ویڈیو تیار ہو رہی ہے"
                 : 'Building your video';
             progress = ffmepegStat.data.time / directorService.duration;
-            int remaining = (ffmepegStat.data.timeElapsed *
-                    (directorService.duration / ffmepegStat.data.time - 1))
-                .floor();
-            int minutes = Duration(milliseconds: remaining).inMinutes;
-            int seconds = Duration(milliseconds: remaining).inSeconds -
-                60 * Duration(milliseconds: remaining).inMinutes;
+            // int remaining = (ffmepegStat.data.timeElapsed *
+            //         (directorService.duration / ffmepegStat.data.time - 1))
+            //     .floor();
+            // int minutes = Duration(milliseconds: remaining).inMinutes;
+            // int seconds = Duration(milliseconds: remaining).inSeconds -
+            //     60 * Duration(milliseconds: remaining).inMinutes;
             // progressText = Localizations.localeOf(context).languageCode == 'ur'
             //     ? '$minutes منٹ  $seconds سیکنڈ  باقی ہیں'
             //     : '$minutes min $seconds secs remaining';

@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:integration_test/Providers/admob_provider.dart';
 import 'package:integration_test/Providers/local_provider.dart';
@@ -31,6 +33,7 @@ class PoetsList extends StatefulWidget {
 }
 
 class _PoetsListState extends State<PoetsList> {
+  DefaultCacheManager cacheManager = DefaultCacheManager();
   late StreamSubscription _connectivitySubscription;
   bool _isConnectionSuccessful = false;
   List<Poet> poets = [];
@@ -39,104 +42,270 @@ class _PoetsListState extends State<PoetsList> {
   List<Ghazal> ghazals = [];
   List<Sher> shers = [];
   List trendingShers = [];
-  Future fetchPoets() async {
-    final response = await http.get(
-      Uri.parse('http://nawees.com/api/poets'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+
+  Future<List<Poet>> fetchPoets() async {
+    const String url = 'http://nawees.com/api/poets';
+
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(url);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> data = jsonDecode(cachedData);
+      final List<Poet> cachedPoets =
+          data.map((json) => Poet.fromJson(json)).toList();
       setState(() {
-        poets = data.map((json) => Poet.fromJson(json)).toList();
+        poets = cachedPoets;
       });
-      return poets;
+      return cachedPoets;
     } else {
-      throw Exception('Failed to fetch poets');
+      // Data not found in the cache, fetch it from the API
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final List<Poet> fetchedPoets =
+            data.map((json) => Poet.fromJson(json)).toList();
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(url, bytes);
+
+        setState(() {
+          poets = fetchedPoets;
+        });
+        return fetchedPoets;
+      } else {
+        throw Exception('Failed to fetch poets');
+      }
     }
   }
 
-  Future fetchCategories() async {
-    final response = await http.get(
-      Uri.parse('http://nawees.com/api/category'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      setState(() {
-        categories = data.map((json) => Category.fromJson(json)).toList();
-      });
+  Future<List<Category>> fetchCategories() async {
+    const String url = 'http://nawees.com/api/category';
 
-      return categories;
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(url);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> data = jsonDecode(cachedData);
+      final List<Category> cachedCategories =
+          data.map((json) => Category.fromJson(json)).toList();
+      setState(() {
+        categories = cachedCategories;
+      });
+      return cachedCategories;
     } else {
-      throw Exception('Failed to fetch categories');
+      // Data not found in the cache, fetch it from the API
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final List<Category> fetchedCategories =
+            data.map((json) => Category.fromJson(json)).toList();
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(url, bytes);
+
+        setState(() {
+          categories = fetchedCategories;
+        });
+        return fetchedCategories;
+      } else {
+        throw Exception('Failed to fetch categories');
+      }
     }
   }
 
   Future getNazams() async {
-    var response = await http.get(
-      Uri.parse('http://nawees.com/api/nazams'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+    const String url = 'http://nawees.com/api/nazams';
+    const String cacheKey = 'nazams_data';
+
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> data = jsonDecode(cachedData);
+      final List<Nazam> cachedNazams =
+          data.map((entry) => Nazam.fromJson(entry)).toList();
       setState(() {
-        nazams = data.map((entry) => Nazam.fromJson(entry)).toList();
+        nazams = cachedNazams;
       });
-      return nazams;
+      return cachedNazams;
+    } else {
+      // Data not found in the cache, fetch it from the API
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final List<Nazam> fetchedNazams =
+            data.map((entry) => Nazam.fromJson(entry)).toList();
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(cacheKey, bytes);
+
+        setState(() {
+          nazams = fetchedNazams;
+        });
+        return fetchedNazams;
+      }
     }
   }
 
   Future getGhazals() async {
-    var response = await http.get(
-      Uri.parse('http://nawees.com/api/ghazals'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+    const String url = 'http://nawees.com/api/ghazals';
+    const String cacheKey = 'ghazals_data';
+
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> data = jsonDecode(cachedData);
+      final List<Ghazal> cachedGhazals =
+          data.map((entry) => Ghazal.fromJson(entry)).toList();
       setState(() {
-        ghazals = data.map((entry) => Ghazal.fromJson(entry)).toList();
+        ghazals = cachedGhazals;
       });
-      return ghazals;
+      return cachedGhazals;
+    } else {
+      // Data not found in the cache, fetch it from the API
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final List<Ghazal> fetchedGhazals =
+            data.map((entry) => Ghazal.fromJson(entry)).toList();
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(cacheKey, bytes);
+
+        setState(() {
+          ghazals = fetchedGhazals;
+        });
+        return fetchedGhazals;
+      }
     }
   }
 
   Future getShers() async {
-    var response = await http.get(
-      Uri.parse('http://nawees.com/api/shers'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+    const String url = 'http://nawees.com/api/shers';
+    const String cacheKey = 'shers_data';
+
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> data = jsonDecode(cachedData);
+      final List<Sher> cachedShers =
+          data.map((entry) => Sher.fromJson(entry)).toList();
       setState(() {
-        shers = data.map((entry) => Sher.fromJson(entry)).toList();
+        shers = cachedShers;
       });
-      return shers;
+      return cachedShers;
+    } else {
+      // Data not found in the cache, fetch it from the API
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final List<Sher> fetchedShers =
+            data.map((entry) => Sher.fromJson(entry)).toList();
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(cacheKey, bytes);
+
+        setState(() {
+          shers = fetchedShers;
+        });
+        return fetchedShers;
+      }
     }
   }
 
+  //   Future getTrendingShers() async {
+  //   var response = await http.get(
+  //     Uri.parse('http://nawees.com/api/sherranks'),
+  //     headers: {
+  //       HttpHeaders.authorizationHeader: "Bearer $apiKey",
+  //     },
+  //   );
+  //   if (response.statusCode == 200) {
+  //     final List<dynamic> data = jsonDecode(response.body);
+  //     setState(() {
+  //       trendingShers = data;
+  //     });
+  //     return trendingShers;
+  //   }
+  // }
+
   Future getTrendingShers() async {
-    var response = await http.get(
-      Uri.parse('http://nawees.com/api/sherranks'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+    const String url = 'http://nawees.com/api/sherranks';
+    const String cacheKey = 'trending_shers_data';
+
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> cachedShers = jsonDecode(cachedData);
       setState(() {
-        trendingShers = data;
+        trendingShers = cachedShers;
       });
-      return trendingShers;
+      return cachedShers;
+    } else {
+      // Data not found in the cache, fetch it from the API
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> fetchedShers = jsonDecode(response.body);
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(cacheKey, bytes);
+
+        setState(() {
+          trendingShers = fetchedShers;
+        });
+        return fetchedShers;
+      }
     }
   }
 
@@ -166,13 +335,13 @@ class _PoetsListState extends State<PoetsList> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // await prefs.remove('userid');
     final int id = DateTime.now().microsecondsSinceEpoch;
-    if (prefs.getInt('uusrsid') != null) {
-      final int userId = prefs.getInt('uusrsid') ?? id;
+    if (prefs.getInt('uuuusrsid') != null) {
+      final int userId = prefs.getInt('uuuusrsid') ?? id;
       Provider.of<UserProvider>(context, listen: false).set(userId);
     } else {
       try {
         await createUser(id);
-        await prefs.setInt('uusrsid', id);
+        await prefs.setInt('uuuusrsid', id);
       } on Error {
         throw Exception('Failed to create user');
       }

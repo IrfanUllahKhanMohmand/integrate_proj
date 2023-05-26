@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:integration_test/Providers/nazams_likes_provider.dart';
 import 'package:integration_test/Providers/user_provider.dart';
 import 'package:integration_test/model/nazam.dart';
@@ -24,32 +26,51 @@ class NazamList extends StatefulWidget {
 }
 
 class _NazamListState extends State<NazamList> {
-  Map nazamsData = {};
+  DefaultCacheManager cacheManager = DefaultCacheManager();
   // Map likes = {};
   getPoet(int id) {
     var poet = widget.poet.where((element) => element.id == id);
     return poet.first;
   }
 
+  Map<String, dynamic> nazamsData = {};
+
   getNazamsLikes() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final nazamProvider =
         Provider.of<NazamLikesProvider>(context, listen: false);
+
     for (var element in widget.nazams) {
-      var response = await http.get(
-        Uri.parse(
-            'http://nawees.com/api/nazamlikes?user_id=${userProvider.userId}&nazam_id=${element.id}'),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $apiKey",
-        },
-      );
-      if (response.statusCode == 200) {
-        nazamsData = await jsonDecode(response.body);
-        nazamProvider.add({element.id: nazamsData.values.first});
-        setState(() {});
+      String cacheKey = 'nazam_likes_${userProvider.userId}_${element.id}';
+      FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+
+      if (cachedFile != null) {
+        // Likes data exists in the cache, read and parse it
+        final String cachedData = await cachedFile.file.readAsString();
+        var nazamLikes = jsonDecode(cachedData)['likes'];
+        nazamProvider.add({element.id: nazamLikes});
+      } else {
+        // Likes data not found in the cache, fetch it from the API
+        var response = await http.get(
+          Uri.parse(
+              'http://nawees.com/api/nazamlikes?user_id=${userProvider.userId}&nazam_id=${element.id}'),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $apiKey",
+          },
+        );
+        if (response.statusCode == 200) {
+          var nazamLikes = jsonDecode(response.body).values.first;
+          nazamProvider.add({element.id: nazamLikes});
+
+          // Cache the fetched data
+          String jsonData = jsonEncode({'likes': nazamLikes});
+          final Uint8List bytes = Uint8List.fromList(utf8.encode(jsonData));
+          await cacheManager.putFile(cacheKey, bytes);
+        }
       }
     }
 
+    setState(() {});
     return nazamProvider.likes;
   }
 

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:integration_test/model/ghazal.dart';
 import 'package:integration_test/model/nazam.dart';
 import 'package:integration_test/model/poet.dart';
@@ -23,81 +25,183 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  DefaultCacheManager cacheManager = DefaultCacheManager();
   late Poet poetData;
   List nazamsData = [];
   List ghazalsData = [];
   List shersData = [];
   Future getPoetData() async {
-    var response = await http.get(
-      Uri.parse('http://nawees.com/api/poets/${widget.id}'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
+    const String url = 'http://nawees.com/api/poets';
+
+    String cacheKey = '${url}_${widget.id}';
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final dynamic data = jsonDecode(cachedData);
+      final Poet cachedPoet = Poet.fromJson(data);
       setState(() {
-        poetData = Poet.fromJson(jsonDecode(response.body));
+        poetData = cachedPoet;
       });
-      return poetData;
+      return cachedPoet;
     } else {
-      throw Exception('Failed to get poet data');
+      // Data not found in the cache, fetch it from the API
+      var response = await http.get(
+        Uri.parse('$url/${widget.id}'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final dynamic data = jsonDecode(response.body);
+        final Poet fetchedPoet = Poet.fromJson(data);
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(cacheKey, bytes);
+
+        setState(() {
+          poetData = fetchedPoet;
+        });
+        return fetchedPoet;
+      } else {
+        throw Exception('Failed to get poet data');
+      }
     }
   }
 
   Future getNazamsData() async {
-    var response = await http.get(
-      Uri.parse('http://nawees.com/api/nazamsByPoet?poet_id=${widget.id}'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
+    const String url = 'http://nawees.com/api/nazamsByPoet';
+
+    String cacheKey = '${url}_${widget.id}';
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> data = jsonDecode(cachedData);
+      final List<Nazam> cachedNazams =
+          data.map((entry) => Nazam.fromJson(entry)).toList();
+
       setState(() {
-        nazamsData = jsonDecode(response.body)
-            .map((entry) => Nazam.fromJson(entry))
-            .toList();
+        nazamsData = cachedNazams;
       });
-      return nazamsData;
+      return cachedNazams;
     } else {
-      throw Exception('Failed to get nazams data');
+      // Data not found in the cache, fetch it from the API
+      var response = await http.get(
+        Uri.parse('$url?poet_id=${widget.id}'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final List<Nazam> fetchedNazams =
+            data.map((entry) => Nazam.fromJson(entry)).toList();
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(cacheKey, bytes);
+
+        setState(() {
+          nazamsData = fetchedNazams;
+        });
+        return fetchedNazams;
+      } else {
+        throw Exception('Failed to get nazams data');
+      }
     }
   }
 
   Future getGhazalsData() async {
-    var response = await http.get(
-      Uri.parse('http://nawees.com/api/ghazalsByPoet?poet_id=${widget.id}'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
+    const String url = 'http://nawees.com/api/ghazalsByPoet';
+    String cacheKey = '${url}_${widget.id}';
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> data = jsonDecode(cachedData);
+      final List<Ghazal> cachedGhazals =
+          data.map((entry) => Ghazal.fromJson(entry)).toList();
+
       setState(() {
-        ghazalsData = jsonDecode(response.body)
-            .map((entry) => Ghazal.fromJson(entry))
-            .toList();
+        ghazalsData = cachedGhazals;
       });
-      return ghazalsData;
+      return cachedGhazals;
     } else {
-      throw Exception('Failed to get ghazal data');
+      // Data not found in the cache, fetch it from the API
+      var response = await http.get(
+        Uri.parse('$url?poet_id=${widget.id}'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final List<Ghazal> fetchedGhazals =
+            data.map((entry) => Ghazal.fromJson(entry)).toList();
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(cacheKey, bytes);
+
+        setState(() {
+          ghazalsData = fetchedGhazals;
+        });
+        return fetchedGhazals;
+      } else {
+        throw Exception('Failed to get ghazal data');
+      }
     }
   }
 
   Future getShersData() async {
-    var response = await http.get(
-      Uri.parse('http://nawees.com/api/shersByPoet?poet_id=${widget.id}'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $apiKey",
-      },
-    );
-    if (response.statusCode == 200) {
+    const String url = 'http://nawees.com/api/shersByPoet';
+
+    String cacheKey = '${url}_${widget.id}';
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> data = jsonDecode(cachedData);
+      final List<Sher> cachedShers =
+          data.map((entry) => Sher.fromJson(entry)).toList();
       setState(() {
-        shersData = jsonDecode(response.body)
-            .map((entry) => Sher.fromJson(entry))
-            .toList();
+        shersData = cachedShers;
       });
-      return shersData;
+      return cachedShers;
     } else {
-      throw Exception('Failed to get shers data');
+      // Data not found in the cache, fetch it from the API
+      var response = await http.get(
+        Uri.parse('$url?poet_id=${widget.id}'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $apiKey",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final List<Sher> fetchedShers =
+            data.map((entry) => Sher.fromJson(entry)).toList();
+
+        // Cache the fetched data
+        final Uint8List bytes = Uint8List.fromList(utf8.encode(response.body));
+        await cacheManager.putFile(cacheKey, bytes);
+
+        setState(() {
+          shersData = fetchedShers;
+        });
+        return fetchedShers;
+      } else {
+        throw Exception('Failed to get shers data');
+      }
     }
   }
 

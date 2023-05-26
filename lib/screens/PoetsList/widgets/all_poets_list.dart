@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:integration_test/Providers/category_likes_provider.dart';
 import 'package:integration_test/Providers/poets_likes_provider.dart';
@@ -38,70 +39,224 @@ class AllPoetsList extends StatefulWidget {
 }
 
 class _AllPoetsListState extends State<AllPoetsList> {
+  DefaultCacheManager cacheManager = DefaultCacheManager();
   Map poetsData = {};
   Map categoriesData = {};
   List<Sher> trendShers = [];
-  getTrendingShers() async {
-    for (var element in widget.trendingShers) {
-      var response = await http.get(
-        Uri.parse('http://nawees.com/api/shers/${element['sher_id']}'),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $apiKey",
-        },
-      );
-      if (response.statusCode == 200) {
-        setState(() {
+
+  // getTrendingShers() async {
+  //   for (var element in widget.trendingShers) {
+  //     var response = await http.get(
+  //       Uri.parse('http://nawees.com/api/shers/${element['sher_id']}'),
+  //       headers: {
+  //         HttpHeaders.authorizationHeader: "Bearer $apiKey",
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       setState(() {
+  //         Sher data = Sher.fromJson(jsonDecode(response.body));
+  //         trendShers.add(data);
+  //       });
+  //     }
+  //   }
+
+  //   return trendShers;
+  // }
+
+  Future getTrendingShers() async {
+    const String cacheKey = 'trending_shers_data_all';
+
+    // Check if the response is already cached
+    FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+    if (cachedFile != null) {
+      // Data exists in the cache, read and parse it
+      final String cachedData = await cachedFile.file.readAsString();
+      final List<dynamic> cachedShers = jsonDecode(cachedData);
+      setState(() {
+        trendShers = cachedShers.map((e) => Sher.fromJson(e)).toList();
+      });
+      return cachedShers.map((e) => Sher.fromJson(e)).toList();
+    } else {
+      // Data not found in the cache, fetch it from the API
+
+      for (var element in widget.trendingShers) {
+        var response = await http.get(
+          Uri.parse('http://nawees.com/api/shers/${element['sher_id']}'),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $apiKey",
+          },
+        );
+        if (response.statusCode == 200) {
           Sher data = Sher.fromJson(jsonDecode(response.body));
           trendShers.add(data);
-        });
+        }
       }
-    }
 
-    return trendShers;
+      // Cache the fetched data
+      final Uint8List bytes = Uint8List.fromList(
+          utf8.encode(jsonEncode(trendShers.map((e) => e.toJson()).toList())));
+      await cacheManager.putFile(cacheKey, bytes);
+
+      return trendShers;
+    }
   }
 
-  getPoetsLikes() async {
+  // Future getTrendingShers() async {
+  //   const String cacheKey = 'ttrending_shers_data_all_poets_list';
+
+  //   // Check if the response is already cached
+  //   FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+  //   if (cachedFile != null) {
+  //     // Data exists in the cache, read and parse it
+  //     final String cachedData = await cachedFile.file.readAsString();
+  //     final List<dynamic> cachedShers = jsonDecode(cachedData);
+  //     setState(() {
+  //       print(cachedShers);
+  //     });
+  //     return cachedShers.map((e) => Sher.fromJson(e)).toList();
+  //   } else {
+  //     String res = '';
+  //     // Data not found in the cache, fetch it from the API
+  //     for (var element in widget.trendingShers) {
+  //       var response = await http.get(
+  //         Uri.parse('http://nawees.com/api/shers/${element['sher_id']}'),
+  //         headers: {
+  //           HttpHeaders.authorizationHeader: "Bearer $apiKey",
+  //         },
+  //       );
+  //       if (response.statusCode == 200) {
+  //         setState(() {
+  //           Sher data = Sher.fromJson(jsonDecode(response.body));
+  //           trendShers.add(data);
+
+  //           res += response.body;
+  //         });
+  //       }
+  //       final Uint8List bytes = Uint8List.fromList(utf8.encode(res));
+  //       await cacheManager.putFile(cacheKey, bytes);
+  //     }
+  //   }
+  // }
+
+  Future getPoetsLikes() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final poetProvider = Provider.of<PoetLikesProvider>(context, listen: false);
+
     for (var element in widget.poets) {
-      var response = await http.get(
-        Uri.parse(
-            'http://nawees.com/api/poetlikes?user_id=${userProvider.userId}&poet_id=${element.id}'),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $apiKey",
-        },
-      );
-      if (response.statusCode == 200) {
-        poetsData = await jsonDecode(response.body);
-        poetProvider.add({element.id: poetsData.values.first});
-        setState(() {});
+      String cacheKey = 'poets_likes_${userProvider.userId}_${element.id}';
+      FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+
+      if (cachedFile != null) {
+        // Likes data exists in the cache, read and parse it
+        final String cachedData = await cachedFile.file.readAsString();
+        var poetsLikes = jsonDecode(cachedData)['likes'];
+        poetProvider.add({element.id: poetsLikes});
+      } else {
+        // Likes data not found in the cache, fetch it from the API
+        var response = await http.get(
+          Uri.parse(
+              'http://nawees.com/api/poetlikes?user_id=${userProvider.userId}&poet_id=${element.id}'),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $apiKey",
+          },
+        );
+        if (response.statusCode == 200) {
+          var poetsLikes = jsonDecode(response.body).values.first;
+          poetProvider.add({element.id: poetsLikes});
+
+          // Cache the fetched data
+          String jsonData = jsonEncode({'likes': poetsLikes});
+          final Uint8List bytes = Uint8List.fromList(utf8.encode(jsonData));
+          await cacheManager.putFile(cacheKey, bytes);
+        }
       }
     }
 
+    setState(() {});
     return poetProvider.likes;
   }
 
-  getCategoriesLikes() async {
+  // getPoetsLikes() async {
+  //   final userProvider = Provider.of<UserProvider>(context, listen: false);
+  //   final poetProvider = Provider.of<PoetLikesProvider>(context, listen: false);
+  //   for (var element in widget.poets) {
+  //     var response = await http.get(
+  //       Uri.parse(
+  //           'http://nawees.com/api/poetlikes?user_id=${userProvider.userId}&poet_id=${element.id}'),
+  //       headers: {
+  //         HttpHeaders.authorizationHeader: "Bearer $apiKey",
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       poetsData = await jsonDecode(response.body);
+  //       poetProvider.add({element.id: poetsData.values.first});
+  //       setState(() {});
+  //     }
+  //   }
+
+  //   return poetProvider.likes;
+  // }
+
+  Future getCategoriesLikes() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final categoriesProvider =
         Provider.of<CategoryLikesProvider>(context, listen: false);
-    for (var element in widget.poets) {
-      var response = await http.get(
-        Uri.parse(
-            'http://nawees.com/api/categorylikes?user_id=${userProvider.userId}&category_id=${element.id}'),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $apiKey",
-        },
-      );
-      if (response.statusCode == 200) {
-        poetsData = await jsonDecode(response.body);
-        categoriesProvider.add({element.id: poetsData.values.first});
-        setState(() {});
+
+    for (var element in widget.categories) {
+      String cacheKey = 'categories_likes_${userProvider.userId}_${element.id}';
+      FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+
+      if (cachedFile != null) {
+        // Likes data exists in the cache, read and parse it
+        final String cachedData = await cachedFile.file.readAsString();
+        var categoriesLikes = jsonDecode(cachedData)['likes'];
+        categoriesProvider.add({element.id: categoriesLikes});
+      } else {
+        // Likes data not found in the cache, fetch it from the API
+        var response = await http.get(
+          Uri.parse(
+              'http://nawees.com/api/categorylikes?user_id=${userProvider.userId}&category_id=${element.id}'),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $apiKey",
+          },
+        );
+        if (response.statusCode == 200) {
+          var categoriesLikes = jsonDecode(response.body).values.first;
+          categoriesProvider.add({element.id: categoriesLikes});
+
+          // Cache the fetched data
+          String jsonData = jsonEncode({'likes': categoriesLikes});
+          final Uint8List bytes = Uint8List.fromList(utf8.encode(jsonData));
+          await cacheManager.putFile(cacheKey, bytes);
+        }
       }
     }
 
+    setState(() {});
     return categoriesProvider.likes;
   }
+
+  // getCategoriesLikes() async {
+  //   final userProvider = Provider.of<UserProvider>(context, listen: false);
+  //   final categoriesProvider =
+  //       Provider.of<CategoryLikesProvider>(context, listen: false);
+  //   for (var element in widget.poets) {
+  //     var response = await http.get(
+  //       Uri.parse(
+  //           'http://nawees.com/api/categorylikes?user_id=${userProvider.userId}&category_id=${element.id}'),
+  //       headers: {
+  //         HttpHeaders.authorizationHeader: "Bearer $apiKey",
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       categoriesData = await jsonDecode(response.body);
+  //       categoriesProvider.add({element.id: categoriesData.values.first});
+  //       setState(() {});
+  //     }
+  //   }
+
+  //   return categoriesProvider.likes;
+  // }
 
   copyToClipBoard(String txt) async {
     await Clipboard.setData(ClipboardData(text: txt));

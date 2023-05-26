@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:integration_test/Providers/catnazams_likes_provider.dart';
 import 'package:integration_test/Providers/local_provider.dart';
 import 'package:integration_test/Providers/user_provider.dart';
@@ -25,6 +26,7 @@ class CategoryNazamPreview extends StatefulWidget {
 }
 
 class _CategoryNazamPreviewState extends State<CategoryNazamPreview> {
+  DefaultCacheManager cacheManager = DefaultCacheManager();
   likeNazam() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final response = await http.post(
@@ -185,6 +187,15 @@ class _CategoryNazamPreviewState extends State<CategoryNazamPreview> {
                                               context,
                                               listen: false)
                                           .add({widget.nazam.id: 0});
+                                      String cacheKey =
+                                          'catnazam_likes_${Provider.of<UserProvider>(context, listen: false).userId}_${widget.nazam.id}';
+                                      String jsonData =
+                                          jsonEncode({'likes': 0});
+                                      final Uint8List bytes =
+                                          Uint8List.fromList(
+                                              utf8.encode(jsonData));
+                                      await cacheManager.putFile(
+                                          cacheKey, bytes);
                                       await dislikeNazam();
                                     },
                                     child: const Icon(Icons.favorite,
@@ -195,6 +206,15 @@ class _CategoryNazamPreviewState extends State<CategoryNazamPreview> {
                                               context,
                                               listen: false)
                                           .add({widget.nazam.id: 1});
+                                      String cacheKey =
+                                          'catnazam_likes_${Provider.of<UserProvider>(context, listen: false).userId}_${widget.nazam.id}';
+                                      String jsonData =
+                                          jsonEncode({'likes': 1});
+                                      final Uint8List bytes =
+                                          Uint8List.fromList(
+                                              utf8.encode(jsonData));
+                                      await cacheManager.putFile(
+                                          cacheKey, bytes);
                                       await likeNazam();
                                     },
                                     child: const Icon(

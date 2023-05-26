@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:integration_test/Providers/ghazals_likes_provider.dart';
 import 'package:integration_test/Providers/local_provider.dart';
 import 'package:integration_test/Providers/user_provider.dart';
@@ -25,6 +26,7 @@ class GhazalPreview extends StatefulWidget {
 }
 
 class _GhazalPreviewState extends State<GhazalPreview> {
+  DefaultCacheManager cacheManager = DefaultCacheManager();
   likeGhazal() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final response = await http.post(
@@ -185,6 +187,15 @@ class _GhazalPreviewState extends State<GhazalPreview> {
                                       Provider.of<GhazalLikesProvider>(context,
                                               listen: false)
                                           .add({widget.ghazal.id: 0});
+                                      String cacheKey =
+                                          'ghazal_likes_${Provider.of<UserProvider>(context, listen: false).userId}_${widget.ghazal.id}';
+                                      String jsonData =
+                                          jsonEncode({'likes': 0});
+                                      final Uint8List bytes =
+                                          Uint8List.fromList(
+                                              utf8.encode(jsonData));
+                                      await cacheManager.putFile(
+                                          cacheKey, bytes);
                                       await dislikeGhazal();
                                     },
                                     child: const Icon(Icons.favorite,
@@ -194,6 +205,15 @@ class _GhazalPreviewState extends State<GhazalPreview> {
                                       Provider.of<GhazalLikesProvider>(context,
                                               listen: false)
                                           .add({widget.ghazal.id: 1});
+                                      String cacheKey =
+                                          'ghazal_likes_${Provider.of<UserProvider>(context, listen: false).userId}_${widget.ghazal.id}';
+                                      String jsonData =
+                                          jsonEncode({'likes': 1});
+                                      final Uint8List bytes =
+                                          Uint8List.fromList(
+                                              utf8.encode(jsonData));
+                                      await cacheManager.putFile(
+                                          cacheKey, bytes);
                                       await likeGhazal();
                                     },
                                     child: const Icon(

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:integration_test/Providers/shers_likes_provider.dart';
 import 'package:integration_test/Providers/user_provider.dart';
 import 'package:integration_test/model/poet.dart';
@@ -24,31 +26,49 @@ class SherTabView extends StatefulWidget {
 }
 
 class _SherTabViewState extends State<SherTabView> {
-  Map shersData = {};
+  DefaultCacheManager cacheManager = DefaultCacheManager();
 
-  getshersLikes() async {
+  Map<String, dynamic> shersData = {};
+
+  getShersLikes() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final sherProvider = Provider.of<SherLikesProvider>(context, listen: false);
-    for (var element in widget.shers) {
-      var response = await http.get(
-        Uri.parse(
-            'http://nawees.com/api/sherlikes?user_id=${userProvider.userId}&sher_id=${element.id}'),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $apiKey",
-        },
-      );
-      if (response.statusCode == 200) {
-        shersData = await jsonDecode(response.body);
 
-        sherProvider.add({element.id: shersData.values.first});
-        setState(() {});
+    for (var element in widget.shers) {
+      String cacheKey = 'sher_likes_${userProvider.userId}_${element.id}';
+      FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+
+      if (cachedFile != null) {
+        // Likes data exists in the cache, read and parse it
+        final String cachedData = await cachedFile.file.readAsString();
+        var sherLikes = jsonDecode(cachedData)['likes'];
+        sherProvider.add({element.id: sherLikes});
+      } else {
+        // Likes data not found in the cache, fetch it from the API
+        var response = await http.get(
+          Uri.parse(
+              'http://nawees.com/api/sherlikes?user_id=${userProvider.userId}&sher_id=${element.id}'),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $apiKey",
+          },
+        );
+        if (response.statusCode == 200) {
+          var sherLikes = jsonDecode(response.body).values.first;
+          sherProvider.add({element.id: sherLikes});
+
+          // Cache the fetched data
+          String jsonData = jsonEncode({'likes': sherLikes});
+          final Uint8List bytes = Uint8List.fromList(utf8.encode(jsonData));
+          await cacheManager.putFile(cacheKey, bytes);
+        }
       }
     }
 
+    setState(() {});
     return sherProvider.likes;
   }
 
-  late final Future ghazalsLikesFuture = getshersLikes();
+  late final Future ghazalsLikesFuture = getShersLikes();
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

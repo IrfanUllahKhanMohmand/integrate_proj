@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:open_director/Editor/model/constants.dart';
 import 'package:open_director/Editor/service_locator.dart';
 import 'package:open_director/Editor/service/project_service.dart';
 import 'package:open_director/Editor/model/project.dart';

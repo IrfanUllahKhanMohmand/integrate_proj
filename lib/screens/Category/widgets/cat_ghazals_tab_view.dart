@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:integration_test/Providers/catghazals_likes_provider.dart';
 import 'package:integration_test/Providers/user_provider.dart';
 import 'package:integration_test/model/category.dart';
@@ -23,28 +25,71 @@ class CategoryGhazalsTabView extends StatefulWidget {
 }
 
 class _CategoryGhazalsTabViewState extends State<CategoryGhazalsTabView> {
-  Map catghazalsData = {};
+  DefaultCacheManager cacheManager = DefaultCacheManager();
+
+  Map<String, dynamic> ghazalsData = {};
+
   getGhazalsLikes() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final ghazalProvider =
+    final catghazalProvider =
         Provider.of<CatGhazalLikesProvider>(context, listen: false);
+
     for (var element in widget.ghazals) {
-      var response = await http.get(
-        Uri.parse(
-            'http://nawees.com/api/catghazallikes?user_id=${userProvider.userId}&catghazal_id=${element.id}'),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $apiKey",
-        },
-      );
-      if (response.statusCode == 200) {
-        catghazalsData = await jsonDecode(response.body);
-        ghazalProvider.add({element.id: catghazalsData.values.first});
-        setState(() {});
+      String cacheKey = 'catghazal_likes_${userProvider.userId}_${element.id}';
+      FileInfo? cachedFile = await cacheManager.getFileFromCache(cacheKey);
+
+      if (cachedFile != null) {
+        // Likes data exists in the cache, read and parse it
+        final String cachedData = await cachedFile.file.readAsString();
+        var ghazalLikes = jsonDecode(cachedData)['likes'];
+        catghazalProvider.add({element.id: ghazalLikes});
+      } else {
+        // Likes data not found in the cache, fetch it from the API
+        var response = await http.get(
+          Uri.parse(
+              'http://nawees.com/api/catghazallikes?user_id=${userProvider.userId}&catghazal_id=${element.id}'),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $apiKey",
+          },
+        );
+        if (response.statusCode == 200) {
+          var ghazalLikes = jsonDecode(response.body).values.first;
+          catghazalProvider.add({element.id: ghazalLikes});
+
+          // Cache the fetched data
+          String jsonData = jsonEncode({'likes': ghazalLikes});
+          final Uint8List bytes = Uint8List.fromList(utf8.encode(jsonData));
+          await cacheManager.putFile(cacheKey, bytes);
+        }
       }
     }
 
-    return ghazalProvider.likes;
+    setState(() {});
+    return catghazalProvider.likes;
   }
+
+  // Map catghazalsData = {};
+  // getGhazalsLikes() async {
+  //   final userProvider = Provider.of<UserProvider>(context, listen: false);
+  //   final ghazalProvider =
+  //       Provider.of<CatGhazalLikesProvider>(context, listen: false);
+  //   for (var element in widget.ghazals) {
+  //     var response = await http.get(
+  //       Uri.parse(
+  //           'http://nawees.com/api/catghazallikes?user_id=${userProvider.userId}&catghazal_id=${element.id}'),
+  //       headers: {
+  //         HttpHeaders.authorizationHeader: "Bearer $apiKey",
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       catghazalsData = await jsonDecode(response.body);
+  //       ghazalProvider.add({element.id: catghazalsData.values.first});
+  //       setState(() {});
+  //     }
+  //   }
+
+  //   return ghazalProvider.likes;
+  // }
 
   late final Future ghazalsLikesFuture = getGhazalsLikes();
   @override

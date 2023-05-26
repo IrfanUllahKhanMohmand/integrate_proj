@@ -20,4 +20,13 @@ class Sher {
         poetId: json['poet_id'],
         likes: json['likes']);
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'content': content,
+      'roman_content': romanContent,
+      'poet_id': poetId,
+      'likes': likes,
+    };
+  }
 }

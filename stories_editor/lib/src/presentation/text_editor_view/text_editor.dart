@@ -413,39 +413,39 @@ class _TextEditorState extends State<TextEditor> {
   }
 }
 
-Widget _text({
-  required TextEditingNotifier editorNotifier,
-  required FocusNode textNode,
-  required ControlNotifier controlNotifier,
-  required PaintingStyle paintingStyle,
-}) {
-  return Text(
-    editorNotifier.textController.text,
-    textAlign: editorNotifier.textAlign,
-    style: TextStyle(
-        fontFamily: controlNotifier.fontList![editorNotifier.fontFamilyIndex],
-        package: controlNotifier.isCustomFontList ? null : 'stories_editor',
-        shadows: <Shadow>[
-          Shadow(
-              offset: const Offset(1.0, 1.0),
-              blurRadius: 3.0,
-              color: controlNotifier.colorList![editorNotifier.textColor] ==
-                      Colors.black
-                  ? Colors.white54
-                  : Colors.black)
-        ]).copyWith(
-        color: controlNotifier.colorList![editorNotifier.textColor],
-        fontSize: editorNotifier.textSize,
-        background: Paint()
-          ..strokeWidth = 20.0
-          ..color = editorNotifier.backGroundColor
-          ..style = paintingStyle
-          ..strokeJoin = StrokeJoin.round
-          ..filterQuality = FilterQuality.high
-          ..strokeCap = StrokeCap.round
-          ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 1)),
-  );
-}
+// Widget _text({
+//   required TextEditingNotifier editorNotifier,
+//   required FocusNode textNode,
+//   required ControlNotifier controlNotifier,
+//   required PaintingStyle paintingStyle,
+// }) {
+//   return Text(
+//     editorNotifier.textController.text,
+//     textAlign: editorNotifier.textAlign,
+//     style: TextStyle(
+//         fontFamily: controlNotifier.fontList![editorNotifier.fontFamilyIndex],
+//         package: controlNotifier.isCustomFontList ? null : 'stories_editor',
+//         shadows: <Shadow>[
+//           Shadow(
+//               offset: const Offset(1.0, 1.0),
+//               blurRadius: 3.0,
+//               color: controlNotifier.colorList![editorNotifier.textColor] ==
+//                       Colors.black
+//                   ? Colors.white54
+//                   : Colors.black)
+//         ]).copyWith(
+//         color: controlNotifier.colorList![editorNotifier.textColor],
+//         fontSize: editorNotifier.textSize,
+//         background: Paint()
+//           ..strokeWidth = 20.0
+//           ..color = editorNotifier.backGroundColor
+//           ..style = paintingStyle
+//           ..strokeJoin = StrokeJoin.round
+//           ..filterQuality = FilterQuality.high
+//           ..strokeCap = StrokeCap.round
+//           ..maskFilter = const MaskFilter.blur(BlurStyle.solid, 1)),
+//   );
+// }
 
 Widget _textField({
   required TextEditingNotifier editorNotifier,

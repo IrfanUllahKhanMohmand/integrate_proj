@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:integration_test/Providers/local_provider.dart';
 import 'package:integration_test/Providers/shers_likes_provider.dart';
@@ -23,6 +24,7 @@ class TabBarSherTile extends StatefulWidget {
 }
 
 class _TabBarSherTileState extends State<TabBarSherTile> {
+  DefaultCacheManager cacheManager = DefaultCacheManager();
   likeSher() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final response = await http.post(
@@ -142,6 +144,12 @@ class _TabBarSherTileState extends State<TabBarSherTile> {
                                   Provider.of<SherLikesProvider>(context,
                                           listen: false)
                                       .add({widget.sher.id: 0});
+                                  String cacheKey =
+                                      'sher_likes_${Provider.of<UserProvider>(context, listen: false).userId}_${widget.sher.id}';
+                                  String jsonData = jsonEncode({'likes': 0});
+                                  final Uint8List bytes =
+                                      Uint8List.fromList(utf8.encode(jsonData));
+                                  await cacheManager.putFile(cacheKey, bytes);
                                   await dislikeSher();
                                 },
                                 child: SvgPicture.asset(
@@ -156,6 +164,12 @@ class _TabBarSherTileState extends State<TabBarSherTile> {
                                   Provider.of<SherLikesProvider>(context,
                                           listen: false)
                                       .add({widget.sher.id: 1});
+                                  String cacheKey =
+                                      'sher_likes_${Provider.of<UserProvider>(context, listen: false).userId}_${widget.sher.id}';
+                                  String jsonData = jsonEncode({'likes': 1});
+                                  final Uint8List bytes =
+                                      Uint8List.fromList(utf8.encode(jsonData));
+                                  await cacheManager.putFile(cacheKey, bytes);
                                   await likeSher();
                                 },
                                 child: SvgPicture.asset(
